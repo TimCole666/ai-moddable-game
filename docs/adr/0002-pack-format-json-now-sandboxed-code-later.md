@@ -1,3 +1,5 @@
 # Pack format: validated JSON now, sandboxed code later
 
+**Status**: amended 2026-10-17. Version 1 packs stop being accepted once version 2 ships, which ends the "data packs stay valid forever" clause below. Version 2 is specified in ADR-0009.
+
 Theme packs are pure, engine-validated JSON: safe to run unchanged no matter who authored them. Decided: a later format version (version 2, see ADR-0009) will allow packs to carry sandboxed code (capability-scoped, no network or filesystem by default) so packs can express new mechanics, Voyager-skill-library style; data packs stay valid forever. Rejected "no code ever" because parameterized data cannot express new mechanics — the cap of the format would cap the game. Consequences: the pack contract is versioned from day one, and validation must gate features by version.

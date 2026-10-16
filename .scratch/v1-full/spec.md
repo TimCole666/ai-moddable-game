@@ -92,11 +92,14 @@ Build the full v1 game in Godot 4.7 (GDScript):
 64. As a maintainer, I want hook order to be deterministic, so that the same packs always behave the same way.
 65. As a maintainer, I want the M1 spec archived and this spec to be the single source of scope, so that the team does not follow two specs.
 66. As a player, I want the battle view, base view, and war report to be clearly separate panels within the main screen, so that each phase is easy to read.
+67. As a player, I want to save a run in progress and resume it later, so that a 10-hour run does not have to be finished in one sitting.
+68. As a player, I want to open the native Rance-10 rules as a comparison option, so that I can feel how the old and new rules differ.
 
 ## Implementation Decisions
 
 Run structure
 - A run has a fixed sequence of about 15 chapters. Each chapter contains one preparation group and one operation group of quests, on branch trees, lasting 4 to 5 turns. Turn counts and quest trees are data in the built-in pack, so packs can change them.
+- Chapter sizes (decided 2026-10-17): chapters 1 to 5 have 4 turns each, and chapters 6 to 15 have 5 turns each, for 70 turns in total. Each chapter has 3 preparation quest trees and 3 operation quest trees. Each quest tree is 4 to 5 steps deep, and each step offers 2 or 3 options. Nodes are drawn from a shared node library, as in M1.
 - Each turn runs preparation, operation, base, and war report in that order.
 - Realm is one value per run. It starts at M1's default of 100. Each war report reduces it by 13 minus 2 per gain, with a floor of 3 (M1 defaults, pack-tunable). The run ends in a loss when the realm is zero or below. It ends in a win after the final chapter when the realm is above zero.
 - Quests are branch trees. The number of forks varies by step, as defined in the data.
@@ -109,7 +112,7 @@ Run structure
 
 Rules and the engine
 - The new strategy rule set is the core rule set for v1. The built-in pack carries it as expression trees, so the interpreter runs the official content.
-- The native Rance-10-style rules stay in the code, not in a pack, for replay coverage and for comparison.
+- The native Rance-10-style rules stay in the code, not in a pack. Developers use them for replay coverage and comparison. Players can also open them as a comparison option. Where that option lives is not decided yet.
 
 Pack format
 - Packs stay JSON. Rules are expression trees. The format version rises to 2. Validation gates features by version, as ADR-0002 requires.
@@ -130,7 +133,12 @@ Hooks
 
 Validation and safety
 - validate_pack returns the full list of reasons. A failed import leaves state unchanged, as M1 requires.
+- Packs that declare format version 1 are rejected with a version reason. v1 has no compatibility layer.
 - Every new text field, for parts and rules alike, is required in zh, en, and ja.
+
+Saves
+- A run in progress can be saved and resumed. A save holds the full run state and its seed, so a resumed run plays out exactly as an uninterrupted one would.
+- Not decided yet: save slots, autosave timing, and what happens to a save when its pack changes.
 
 Interfaces
 - The GameEngine public API stays the single seam for the UI and for tests: validate_pack, new_game, step, get_state, available_actions, context_line, and the chrome and art accessors.
@@ -165,6 +173,7 @@ What makes a good test here: it exercises external behavior through the engine s
 - Language switch mid-run keeps state (M1 test, retained).
 - Adult gate: the web-style gate shows the all-ages line (M1 test, retained).
 - Pack round trip: export, then import, yields a pack that validates and plays identically.
+- Saves: a save taken mid-run and loaded gives the same state, and play continued from it matches an uninterrupted run with the same actions.
 - Not automated: art quality, audio feel, and UI feel. These are covered by the playtest, using the notes template.
 - Prior art: the replay suite, the view smoke test, and the pack and balance checks already in the project.
 
@@ -190,16 +199,20 @@ Defaults to confirm (set in this spec, not yet decided by the owner):
 - Hook recursion depth and per-turn budgets are placeholders to tune.
 - The party roster and skill set carry over from M1.
 
-Open questions to settle before implementation:
-- Version 1 compatibility: do existing version-1 packs still import, or are they rejected with a version reason?
-- In-run saving: none, or save and resume within a run? A 10-hour run without any save is a real risk.
-- How the native Rance-10 rules are reached: developer-only, or a player-visible comparison option?
-- Turn counts and quest-tree sizes for each of the 15 chapters.
+Decided on 2026-10-17:
+- Version 1 packs are rejected, with no compatibility layer. This conflicts with ADR-0002 (data packs stay valid forever) and ADR-0008 (v1 packs run unchanged). Both ADRs are amended on 2026-10-17 (ADR-0002 and ADR-0008 status lines).
+- Saving: in-run save and resume is in scope.
+- Native Rance-10 rules: developer use and a player-visible comparison option.
+- Chapter sizes: see Run structure.
+
+Still open before implementation:
+- Save slots, autosave timing, and what happens to a save when its pack has changed.
 
 Documents to update when this spec is accepted:
 - A new ADR replacing ADR-0007, covering the code-pack format: JSON expression trees with a self-written interpreter.
 - A new ADR recording the core rule replacement: the Rance-10-style rules are replaced by the strategy rules, and the native Rance-10 rules are kept.
-- Amend ADR-0002: its line about later sandboxed code now applies to version 2.
+- Amend ADR-0002: its line about later sandboxed code now applies to version 2, and its "data packs stay valid forever" clause ends with version 2.
+- Amend ADR-0008: its "v1 packs run unchanged" clause no longer applies.
 - Update CONTEXT.md: the Core Loop, Theme Pack, Part, and Engine definitions, and the new terms Run, Chapter, Realm, Card Draft, and Rance-10 Rules.
 - Archive the M1 spec.
 
