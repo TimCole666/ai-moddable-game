@@ -30,25 +30,55 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"pack_id": "builtin",
-		"turn": 1,
+		"base_options": null,
 		"battle": {
-			"enemy": "boss",
-			"boss": true,
-			"enemy_hp": 160,
-			"enemy_max_hp": 160,
-			"enemy_at": 16,
-			"round": 11,
 			"ap": 6,
 			"ap_max": 6,
-			"regen": 2,
+			"boss": true,
 			"combo": 0,
+			"enemy": "boss",
+			"enemy_at": 16,
+			"enemy_hp": 160,
+			"enemy_max_hp": 160,
 			"guard": false,
 			"hexed": true,
+			"next_action": "e_slash",
 			"over": "lose",
 			"party_hp": [40, 35, 40, 5, 0, 33],
-			"next_action": "e_slash",
+			"regen": 2,
+			"round": 11,
 		},
+		"chest": null,
+		"collection": {
+			"archer": {
+				"count": 1,
+				"exp": 0,
+			},
+			"healer": {
+				"count": 1,
+				"exp": 0,
+			},
+			"hero": {
+				"count": 1,
+				"exp": 0,
+			},
+			"mage": {
+				"count": 1,
+				"exp": 0,
+			},
+			"striker": {
+				"count": 1,
+				"exp": 0,
+			},
+			"tank": {
+				"count": 1,
+				"exp": 0,
+			},
+		},
+		"ended": "",
+		"fatigue": 0,
+		"gains_total": 0,
+		"gains_turn": 0,
 		"log": [
 			"Turn 1: battle vs Warlord",
 			"Round 1: Ranger uses Hex: one enemy action this round will be cancelled",
@@ -64,4 +94,11 @@ func expected_state() -> Dictionary:
 			"Round 10: Warlord uses Slam for 24 damage on Dancer (HP 0)",
 			"Round 11: the squad withdraws (stalemate)",
 		],
+		"medals": 0,
+		"pack_id": "builtin",
+		"phase": 0,
+		"quest": null,
+		"realm": 100,
+		"tickets": 0,
+		"turn": 1,
 	}

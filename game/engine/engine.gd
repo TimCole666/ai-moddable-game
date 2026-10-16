@@ -19,8 +19,9 @@ extends Node
 
 # --- Fixed skeleton constants (mechanics, not content) -----------------------
 # Content strings live in theme packs, never here. Skill effects, leader and
-# enemy stats, and plans are rules; every name/icon for them is pack text
-# (text.<lang>.skillNames / .cards / .enemies / .enemyActions).
+# enemy stats, quest node graphs, and plans are rules; every name/icon/title
+# for them is pack text (text.<lang>.cards / .skillNames / .enemies /
+# .enemyActions / .questTitles / .flavor).
 
 ## Leader skills. "attr" lives on the leader's binding (not the skill) and is
 ## what the weakness multiplier checks against the enemy's weakness.
@@ -35,9 +36,8 @@ const SKILLS := {
 }
 
 ## The battle party: the six skeleton character cards with base stats and
-## their two skill bindings each. Squad formation from the card collection
-## (auto-formation, duplicates, level-ups) arrives with the turn cycle; until
-## then the battle core runs this fixed party.
+## their two skill bindings each. The party is fixed; the card collection
+## (chests) accumulates counts and EXP on these same six ids.
 const LEADERS := [
 	{"id": "hero", "faction": 0, "at": 14, "max_hp": 60, "skills": [{"id": "slash"}, {"id": "heavy"}]},
 	{"id": "tank", "faction": 0, "at": 9, "max_hp": 85, "skills": [{"id": "guard"}, {"id": "slash"}]},
@@ -63,6 +63,63 @@ const ENEMY_SKILLS := {
 	"e_bolt": {"kind": "magic", "mult": 1.2},
 }
 
+# --- Turn cycle: quest skeletons ---------------------------------------------
+# Steps of paired node ids (left / right branch), identical for every theme —
+# the pack's questTitles name the quests, the pack's text names the nodes.
+# Node shapes: battle/auto carry an enemy id; event carries its effect.
+
+const QUEST_NODES := {
+	"b_g": {"t": "battle", "e": "grunt"},
+	"b_b": {"t": "battle", "e": "brute"},
+	"b_s": {"t": "battle", "e": "shaman"},
+	"b_boss": {"t": "battle", "e": "boss"},
+	"a_g": {"t": "auto", "e": "grunt"},
+	"a_b": {"t": "auto", "e": "brute"},
+	"chest": {"t": "chest"},
+	"heal": {"t": "heal"},
+	"gains": {"t": "gains"},
+	"medal": {"t": "medal"},
+	"ev_exp": {"t": "event", "effect": "exp"},
+	"ev_gains": {"t": "event", "effect": "gains"},
+}
+
+const QUESTS := {
+	"prep": [
+		{"key": "prepA", "steps": [["b_g", "chest"], ["ev_exp", "ev_gains"], ["gains", "heal"]]},
+		{"key": "prepB", "steps": [["chest", "a_g"], ["heal", "ev_exp"], ["medal", "gains"]]},
+	],
+	"operation": [
+		{"key": "opA", "steps": [["b_g", "a_b"], ["chest", "ev_gains"], ["heal", "b_s"], ["b_boss", "chest"]]},
+		{"key": "opB", "steps": [["a_g", "chest"], ["ev_exp", "b_s"], ["b_b", "heal"], ["chest", "medal"]]},
+	],
+}
+
+# --- Turn cycle: tuning -------------------------------------------------------
+
+const PHASE_PREPARE := 0
+const PHASE_OPERATION := 1
+const PHASE_BASE := 2
+const PHASE_WAR_REPORT := 3
+
+const START_REALM := 100
+const REALM_WARN_BELOW := 50
+const TURN_LIMIT := 8
+const WAR_LOSS_BASE := 9
+const WAR_LOSS_REDUCTION := 2
+const WAR_LOSS_MIN := 3
+const MAX_TICKETS := 2
+const GAINS_NODE_AMOUNT := 2
+const EVENT_EXP := 2
+const MEAL_EXP := 2
+const LOGISTICS_GAINS := 1
+const CHEST_CHOICES := 3
+const AUTO_EXP := 1
+const AUTO_AT_BONUS_PER_LEVEL := 0.05
+const AUTO_WIN_RATIO := 1.6
+const BATTLE_WIN_EXP := 2
+
+# --- Battle tuning -------------------------------------------------------------
+
 const BATTLE_START_AP := 4
 const BATTLE_AP_MAX := 6
 const BATTLE_AP_REGEN := 2
@@ -74,9 +131,17 @@ const ENEMY_SCALE_PER_TURN := 0.15
 
 const START_TURN := 1
 
+# --- Action vocabulary -----------------------------------------------------------
+
 const ACTION_START_BATTLE := "start_battle"
 const ACTION_SKILL := "skill"
 const ACTION_END_TURN := "end_turn"
+const ACTION_START_QUEST := "start_quest"
+const ACTION_CHOOSE := "choose"
+const ACTION_CHEST_PICK := "chest_pick"
+const ACTION_RETIRE := "retire"
+const ACTION_BASE_PICK := "base_pick"
+const ACTION_END_PHASE := "end_phase"
 
 const BUILTIN_PACK_PATH := "res://engine/builtin_pack.json"
 
@@ -117,11 +182,26 @@ func new_game(pack: Dictionary) -> Dictionary:
 	if not errors.is_empty():
 		return {"ok": false, "errors": errors, "state": {}}
 	_pack = pack.duplicate(true)
+	var collection := {}
+	for leader in LEADERS:
+		collection[leader["id"]] = {"count": 1, "exp": 0}
 	_state = {
 		"pack_id": pack["id"],
 		"turn": START_TURN,
-		"log": [],
+		"phase": PHASE_PREPARE,
+		"realm": START_REALM,
+		"gains_turn": 0,
+		"gains_total": 0,
+		"medals": 0,
+		"tickets": 0,
+		"fatigue": 0,
+		"collection": collection,
+		"quest": null,
+		"chest": null,
+		"base_options": null,
+		"ended": "",
 		"battle": null,
+		"log": [],
 	}
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
@@ -131,13 +211,21 @@ func new_game(pack: Dictionary) -> Dictionary:
 ## post-step snapshot on success and the untouched snapshot on failure. The
 ## action vocabulary grows in later tickets without changing this signature.
 ##
+## Turn-cycle vocabulary (ticket 03):
+##   {"type": "start_quest", "pool": "prep"|"operation", "idx": <0|1>}
+##   {"type": "choose", "option": <0|1>}     # quest branch choice
+##   {"type": "chest_pick", "idx": <0..2>}   # resolve an opened chest
+##   {"type": "retire"}                      # abandon the quest, no rewards
+##   {"type": "base_pick", "option": <int>}  # base phase action
+##   {"type": "end_phase"}                   # advance the phase; at the war
+##                                           # report, resolve it -> next turn
 ## Battle vocabulary (ticket 02):
 ##   {"type": "start_battle", "enemy": <skeleton enemy id>}
 ##   {"type": "skill", "leader": <leader index>, "slot": <skill slot index>}
-##   {"type": "end_turn"}
-## end_turn outside a battle advances the session turn; during a battle it
-## resolves the enemy phase (announced in state.battle.next_action); once the
-## battle is over ("win"/"lose" in state.battle.over) it clears the battle.
+##   {"type": "end_turn"}                    # battle only: resolve the enemy
+##                                           # phase announced in battle.next_action;
+##                                           # once over, close the battle (and
+##                                           # finish or abandon the quest node)
 func step(action: Dictionary) -> Dictionary:
 	if _state.is_empty():
 		return _step_error("engine: no session; call new_game() first")
@@ -149,6 +237,18 @@ func step(action: Dictionary) -> Dictionary:
 			return _apply_skill(action)
 		ACTION_END_TURN:
 			return _apply_end_turn()
+		ACTION_START_QUEST:
+			return _apply_start_quest(action)
+		ACTION_CHOOSE:
+			return _apply_choose(action)
+		ACTION_CHEST_PICK:
+			return _apply_chest_pick(action)
+		ACTION_RETIRE:
+			return _apply_retire()
+		ACTION_BASE_PICK:
+			return _apply_base_pick(action)
+		ACTION_END_PHASE:
+			return _apply_end_phase()
 		_:
 			return _step_error("action.type: unknown action type %s" % [type])
 
@@ -173,23 +273,302 @@ func get_builtin_pack() -> Dictionary:
 	return parsed
 
 
+# --- Turn cycle ------------------------------------------------------------------
+
+func _apply_start_quest(action: Dictionary) -> Dictionary:
+	if _state["ended"] != "":
+		return _step_error("start_quest: the game is over")
+	if _state["quest"] != null:
+		return _step_error("start_quest: quest already active")
+	if _state["battle"] != null:
+		return _step_error("start_quest: battle still active")
+	if _state["chest"] != null:
+		return _step_error("start_quest: chest still open")
+	var phase: int = _state["phase"]
+	if phase != PHASE_PREPARE and phase != PHASE_OPERATION:
+		return _step_error("start_quest: quests only run in preparation and operation phases")
+	var pool: Variant = action.get("pool", null)
+	if not (pool is String) or not QUESTS.has(pool):
+		return _step_error("start_quest.pool: invalid pool %s" % [pool])
+	var pool_quests: Array = QUESTS[pool]
+	var idx_v: Variant = action.get("idx", null)
+	if not _is_integral(idx_v):
+		return _step_error("start_quest.idx: invalid quest index %s" % [idx_v])
+	var idx := int(idx_v)
+	if idx < 0 or idx >= pool_quests.size():
+		return _step_error("start_quest.idx: invalid quest index %s" % [idx_v])
+	_state["quest"] = {"pool": pool, "idx": idx, "step": 0}
+	var kind := "Preparation" if pool == "prep" else "Operation"
+	_log("Turn %d: %s quest started: %s." % [_state["turn"], kind, _quest_title(pool_quests[idx]["key"])])
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _apply_choose(action: Dictionary) -> Dictionary:
+	if _state["quest"] == null:
+		return _step_error("choose: no active quest")
+	if _state["battle"] != null:
+		return _step_error("choose: battle still active")
+	if _state["chest"] != null:
+		return _step_error("choose: chest still open")
+	if _state["ended"] != "":
+		return _step_error("choose: the game is over")
+	var option_v: Variant = action.get("option", null)
+	if not _is_integral(option_v) or int(option_v) < 0 or int(option_v) > 1:
+		return _step_error("choose.option: invalid branch %s" % [option_v])
+	var option := int(option_v)
+	var quest: Dictionary = _state["quest"]
+	var steps: Array = QUESTS[quest["pool"]][quest["idx"]]["steps"]
+	var step_nodes: Array = steps[quest["step"]]
+	_apply_node(step_nodes[option], option)
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+## Resolve one quest node. Battle and chest nodes hand control to their own
+## action loop (the step advances when the battle is won or the chest picked);
+## every other node resolves immediately and advances the quest step.
+func _apply_node(node_id: String, option: int) -> void:
+	var node: Dictionary = QUEST_NODES[node_id]
+	match node["t"]:
+		"battle":
+			_start_battle(node["e"])
+			return
+		"chest":
+			_open_chest()
+			return
+		"auto":
+			_apply_auto_node(node["e"])
+		"heal":
+			_state["fatigue"] = 0
+			_log("Turn %d: rest site: squad fully restored, fatigue cleared." % [_state["turn"]])
+		"event":
+			_apply_event_node(node["effect"])
+		"gains":
+			_state["gains_turn"] = _state["gains_turn"] + GAINS_NODE_AMOUNT
+			_state["gains_total"] = _state["gains_total"] + GAINS_NODE_AMOUNT
+			_log("Turn %d: war supplies secured: gains +%d (turn total %d)." % [
+				_state["turn"], GAINS_NODE_AMOUNT, _state["gains_turn"],
+			])
+		"medal":
+			_state["medals"] = _state["medals"] + 1
+			_log("Turn %d: medal +1 (squad level %d)." % [_state["turn"], _squad_level()])
+	_finish_node()
+
+
+## Deterministic auto-battle (the Rance-10 squad-total-AT comparison): total
+## AT boosted 5% per squad level (two medals each) vs 1.6x the enemy's base
+## AT. Winning or not, every leader banks +1 EXP.
+func _apply_auto_node(enemy_id: String) -> void:
+	var def: Dictionary = ENEMIES[enemy_id]
+	var total_at := _squad_total_at()
+	for id in _state["collection"]:
+		var entry: Dictionary = _state["collection"][id]
+		entry["exp"] = entry["exp"] + AUTO_EXP
+	if total_at >= roundi(def["at"] * AUTO_WIN_RATIO):
+		_log("Turn %d: skirmish vs %s: won handily (squad AT %d). Leaders +%d EXP." % [
+			_state["turn"], _enemy_name(enemy_id), total_at, AUTO_EXP,
+		])
+	else:
+		_log("Turn %d: skirmish vs %s: won at a cost (squad AT %d). Leaders +%d EXP." % [
+			_state["turn"], _enemy_name(enemy_id), total_at, AUTO_EXP,
+		])
+
+
+## Event nodes resolve by the node's own effect: +EXP to the squad member
+## rotating with the turn, or +1 war gains. Flavor lines come from the pack.
+func _apply_event_node(effect: String) -> void:
+	if effect == "exp":
+		var chars := _owned_char_ids()
+		var char_id: String = chars[_state["turn"] % chars.size()]
+		var entry: Dictionary = _state["collection"][char_id]
+		entry["exp"] = entry["exp"] + EVENT_EXP
+		_log("Turn %d: %s (%s +%d EXP)" % [_state["turn"], _flavor_line("ev_exp"), _card_name(char_id), EVENT_EXP])
+	else:
+		_state["gains_turn"] = _state["gains_turn"] + 1
+		_state["gains_total"] = _state["gains_total"] + 1
+		_log("Turn %d: %s" % [_state["turn"], _flavor_line("ev_gains")])
+
+
+func _open_chest() -> void:
+	# Deterministic 3-card offer: a pure function of turn and quest step.
+	var quest: Dictionary = _state["quest"]
+	var opts: Array = []
+	var k := 0
+	while opts.size() < CHEST_CHOICES and k < LEADERS.size():
+		var id: String = LEADERS[(_state["turn"] * 7 + quest["step"] * 5 + k * 5) % LEADERS.size()]["id"]
+		if not opts.has(id):
+			opts.append(id)
+		k += 1
+	_state["chest"] = opts
+	_log("Turn %d: treasure chest! %d cards — take one." % [_state["turn"], opts.size()])
+
+
+func _apply_chest_pick(action: Dictionary) -> Dictionary:
+	if _state["chest"] == null:
+		return _step_error("chest_pick: no chest open")
+	if _state["battle"] != null:
+		return _step_error("chest_pick: battle still active")
+	var chest: Array = _state["chest"]
+	var idx_v: Variant = action.get("idx", null)
+	if not _is_integral(idx_v) or int(idx_v) < 0 or int(idx_v) >= chest.size():
+		return _step_error("chest_pick.idx: invalid card index %s" % [idx_v])
+	var card_id: String = chest[int(idx_v)]
+	var entry: Dictionary = _state["collection"][card_id]
+	entry["count"] = entry["count"] + 1
+	if entry["count"] > 1:
+		_log("Turn %d: card gained: %s (copy x%d)." % [_state["turn"], _card_name(card_id), entry["count"]])
+	else:
+		_log("Turn %d: card gained: %s." % [_state["turn"], _card_name(card_id)])
+	_state["chest"] = null
+	_finish_node()
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _finish_node() -> void:
+	var quest: Dictionary = _state["quest"]
+	quest["step"] = quest["step"] + 1
+	var steps: Array = QUESTS[quest["pool"]][quest["idx"]]["steps"]
+	if quest["step"] >= steps.size():
+		_complete_quest()
+
+
+func _complete_quest() -> void:
+	var quest: Dictionary = _state["quest"]
+	var title := _quest_title(QUESTS[quest["pool"]][quest["idx"]]["key"])
+	_state["quest"] = null
+	_log("Turn %d: quest complete: %s." % [_state["turn"], title])
+	if quest["pool"] == "operation" and _state["tickets"] < MAX_TICKETS:
+		_state["tickets"] = _state["tickets"] + 1
+		_log("Turn %d: earned a meal ticket." % [_state["turn"]])
+	_state["phase"] = _state["phase"] + 1
+	if _state["phase"] == PHASE_BASE:
+		_set_base_options()
+
+
+func _apply_retire() -> Dictionary:
+	if _state["quest"] == null:
+		return _step_error("retire: no active quest")
+	_state["quest"] = null
+	_state["battle"] = null
+	_state["chest"] = null
+	_state["phase"] = _state["phase"] + 1
+	if _state["phase"] == PHASE_BASE:
+		_set_base_options()
+	_log("Turn %d: quest retired (no rewards)." % [_state["turn"]])
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _set_base_options() -> void:
+	if _state["tickets"] > 0:
+		_state["base_options"] = ["meal", "meal", "meal"]
+	else:
+		_state["base_options"] = ["exp", "gains"]
+
+
+func _apply_base_pick(action: Dictionary) -> Dictionary:
+	if _state["phase"] != PHASE_BASE:
+		return _step_error("base_pick: not in the base phase")
+	var options: Variant = _state["base_options"]
+	if not (options is Array):
+		return _step_error("base_pick: base phase already resolved")
+	var option_v: Variant = action.get("option", null)
+	if not _is_integral(option_v) or int(option_v) < 0 or int(option_v) >= (options as Array).size():
+		return _step_error("base_pick.option: invalid option %s" % [option_v])
+	var option := int(option_v)
+	var chars := _owned_char_ids()
+	var char_id: String = chars[option % chars.size()]
+	var entry: Dictionary = _state["collection"][char_id]
+	if _state["tickets"] > 0:
+		_state["tickets"] = _state["tickets"] - 1
+		entry["exp"] = entry["exp"] + MEAL_EXP
+		_log("Turn %d: meal ticket spent: %s event, +%d EXP." % [_state["turn"], _card_name(char_id), MEAL_EXP])
+	elif option == 0:
+		entry["exp"] = entry["exp"] + EVENT_EXP
+		_log("Turn %d: quiet evening: %s +%d EXP." % [_state["turn"], _card_name(char_id), EVENT_EXP])
+	else:
+		_state["gains_turn"] = _state["gains_turn"] + LOGISTICS_GAINS
+		_state["gains_total"] = _state["gains_total"] + LOGISTICS_GAINS
+		_log("Turn %d: logistics arranged: war gains +%d." % [_state["turn"], LOGISTICS_GAINS])
+	_state["base_options"] = null
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _apply_end_phase() -> Dictionary:
+	if _state["ended"] != "":
+		return _step_error("end_phase: the game is over")
+	if _state["quest"] != null:
+		return _step_error("end_phase: quest still active")
+	if _state["battle"] != null:
+		return _step_error("end_phase: battle still active")
+	if _state["chest"] != null:
+		return _step_error("end_phase: chest still open")
+	if _state["phase"] == PHASE_BASE and _state["base_options"] != null:
+		return _step_error("end_phase: base phase options pending")
+	if _state["phase"] == PHASE_WAR_REPORT:
+		_resolve_war_report()
+	else:
+		_state["phase"] = _state["phase"] + 1
+		if _state["phase"] == PHASE_BASE:
+			_set_base_options()
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+## The war report converts this turn's war gains into softened realm losses.
+## Fatigue ticks up once per report (when the pack's Fatigue part is enabled),
+## realm at zero ends the game in defeat, and past the turn limit the
+## campaign is won.
+func _resolve_war_report() -> void:
+	var loss := maxi(WAR_LOSS_MIN, WAR_LOSS_BASE - WAR_LOSS_REDUCTION * _state["gains_turn"])
+	_state["realm"] = _state["realm"] - loss
+	var left := maxi(0, _state["realm"])
+	_log(_report_tpl().replace("{turn}", str(_state["turn"])).replace("{loss}", str(loss)).replace("{left}", "%d%%" % [left]))
+	_state["gains_turn"] = 0
+	var part := _fatigue_part()
+	if not part.is_empty():
+		_state["fatigue"] = _state["fatigue"] + 1
+	if _state["realm"] <= 0:
+		_state["ended"] = "lose"
+		_log("Turn %d: the realm falls. GAME OVER." % [_state["turn"]])
+		return
+	_state["turn"] = _state["turn"] + 1
+	_state["phase"] = PHASE_PREPARE
+	if _state["turn"] > TURN_LIMIT:
+		_state["ended"] = "win"
+		_log("Turn %d: the campaign holds — victory!" % [_state["turn"]])
+	elif _state["realm"] < REALM_WARN_BELOW:
+		_log("Turn %d: warning: the realm is below half (%d%% held)." % [_state["turn"], _state["realm"]])
+
+
+func _squad_level() -> int:
+	return _state["medals"] / 2
+
+
+func _squad_total_at() -> int:
+	var total := 0
+	for leader in LEADERS:
+		total = total + leader["at"]
+	return roundi(total * (1.0 + AUTO_AT_BONUS_PER_LEVEL * _squad_level()))
+
+
+func _owned_char_ids() -> Array:
+	return _state["collection"].keys()
+
+
 # --- Battle core ---------------------------------------------------------------
 
-func _apply_start_battle(action: Dictionary) -> Dictionary:
-	if _state["battle"] != null:
-		return _step_error("start_battle: battle already active")
-	var enemy_id: Variant = action.get("enemy", null)
-	if not (enemy_id is String) or not ENEMIES.has(enemy_id):
-		return _step_error("start_battle: unknown enemy %s" % [enemy_id])
+## Start a battle against a skeleton enemy. Returns "" on success or the error
+## message; used both by the direct start_battle action and by battle quest
+## nodes. Enemies scale with the session turn so later fights bite harder.
+## When the pack's Fatigue part is enabled and its threshold is crossed, the
+## part's apPenalty drags the battle's AP pool and regen (announced in the log).
+func _start_battle(enemy_id: String) -> String:
 	var def: Dictionary = ENEMIES[enemy_id]
-	# Enemies scale with the session turn so later fights bite harder.
 	var scale: float = 1.0 + ENEMY_SCALE_PER_TURN * (_state["turn"] - 1)
 	var hp := roundi(def["hp"] * scale)
 	var at := roundi(def["at"] * scale)
 	var party_hp: Array = []
 	for leader in LEADERS:
 		party_hp.append(leader["max_hp"])
-	_state["battle"] = {
+	var battle := {
 		"enemy": enemy_id,
 		"boss": bool(def.get("boss", false)),
 		"enemy_hp": hp,
@@ -207,7 +586,26 @@ func _apply_start_battle(action: Dictionary) -> Dictionary:
 		# Pre-announcement: the action the enemy will take when this round ends.
 		"next_action": def["plan"][0],
 	}
+	var part := _fatigue_part()
+	if not part.is_empty() and _state["fatigue"] >= part["params"]["threshold"]:
+		var penalty: int = part["params"]["apPenalty"]
+		battle["ap_max"] = maxi(1, BATTLE_AP_MAX - penalty)
+		battle["regen"] = maxi(0, BATTLE_AP_REGEN - penalty)
+		_log("Turn %d: %s drags the squad: AP regen -%d." % [_state["turn"], _fatigue_part_name(), penalty])
+	_state["battle"] = battle
 	_log("Turn %d: battle vs %s" % [_state["turn"], _enemy_name(enemy_id)])
+	return ""
+
+
+func _apply_start_battle(action: Dictionary) -> Dictionary:
+	if _state["battle"] != null:
+		return _step_error("start_battle: battle already active")
+	var enemy_id: Variant = action.get("enemy", null)
+	if not (enemy_id is String) or not ENEMIES.has(enemy_id):
+		return _step_error("start_battle: unknown enemy %s" % [enemy_id])
+	var error := _start_battle(enemy_id)
+	if error != "":
+		return _step_error(error)
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 
@@ -274,6 +672,9 @@ func _apply_attack(b: Dictionary, leader_def: Dictionary, bind: Dictionary, sk: 
 	_log("Round %d: %s uses %s for %d damage (enemy HP %d)" % [b["round"], leader_label, skill_label, total, b["enemy_hp"]])
 	if b["enemy_hp"] <= 0:
 		b["over"] = "win"
+		for id in _state["collection"]:
+			var entry: Dictionary = _state["collection"][id]
+			entry["exp"] = entry["exp"] + BATTLE_WIN_EXP
 		_log("Round %d: victory!" % [b["round"]])
 
 
@@ -343,7 +744,7 @@ func _jitter(round_no: int, a: int, b: int, c: int) -> float:
 
 
 # --- Pack text lookups ---------------------------------------------------------
-# Battle log lines carry pack names. Ticket 04 enforces these fields in the
+# Log lines carry pack names. Ticket 04 enforces these fields in the
 # contract; until then a missing name falls back to the skeleton id.
 
 func _locale() -> Dictionary:
@@ -380,6 +781,58 @@ func _enemy_name(id: String) -> String:
 
 func _enemy_action_name(id: String) -> String:
 	return _text_name("enemyActions", id)
+
+
+func _quest_title(key: String) -> String:
+	var titles: Variant = _locale().get("questTitles", {})
+	if titles is Dictionary and (titles as Dictionary).has(key):
+		var title: Variant = (titles as Dictionary)[key]
+		if title is String and not (title as String).is_empty():
+			return title
+	return key
+
+
+## First flavor line for an event node; falls back to a bare chrome line when
+## the pack carries no flavor yet (ticket 04 enforces it).
+func _flavor_line(key: String) -> String:
+	var flavor: Variant = _locale().get("flavor", {})
+	if flavor is Dictionary:
+		var lines: Variant = (flavor as Dictionary).get(key, null)
+		if lines is Array and not (lines as Array).is_empty() and (lines as Array)[0] is String:
+			return (lines as Array)[0]
+	if key == "ev_exp":
+		return "an event (+EXP)"
+	return "an event (+war gains)"
+
+
+## The war-report template with its {turn} {loss} {left} placeholders; falls
+## back to a bare chrome template when the pack carries none (ticket 04).
+func _report_tpl() -> String:
+	var flavor: Variant = _locale().get("flavor", {})
+	if flavor is Dictionary:
+		var tpl: Variant = (flavor as Dictionary).get("reportTpl", null)
+		if tpl is String and not (tpl as String).is_empty():
+			return tpl
+	return "Turn {turn} war report: the realm lost {loss} ground. {left} remains."
+
+
+## The pack's Fatigue part as declared ({enabled, params} + text name), or {}
+## when the pack disables it or carries no part text.
+func _fatigue_part() -> Dictionary:
+	var parts: Variant = _pack.get("parts", {})
+	if not (parts is Dictionary):
+		return {}
+	var fatigue: Variant = (parts as Dictionary).get("fatigue", null)
+	if not (fatigue is Dictionary):
+		return {}
+	var fat := fatigue as Dictionary
+	if (fat.get("enabled", false) is bool) and fat["enabled"]:
+		return fat
+	return {}
+
+
+func _fatigue_part_name() -> String:
+	return _text_name("parts", "fatigue")
 
 
 # --- Validation helpers -------------------------------------------------------
@@ -461,20 +914,33 @@ func _step_error(message: String) -> Dictionary:
 	return {"ok": false, "errors": errors, "state": state}
 
 
+## End the battle round: resolve the announced enemy action, or — once the
+## battle is over — close the battle. A won battle finishes the quest node
+## (the step advances, possibly completing the quest); a lost one abandons
+## the quest and moves the phase along.
 func _apply_end_turn() -> Dictionary:
 	var battle: Variant = _state["battle"]
-	if battle is Dictionary:
-		var b := battle as Dictionary
-		if b["over"] != "":
-			# The result state (over: "win"/"lose") stays observable until the
-			# next end turn clears the battle.
-			_state["battle"] = null
-			_log("Turn %d: battle over" % [_state["turn"]])
-		else:
-			_apply_battle_end_turn(b)
+	if not (battle is Dictionary):
+		return _step_error("end_turn: no active battle")
+	var b := battle as Dictionary
+	if b["over"] != "":
+		# The result state (over: "win"/"lose") stays observable until the
+		# next end turn closes the battle.
+		var result: String = b["over"]
+		_state["battle"] = null
+		_log("Turn %d: battle over" % [_state["turn"]])
+		if _state["quest"] != null:
+			if result == "win":
+				_finish_node()
+			else:
+				_state["quest"] = null
+				_state["chest"] = null
+				_state["phase"] = _state["phase"] + 1
+				if _state["phase"] == PHASE_BASE:
+					_set_base_options()
+				_log("Turn %d: quest abandoned." % [_state["turn"]])
 	else:
-		_state["turn"] = _state["turn"] + 1
-		_log("Turn %d: end turn" % [_state["turn"]])
+		_apply_battle_end_turn(b)
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 

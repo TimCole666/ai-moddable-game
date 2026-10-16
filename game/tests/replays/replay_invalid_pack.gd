@@ -29,8 +29,45 @@ func expected_new_game_errors() -> PackedStringArray:
 
 func expected_state() -> Dictionary:
 	return {
-		"pack_id": "builtin",
-		"turn": 1,
-		"log": [],
+		"base_options": null,
 		"battle": null,
+		"chest": null,
+		"collection": {
+			"archer": {
+				"count": 1,
+				"exp": 0,
+			},
+			"healer": {
+				"count": 1,
+				"exp": 0,
+			},
+			"hero": {
+				"count": 1,
+				"exp": 0,
+			},
+			"mage": {
+				"count": 1,
+				"exp": 0,
+			},
+			"striker": {
+				"count": 1,
+				"exp": 0,
+			},
+			"tank": {
+				"count": 1,
+				"exp": 0,
+			},
+		},
+		"ended": "",
+		"fatigue": 0,
+		"gains_total": 0,
+		"gains_turn": 0,
+		"log": [],
+		"medals": 0,
+		"pack_id": "builtin",
+		"phase": 0,
+		"quest": null,
+		"realm": 100,
+		"tickets": 0,
+		"turn": 1,
 	}
