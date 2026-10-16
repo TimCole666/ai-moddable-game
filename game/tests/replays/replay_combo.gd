@@ -21,66 +21,73 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 2,
-			"ap_max": 6,
-			"boss": true,
-			"combo": 0,
-			"enemy": "boss",
-			"enemy_at": 16,
-			"enemy_hp": 137,
-			"enemy_max_hp": 160,
-			"guard": false,
-			"hexed": false,
-			"next_action": "e_slash",
-			"over": "",
-			"party_hp": [60, 58, 70, 45, 50, 48],
-			"regen": 2,
-			"round": 2,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 0,
-			},
-			"healer": {
-				"count": 1,
-				"exp": 0,
-			},
-			"hero": {
-				"count": 1,
-				"exp": 0,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 0,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 0,
-			},
-			"tank": {
-				"count": 1,
-				"exp": 0,
-			},
-		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: battle vs Warlord",
-			"Round 1: Vanguard uses Strike for 14 damage (enemy HP 146)",
-			"Round 1: Bulwark uses Strike for 9 damage (enemy HP 137)",
-			"Round 1: Warlord uses Slam for 27 damage on Bulwark (HP 58)",
+	"base_options": null,
+	"battle": {
+		"ap": 2,
+		"ap_max": 6,
+		"boss": true,
+		"combo": 0,
+		"enemy": "boss",
+		"enemy_at": 16,
+		"enemy_hp": 137,
+		"enemy_max_hp": 160,
+		"guard": false,
+		"hexed": false,
+		"next_action": "e_slash",
+		"over": "",
+		"party_hp": [
+			60,
+			58,
+			70,
+			45,
+			50,
+			48
 		],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": null,
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"regen": 2,
+		"round": 2
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
+		},
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 0
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: battle vs Admiral Blackjaw",
+		"Round 1: Captain Maren Stormbite uses Cutlass Slash for 14 damage (enemy HP 146)",
+		"Round 1: Bram Ironkeel uses Cutlass Slash for 9 damage (enemy HP 137)",
+		"Round 1: Admiral Blackjaw uses Cannon Slam for 27 damage on Bram Ironkeel (HP 58)"
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": null,
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}

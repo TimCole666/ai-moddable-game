@@ -88,48 +88,73 @@ func _write_json(path: String, pack: Dictionary) -> void:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 2,
-			"ap_max": 6,
-			"boss": false,
-			"combo": 1,
-			"enemy": "grunt",
-			"enemy_at": 8,
-			"enemy_hp": 26,
-			"enemy_max_hp": 40,
-			"guard": false,
-			"hexed": false,
-			"next_action": "e_slash",
-			"over": "",
-			"party_hp": [60, 85, 70, 45, 50, 48],
-			"regen": 2,
-			"round": 1,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {"count": 1, "exp": 0},
-			"healer": {"count": 1, "exp": 0},
-			"hero": {"count": 1, "exp": 0},
-			"mage": {"count": 1, "exp": 0},
-			"striker": {"count": 1, "exp": 0},
-			"tank": {"count": 1, "exp": 0},
-		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: theme pack exported to user://t04/roundtrip/exported.json",
-			"Turn 1: theme pack switched to Mutated Seas.",
-			"Turn 1: battle vs Grunt",
-			"Round 1: Mutineer uses Strike for 14 damage (enemy HP 26)",
+	"base_options": null,
+	"battle": {
+		"ap": 2,
+		"ap_max": 6,
+		"boss": false,
+		"combo": 1,
+		"enemy": "grunt",
+		"enemy_at": 8,
+		"enemy_hp": 26,
+		"enemy_max_hp": 40,
+		"guard": false,
+		"hexed": false,
+		"next_action": "e_slash",
+		"over": "",
+		"party_hp": [
+			60,
+			85,
+			70,
+			45,
+			50,
+			48
 		],
-		"medals": 0,
-		"pack_id": "mutated",
-		"phase": 0,
-		"quest": null,
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"regen": 2,
+		"round": 1
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
+		},
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 0
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: theme pack exported to user://t04/roundtrip/exported.json",
+		"Turn 1: theme pack switched to Mutated Seas.",
+		"Turn 1: battle vs Press-Gang Hand",
+		"Round 1: Mutineer uses Cutlass Slash for 14 damage (enemy HP 26)"
+	],
+	"medals": 0,
+	"pack_id": "mutated",
+	"phase": 0,
+	"quest": null,
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}

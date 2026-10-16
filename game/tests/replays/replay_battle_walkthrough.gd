@@ -34,75 +34,82 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 0,
-			"ap_max": 6,
-			"boss": false,
-			"combo": 1,
-			"enemy": "brute",
-			"enemy_at": 12,
-			"enemy_hp": 0,
-			"enemy_max_hp": 70,
-			"guard": false,
-			"hexed": false,
-			"next_action": "e_slash",
-			"over": "win",
-			"party_hp": [60, 74, 68, 26, 37, 35],
-			"regen": 2,
-			"round": 6,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 2,
-			},
-			"healer": {
-				"count": 1,
-				"exp": 2,
-			},
-			"hero": {
-				"count": 1,
-				"exp": 2,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 2,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 2,
-			},
-			"tank": {
-				"count": 1,
-				"exp": 2,
-			},
-		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: battle vs Brute",
-			"Round 1: Sage uses Blast for 22 damage (enemy HP 48)",
-			"Round 1: Brute uses Slam for 20 damage on Bulwark (HP 65)",
-			"Round 2: Dancer uses Twin Strike for 16 damage (enemy HP 32)",
-			"Round 2: Brute uses Jab for 11 damage on Medic (HP 59)",
-			"Round 3: Medic uses Mend: all standing leaders +9 HP",
-			"Round 3: Brute uses Slam for 19 damage on Sage (HP 26)",
-			"Round 4: Vanguard uses Strike for 15 damage (enemy HP 17)",
-			"Round 4: Brute uses Jab for 13 damage on Dancer (HP 37)",
-			"Round 5: Bulwark uses Brace: party braces (-30% incoming this round)",
-			"Round 5: Brute uses Slam for 13 damage on Ranger (HP 35)",
-			"Round 6: Sage uses Blast for 22 damage (enemy HP 0)",
-			"Round 6: victory!",
+	"base_options": null,
+	"battle": {
+		"ap": 0,
+		"ap_max": 6,
+		"boss": false,
+		"combo": 1,
+		"enemy": "brute",
+		"enemy_at": 12,
+		"enemy_hp": 0,
+		"enemy_max_hp": 70,
+		"guard": false,
+		"hexed": false,
+		"next_action": "e_slash",
+		"over": "win",
+		"party_hp": [
+			60,
+			74,
+			68,
+			26,
+			37,
+			35
 		],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": null,
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"regen": 2,
+		"round": 6
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 2
+		},
+		"healer": {
+			"count": 1,
+			"exp": 2
+		},
+		"hero": {
+			"count": 1,
+			"exp": 2
+		},
+		"mage": {
+			"count": 1,
+			"exp": 2
+		},
+		"striker": {
+			"count": 1,
+			"exp": 2
+		},
+		"tank": {
+			"count": 1,
+			"exp": 2
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: battle vs Sharkhide Brute",
+		"Round 1: Tempest Iris uses Powder Blast for 22 damage (enemy HP 48)",
+		"Round 1: Sharkhide Brute uses Cannon Slam for 20 damage on Bram Ironkeel (HP 65)",
+		"Round 2: Twin-Cut Sable uses Knife Flurry for 16 damage (enemy HP 32)",
+		"Round 2: Sharkhide Brute uses Hook Rake for 11 damage on Tidepriestess Nuala (HP 59)",
+		"Round 3: Tidepriestess Nuala uses Sea Salve: all standing leaders +9 HP",
+		"Round 3: Sharkhide Brute uses Cannon Slam for 19 damage on Tempest Iris (HP 26)",
+		"Round 4: Captain Maren Stormbite uses Cutlass Slash for 15 damage (enemy HP 17)",
+		"Round 4: Sharkhide Brute uses Hook Rake for 13 damage on Twin-Cut Sable (HP 37)",
+		"Round 5: Bram Ironkeel uses Brace the Deck: party braces (-30% incoming this round)",
+		"Round 5: Sharkhide Brute uses Cannon Slam for 13 damage on Gull-Eye Finn (HP 35)",
+		"Round 6: Tempest Iris uses Powder Blast for 22 damage (enemy HP 0)",
+		"Round 6: victory!"
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": null,
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}

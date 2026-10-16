@@ -590,7 +590,7 @@ func _apply_base_pick(action: Dictionary) -> Dictionary:
 		_log_chrome("base_meal", [_state["turn"], _card_name(char_id), MEAL_EXP])
 	elif option == 0:
 		entry["exp"] = entry["exp"] + EVENT_EXP
-		_log_chrome("base_quiet", [_state["turn"], _card_name(char_id), EVENT_EXP])
+		_log_chrome("base_quiet", [_state["turn"], _card_name(char_id), _flavor_line("base"), EVENT_EXP])
 	else:
 		_state["gains_turn"] = _state["gains_turn"] + LOGISTICS_GAINS
 		_state["gains_total"] = _state["gains_total"] + LOGISTICS_GAINS
@@ -899,14 +899,17 @@ func _quest_title(key: String) -> String:
 	return key
 
 
-## First flavor line for an event node; falls back to a bare chrome line when
-## the pack carries no flavor yet (ticket 04 enforces it).
+## Flavor line for an event/rest surface, rotating deterministically with the
+## session turn so a pool of lines cycles instead of repeating one line
+## (ticket 07 ships several lines per pool). Falls back to a bare chrome line
+## when the pack carries no flavor yet (ticket 04 enforces it).
 func _flavor_line(key: String) -> String:
 	var flavor: Variant = _locale().get("flavor", {})
 	if flavor is Dictionary:
 		var lines: Variant = (flavor as Dictionary).get(key, null)
 		if lines is Array and not (lines as Array).is_empty() and (lines as Array)[0] is String:
-			return (lines as Array)[0]
+			var pool: Array = lines as Array
+			return pool[int(_state.get("turn", 0)) % pool.size()]
 	if key == "ev_exp":
 		return "an event (+EXP)"
 	return "an event (+war gains)"

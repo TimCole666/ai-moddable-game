@@ -38,66 +38,66 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": null,
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 3,
-			},
-			"healer": {
-				"count": 1,
-				"exp": 5,
-			},
-			"hero": {
-				"count": 1,
-				"exp": 3,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 3,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 3,
-			},
-			"tank": {
-				"count": 2,
-				"exp": 3,
-			},
+	"base_options": null,
+	"battle": null,
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 3
 		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: Preparation quest started: Supply Scout.",
-			"Turn 1: treasure chest! 3 cards — take one.",
-			"Turn 1: card gained: Bulwark (copy x2).",
-			"Turn 1: rest site: squad fully restored, fatigue cleared.",
-			"Turn 1: medal +1 (squad level 0).",
-			"Turn 1: quest complete: Supply Scout.",
-			"Turn 1: Operation quest started: Ambush at the Ford.",
-			"Turn 1: skirmish vs Grunt: won handily (squad AT 69). Leaders +1 EXP.",
-			"Turn 1: battle vs Shaman",
-			"Round 1: Dancer uses Blast for 28 damage (enemy HP 7)",
-			"Round 1: Shaman uses Bolt for 13 damage on Bulwark (HP 72)",
-			"Round 2: Dancer uses Twin Strike for 16 damage (enemy HP 0)",
-			"Round 2: victory!",
-			"Turn 1: battle over",
-			"Turn 1: rest site: squad fully restored, fatigue cleared.",
-			"Turn 1: medal +1 (squad level 1).",
-			"Turn 1: quest complete: Ambush at the Ford.",
-			"Turn 1: earned a meal ticket.",
-			"Turn 1: meal ticket spent: Medic event, +2 EXP.",
-			"Turn 1 war report: the enemy pushed the frontier — the alliance lost 9 ground. 91% of the realm remains.",
-		],
-		"medals": 2,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": null,
-		"realm": 91,
-		"tickets": 0,
-		"turn": 2,
-	}
+		"healer": {
+			"count": 1,
+			"exp": 5
+		},
+		"hero": {
+			"count": 1,
+			"exp": 3
+		},
+		"mage": {
+			"count": 1,
+			"exp": 3
+		},
+		"striker": {
+			"count": 1,
+			"exp": 3
+		},
+		"tank": {
+			"count": 2,
+			"exp": 3
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: Preparation quest started: The Rum Run.",
+		"Turn 1: treasure chest! 3 cards — take one.",
+		"Turn 1: card gained: Bram Ironkeel (copy x2).",
+		"Turn 1: rest site: squad fully restored, fatigue cleared.",
+		"Turn 1: medal +1 (squad level 0).",
+		"Turn 1: quest complete: The Rum Run.",
+		"Turn 1: Operation quest started: Ambush in the Screaming Strait.",
+		"Turn 1: skirmish vs Press-Gang Hand: won handily (squad AT 69). Leaders +1 EXP.",
+		"Turn 1: battle vs Reef Hexer",
+		"Round 1: Twin-Cut Sable uses Powder Blast for 28 damage (enemy HP 7)",
+		"Round 1: Reef Hexer uses Venom Bolt for 13 damage on Bram Ironkeel (HP 72)",
+		"Round 2: Twin-Cut Sable uses Knife Flurry for 16 damage (enemy HP 0)",
+		"Round 2: victory!",
+		"Turn 1: battle over",
+		"Turn 1: rest site: squad fully restored, fatigue cleared.",
+		"Turn 1: medal +1 (squad level 1).",
+		"Turn 1: quest complete: Ambush in the Screaming Strait.",
+		"Turn 1: earned a meal ticket.",
+		"Turn 1: meal ticket spent: Tidepriestess Nuala event, +2 EXP.",
+		"Turn 1 dispatch from the tide: raiders tore 9 leagues from our waters — 91% of the sea still flies the crimson flag."
+	],
+	"medals": 2,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": null,
+	"realm": 91,
+	"tickets": 0,
+	"turn": 2
+}

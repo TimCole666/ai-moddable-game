@@ -27,52 +27,52 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": null,
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 2,
-			},
-			"healer": {
-				"count": 1,
-				"exp": 2,
-			},
-			"hero": {
-				"count": 1,
-				"exp": 2,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 2,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 2,
-			},
-			"tank": {
-				"count": 1,
-				"exp": 2,
-			},
+	"base_options": null,
+	"battle": null,
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 2
 		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: battle vs Shaman",
-			"Round 1: Dancer uses Blast for 28 damage (enemy HP 7)",
-			"Round 1: Shaman uses Bolt for 13 damage on Bulwark (HP 72)",
-			"Round 2: Dancer uses Twin Strike for 16 damage (enemy HP 0)",
-			"Round 2: victory!",
-			"Turn 1: battle over",
-		],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": null,
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"healer": {
+			"count": 1,
+			"exp": 2
+		},
+		"hero": {
+			"count": 1,
+			"exp": 2
+		},
+		"mage": {
+			"count": 1,
+			"exp": 2
+		},
+		"striker": {
+			"count": 1,
+			"exp": 2
+		},
+		"tank": {
+			"count": 1,
+			"exp": 2
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: battle vs Reef Hexer",
+		"Round 1: Twin-Cut Sable uses Powder Blast for 28 damage (enemy HP 7)",
+		"Round 1: Reef Hexer uses Venom Bolt for 13 damage on Bram Ironkeel (HP 72)",
+		"Round 2: Twin-Cut Sable uses Knife Flurry for 16 damage (enemy HP 0)",
+		"Round 2: victory!",
+		"Turn 1: battle over"
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": null,
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}

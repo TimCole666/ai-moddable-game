@@ -48,50 +48,79 @@ func checks() -> PackedStringArray:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 2,
-			"ap_max": 6,
-			"boss": false,
-			"combo": 0,
-			"enemy": "grunt",
-			"enemy_at": 8,
-			"enemy_hp": 26,
-			"enemy_max_hp": 40,
-			"guard": false,
-			"hexed": false,
-			"next_action": "e_slash",
-			"over": "",
-			"party_hp": [60, 77, 70, 45, 50, 48],
-			"regen": 2,
-			"round": 2,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {"count": 1, "exp": 0},
-			"healer": {"count": 1, "exp": 0},
-			"hero": {"count": 1, "exp": 0},
-			"mage": {"count": 1, "exp": 0},
-			"striker": {"count": 1, "exp": 0},
-			"tank": {"count": 1, "exp": 0},
-		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: Preparation quest started: Ridge Patrol.",
-			"Turn 1: battle vs Grunt",
-			"Round 1: Vanguard uses Strike for 14 damage (enemy HP 26)",
-			"Turn 1: theme pack switched to Iron Road.",
-			"ラウンド 1：駅務衛生兵 が 応急修理 を使用：生存する隊員全員の HP +9",
-			"ラウンド 1：襲撃者 が 鞭打ち を使用、8 ダメージ（制動手 の HP 77）",
+	"base_options": null,
+	"battle": {
+		"ap": 2,
+		"ap_max": 6,
+		"boss": false,
+		"combo": 0,
+		"enemy": "grunt",
+		"enemy_at": 8,
+		"enemy_hp": 26,
+		"enemy_max_hp": 40,
+		"guard": false,
+		"hexed": false,
+		"next_action": "e_slash",
+		"over": "",
+		"party_hp": [
+			60,
+			77,
+			70,
+			45,
+			50,
+			48
 		],
-		"medals": 0,
-		"pack_id": "ironroad",
-		"phase": 0,
-		"quest": {"idx": 0, "pool": "prep", "step": 0},
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"regen": 2,
+		"round": 2
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
+		},
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 0
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: Preparation quest started: Provisions Ashore.",
+		"Turn 1: battle vs Press-Gang Hand",
+		"Round 1: Captain Maren Stormbite uses Cutlass Slash for 14 damage (enemy HP 26)",
+		"Turn 1: theme pack switched to Iron Road.",
+		"ラウンド 1：駅務衛生兵 が 応急修理 を使用：生存する隊員全員の HP +9",
+		"ラウンド 1：襲撃者 が 鞭打ち を使用、8 ダメージ（制動手 の HP 77）"
+	],
+	"medals": 0,
+	"pack_id": "ironroad",
+	"phase": 0,
+	"quest": {
+		"idx": 0,
+		"pool": "prep",
+		"step": 0
+	},
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}
