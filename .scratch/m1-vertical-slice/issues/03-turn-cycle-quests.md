@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 (Battle core).
 
-**Status:** done
+Status: done
 
 - [x] Turns flow through preparation → operation → base → war report and back
 - [x] Quests are branch choices (two preparations, two operations) with distinct node paths (battles, chests, events, rest sites)

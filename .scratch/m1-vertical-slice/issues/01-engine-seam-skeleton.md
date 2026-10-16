@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** done
+Status: done
 
 - [x] The project opens and runs; the placeholder scene renders live Engine state
 - [x] The Engine exposes `validate_pack()` and deterministic state transitions as its only public seam

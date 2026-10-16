@@ -4,7 +4,7 @@
 
 **Blocked by:** 03 (Turn cycle + quests).
 
-**Status:** done
+Status: done
 
 - [x] The v1 schema validates: id, palette enum, Fatigue params (threshold > 0, apPenalty >= 0), all three locales complete, report template placeholders present
 - [x] The contract carries a version field from day one (ADR-0002)

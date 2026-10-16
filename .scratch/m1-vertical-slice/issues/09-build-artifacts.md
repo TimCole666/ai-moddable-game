@@ -4,7 +4,7 @@
 
 **Blocked by:** 05 (Trilingual interface chrome), 06 (AI Entry), 07 (Pirate content pack).
 
-**Status:** done
+Status: done
 
 - [x] A desktop build runs on Linux with the full slice (Adult Content included)
 - [ ] A web export runs in a browser with Adult Content gated off (export + gate verified headless; an actual browser run is still pending)

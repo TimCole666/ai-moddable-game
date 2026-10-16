@@ -31,4 +31,4 @@ Used by `/wayfinder`. The **map** is a file with one **child** file per ticket.
 
 ## Switching to GitHub later
 
-When the GitHub repo is created, re-run `/setup-matt-pocock-skills` to switch this config; existing `.scratch/` content can be migrated to issues then.
+If the tracker moves to GitHub Issues later, re-run `/setup-matt-pocock-skills` to switch this config; existing `.scratch/` content can be migrated to issues then.

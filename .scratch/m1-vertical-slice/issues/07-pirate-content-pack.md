@@ -4,7 +4,7 @@
 
 **Blocked by:** 05 (Trilingual interface chrome), 06 (AI Entry).
 
-**Status:** done
+Status: done
 
 - [x] The full arc is completable start to finish (both preparation and operation quests reachable and winnable)
 - [x] All text complete in zh, en, and ja
