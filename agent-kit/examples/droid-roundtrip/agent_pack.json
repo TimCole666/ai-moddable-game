@@ -1,0 +1,131 @@
+{
+  "id": "coral-court",
+  "version": 1,
+  "accent": "#ff6f61",
+  "bodyClass": "seas",
+  "parts": {
+    "fatigue": {
+      "enabled": true,
+      "params": { "threshold": 3, "apPenalty": 1 }
+    }
+  },
+  "text": {
+    "en": {
+      "name": "Coral Court",
+      "tagline": "courtly intrigue beneath the tide",
+      "factions": [
+        { "name": "Pearl Throne", "icon": "🫧" },
+        { "name": "Tide-Priesthood", "icon": "🔱" },
+        { "name": "Leviathan Guild", "icon": "🐋" }
+      ],
+      "cards": {
+        "hero":    { "name": "Coral Knight",    "icon": "🪸" },
+        "tank":    { "name": "Shellwarden",     "icon": "🐚" },
+        "healer":  { "name": "Kelp Chirurgeon", "icon": "🌿" },
+        "mage":    { "name": "Brine Weaver",    "icon": "🌊" },
+        "striker": { "name": "Mantis Shrimp",   "icon": "🦐" },
+        "archer":  { "name": "Urchin Sniper",   "icon": "🦔" }
+      },
+      "skillNames": {
+        "slash": "Reef Cut", "heavy": "Crushing Tide", "multi": "School of Daggers",
+        "blast": "Pressure Burst", "mend": "Moonpool Drift", "guard": "Mother-of-Pearl Ward", "hex": "Barnacle Curse"
+      },
+      "enemies": {
+        "grunt":  { "name": "Reef Skulk",   "icon": "🦀" },
+        "brute":  { "name": "Ankle-Biter",  "icon": "🐙" },
+        "shaman": { "name": "Riptide Chanter", "icon": "🪶" },
+        "boss":   { "name": "The Abyss-Crowned", "icon": "🐉" }
+      },
+      "enemyActions": { "e_slash": "Snip", "e_heavy": "Undertow Slam", "e_bolt": "Static Shoal" },
+      "questTitles": {
+        "prepA": "Weigh the Tides", "prepB": "Silk for the Court",
+        "opA": "Guard the Pearl Regatta", "opB": "Hunt the Leviathan"
+      },
+      "flavor": {
+        "ev_exp":   ["A retired tide-priest teaches you to read the reef's moods."],
+        "ev_gains": ["Divers haul mother-of-pearl from the drowned terraces."],
+        "base":     ["Lantern-fish drift past the open pavilion at rest."],
+        "reportTpl": "Turn {turn} dispatch from the reef: the foe devoured {loss} coral miles. {left} of the court's waters still answer the Throne."
+      },
+      "parts": { "fatigue": { "name": "Deep Weariness", "icon": "🥱" } }
+    },
+    "zh": {
+      "name": "珊瑚宫廷",
+      "tagline": "潮汐之下的宫廷权谋",
+      "factions": [
+        { "name": "明珠王座", "icon": "🫧" },
+        { "name": "潮汐祭司团", "icon": "🔱" },
+        { "name": "巨兽猎会", "icon": "🐋" }
+      ],
+      "cards": {
+        "hero":    { "name": "珊瑚骑士",   "icon": "🪸" },
+        "tank":    { "name": "螺壳守卫",   "icon": "🐚" },
+        "healer":  { "name": "海藻医师",   "icon": "🌿" },
+        "mage":    { "name": "盐水织者",   "icon": "🌊" },
+        "striker": { "name": "雀虾拳士",   "icon": "🦐" },
+        "archer":  { "name": "海刺神射",   "icon": "🦔" }
+      },
+      "skillNames": {
+        "slash": "礁岩斩", "heavy": "碎浪重压", "multi": "鱼群刀阵",
+        "blast": "深压爆裂", "mend": "月池回潮", "guard": "珠母之障", "hex": "藤壶诅咒"
+      },
+      "enemies": {
+        "grunt":  { "name": "礁缝游卒",  "icon": "🦀" },
+        "brute":  { "name": "噬踝巨妖",  "icon": "🐙" },
+        "shaman": { "name": "激流咏者",  "icon": "🪶" },
+        "boss":   { "name": "深渊加冕者", "icon": "🐉" }
+      },
+      "enemyActions": { "e_slash": "钳剪", "e_heavy": "坠流重击", "e_bolt": "电群闪击" },
+      "questTitles": {
+        "prepA": "测算潮信", "prepB": "为宫廷备丝",
+        "opA": "守护珍珠赛会", "opB": "猎杀利维坦"
+      },
+      "flavor": {
+        "ev_exp":   ["一位退隐的潮汐祭司教你读懂礁盘的脾气。"],
+        "ev_gains": ["采珠人从沉没的平台上捞回珠母。"],
+        "base":     ["休整时，灯笼鱼游过敞开的凉亭。"],
+        "reportTpl": "第{turn}轮礁区急报：敌吞没{loss}里珊瑚海域。宫廷水域尚余{left}听命于王座。"
+      },
+      "parts": { "fatigue": { "name": "深海倦怠", "icon": "🥱" } }
+    },
+    "ja": {
+      "name": "珊瑚宮廷",
+      "tagline": "潮の下で交わされる宮廷の謀",
+      "factions": [
+        { "name": "真珠の玉座", "icon": "🫧" },
+        { "name": "潮の司祭団", "icon": "🔱" },
+        { "name": "リヴァイアサン猟団", "icon": "🐋" }
+      ],
+      "cards": {
+        "hero":    { "name": "珊瑚の騎士",     "icon": "🪸" },
+        "tank":    { "name": "貝殻の守人",     "icon": "🐚" },
+        "healer":  { "name": "海藻の医師",     "icon": "🌿" },
+        "mage":    { "name": "潮縒りの織手",   "icon": "🌊" },
+        "striker": { "name": "シャコの拳士",   "icon": "🦐" },
+        "archer":  { "name": "ウニの狙撃手",   "icon": "🦔" }
+      },
+      "skillNames": {
+        "slash": "礁の断ち割り", "heavy": "砕く大潮", "multi": "群刀の乱れ",
+        "blast": "水圧の爆発", "mend": "月の泉の恵み", "guard": "真珠母の結界", "hex": "フジツボの呪い"
+      },
+      "enemies": {
+        "grunt":  { "name": "礁の密猟者",   "icon": "🦀" },
+        "brute":  { "name": "足喰みの巨骸", "icon": "🐙" },
+        "shaman": { "name": "逆潮の詠み手", "icon": "🪶" },
+        "boss":   { "name": "深淵の戴冠者", "icon": "🐉" }
+      },
+      "enemyActions": { "e_slash": "鋏切り", "e_heavy": "引き潮の打撃", "e_bolt": "静電の群れ" },
+      "questTitles": {
+        "prepA": "潮を読む", "prepB": "宮廷への絹仕立て",
+        "opA": "真珠の御幸を守れ", "opB": "リヴァイアサン狩り"
+      },
+      "flavor": {
+        "ev_exp":   ["隠居した潮の司祭が、礁の機嫌の読み方を教えてくれる。"],
+        "ev_gains": ["潜水夫たちが水没した段丘から真珠母を引き上げる。"],
+        "base":     ["休憩の間、提灯魚が開け放たれた東屋を泳ぎ過ぎる。"],
+        "reportTpl": "第{turn}回目の礁からの急報：敵は{loss}海里の珊瑚を呑んだ。宮廷の水域の{left}はなお玉座に忠実である。"
+      },
+      "parts": { "fatigue": { "name": "深海の疲労", "icon": "🥱" } }
+    }
+  }
+}

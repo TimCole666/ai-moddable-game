@@ -4,9 +4,13 @@
 
 **Blocked by:** 04 (Theme Pack contract v1).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Provider settings accept a cloud key or a local endpoint, with recommended presets
-- [ ] Generation produces packs that pass v1 validation or fail with actionable errors
-- [ ] Cache-first persistence: an identical generation request returns the stored result without a second call
-- [ ] A generated pack appears in the pack list and plays (full round-trip demo)
+- [x] Provider settings accept a cloud key or a local endpoint, with recommended presets
+- [x] Generation produces packs that pass v1 validation or fail with actionable errors
+- [x] Cache-first persistence: an identical generation request returns the stored result without a second call
+- [x] A generated pack appears in the pack list and plays (full round-trip demo)
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit c5da3ec); merged with all M1 tickets. All checkboxes hold; cache-first persistence proven with exactly-one-network-call replay.

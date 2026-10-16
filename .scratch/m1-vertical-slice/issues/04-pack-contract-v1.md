@@ -4,10 +4,14 @@
 
 **Blocked by:** 03 (Turn cycle + quests).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The v1 schema validates: id, palette enum, Fatigue params (threshold > 0, apPenalty >= 0), all three locales complete, report template placeholders present
-- [ ] The contract carries a version field from day one (ADR-0002)
-- [ ] Invalid packs are rejected with specific reasons and state untouched (replay-asserted)
-- [ ] Export → mutate → import round-trips into a playable pack
-- [ ] Two placeholder packs switch in-game without touching rules
+- [x] The v1 schema validates: id, palette enum, Fatigue params (threshold > 0, apPenalty >= 0), all three locales complete, report template placeholders present
+- [x] The contract carries a version field from day one (ADR-0002)
+- [x] Invalid packs are rejected with specific reasons and state untouched (replay-asserted)
+- [x] Export → mutate → import round-trips into a playable pack
+- [x] Two placeholder packs switch in-game without touching rules
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit fb03aae); merged with all M1 tickets. v1 schema enforced with version gate; round-trip and pack switching replay-asserted. Two placeholder slots: the second was later superseded by the finished pirate pack (ticket 07) — end state exceeds the ticket.

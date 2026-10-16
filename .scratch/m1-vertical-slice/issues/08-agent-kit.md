@@ -4,9 +4,13 @@
 
 **Blocked by:** 04 (Theme Pack contract v1).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The contract document specifies the v1 schema, validation reasons, and at least one worked example per section
-- [ ] A Claude Code skill encodes the contract (installable and invocable)
-- [ ] An agent-authored pack passes `validate_pack()` and plays in-game
-- [ ] The round-trip is demonstrated with a real agent run, not a hand-written simulation
+- [x] The contract document specifies the v1 schema, validation reasons, and at least one worked example per section
+- [x] A Claude Code skill encodes the contract (installable and invocable)
+- [x] An agent-authored pack passes `validate_pack()` and plays in-game
+- [x] The round-trip is demonstrated with a real agent run, not a hand-written simulation
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit ad0c6fd); merged with all M1 tickets. Round-trip demonstrated by a real agent run: a Droid subagent with ONLY the two kit files authored a pack, first-attempt VALID + PACK PLAYED (agent-kit/examples/droid-roundtrip/). Claude Code CLI variant documented for when its credentials exist.

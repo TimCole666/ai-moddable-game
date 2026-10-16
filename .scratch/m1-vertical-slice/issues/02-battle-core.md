@@ -4,10 +4,14 @@
 
 **Blocked by:** 01 (Engine test seam + project skeleton).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A battle is playable end to end: AP spend, skills, damage, heals, guards
-- [ ] Enemy actions are pre-announced; bracing reduces incoming damage; a hexed action is cancelled
-- [ ] Combos and the weakness multiplier resolve correctly (the prototype's dead-multiplier bug stays dead — see replay)
-- [ ] Victory and defeat both terminate the battle with a result state
-- [ ] A walkthrough replay asserts the scripted battle's final state bit-for-bit
+- [x] A battle is playable end to end: AP spend, skills, damage, heals, guards
+- [x] Enemy actions are pre-announced; bracing reduces incoming damage; a hexed action is cancelled
+- [x] Combos and the weakness multiplier resolve correctly (the prototype's dead-multiplier bug stays dead — see replay)
+- [x] Victory and defeat both terminate the battle with a result state
+- [x] A walkthrough replay asserts the scripted battle's final state bit-for-bit
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit 24f76a8); merged with all M1 tickets. All checkboxes hold; weakness multiplier pinned live, hex/brace/combo covered by replays.

@@ -4,11 +4,15 @@
 
 **Blocked by:** 02 (Battle core).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Turns flow through preparation → operation → base → war report and back
-- [ ] Quests are branch choices (two preparations, two operations) with distinct node paths (battles, chests, events, rest sites)
-- [ ] War gains soften realm losses; realm integrity tracks and warns below half
-- [ ] Medals, squad level, and meal tickets accumulate and are spendable
-- [ ] The Fatigue part visibly drags AP regen once its threshold is crossed
-- [ ] A walkthrough replay asserts a multi-turn arc's final state bit-for-bit
+- [x] Turns flow through preparation → operation → base → war report and back
+- [x] Quests are branch choices (two preparations, two operations) with distinct node paths (battles, chests, events, rest sites)
+- [x] War gains soften realm losses; realm integrity tracks and warns below half
+- [x] Medals, squad level, and meal tickets accumulate and are spendable
+- [x] The Fatigue part visibly drags AP regen once its threshold is crossed
+- [x] A walkthrough replay asserts a multi-turn arc's final state bit-for-bit
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit fb92788); merged with all M1 tickets. All checkboxes hold; full turn cycle, branches, medals/tickets, fatigue drag replay-asserted.

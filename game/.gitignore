@@ -1,0 +1,9 @@
+# Godot generated caches
+.godot/
+
+# Godot export artifacts
+*.tmp
+export_presets.cfg.secret
+
+# Ticket 09 build outputs (scripts/build.sh)
+build/
