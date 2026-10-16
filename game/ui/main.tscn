@@ -44,18 +44,13 @@ offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PatrolButton" type="Button" parent="Buttons"]
+[node name="StartBattleButton" type="Button" parent="Buttons"]
 layout_mode = 2
-text = "Patrol"
-
-[node name="RestButton" type="Button" parent="Buttons"]
-layout_mode = 2
-text = "Rest"
+text = "Start Battle"
 
 [node name="EndTurnButton" type="Button" parent="Buttons"]
 layout_mode = 2
 text = "End Turn"
 
-[connection signal="pressed" from="Buttons/PatrolButton" to="." method="_on_patrol_pressed"]
-[connection signal="pressed" from="Buttons/RestButton" to="." method="_on_rest_pressed"]
+[connection signal="pressed" from="Buttons/StartBattleButton" to="." method="_on_start_battle_pressed"]
 [connection signal="pressed" from="Buttons/EndTurnButton" to="." method="_on_end_turn_pressed"]

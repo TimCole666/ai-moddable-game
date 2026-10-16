@@ -30,7 +30,9 @@ func _ready() -> void:
 
 func _load_replays() -> Array:
 	var replays: Array = []
-	for file_name in DirAccess.get_files_at(REPLAYS_DIR):
+	var file_names: PackedStringArray = DirAccess.get_files_at(REPLAYS_DIR)
+	file_names.sort()
+	for file_name in file_names:
 		if not file_name.ends_with(".gd"):
 			continue
 		var script: Variant = load(REPLAYS_DIR + "/" + file_name)
@@ -44,6 +46,15 @@ func _load_replays() -> Array:
 
 func _run_replay(replay: ReplayBase) -> bool:
 	var replay_name := replay.replay_name()
+	# Baseline session under the builtin pack: replays run in arbitrary file
+	# order against the shared Engine, so every replay starts from this known
+	# state. A rejected pack leaves exactly this baseline (zero state change);
+	# a valid pack replaces it with its own session.
+	var baseline := GameEngine.new_game(GameEngine.get_builtin_pack())
+	if not baseline["ok"]:
+		printerr("REPLAY %s: FAILED" % [replay_name])
+		printerr("  builtin baseline session failed to start: %s" % [baseline["errors"]])
+		return false
 	var pack := replay.pack()
 	if pack.is_empty():
 		pack = GameEngine.get_builtin_pack()

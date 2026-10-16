@@ -1,7 +1,8 @@
 extends ReplayBase
 
 ## Invalid-pack rejection: an invalid pack is rejected with specific reasons
-## and the state stays untouched (no session starts, so state remains empty).
+## and zero state change. The runner boots a baseline builtin session before
+## every replay, so "untouched" means exactly that baseline survives.
 
 
 func replay_name() -> String:
@@ -27,4 +28,9 @@ func expected_new_game_errors() -> PackedStringArray:
 
 
 func expected_state() -> Dictionary:
-	return {}
+	return {
+		"pack_id": "builtin",
+		"turn": 1,
+		"log": [],
+		"battle": null,
+	}

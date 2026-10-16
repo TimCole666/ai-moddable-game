@@ -1,0 +1,41 @@
+extends ReplayBase
+
+## The weakness multiplier is alive: the striker's fire Blast vs the fire-weak
+## Shaman deals roundi(12 * 1.4 * 1.1 * 1.5) = 28, not the unboosted 18.
+## The prototype once read the weakness off the battle instance instead of the
+## enemy definition, which killed the multiplier ("dead-multiplier bug"); this
+## replay keeps it dead. Without the x1.5 the Shaman survives the Twin Strike
+## at 1 HP and the battle would NOT be over — the pinned victory + cleared
+## battle would fail.
+##
+## Also pins the win flow: the victory result state (over "win") is visible
+## after the winning skill, and the next end turn clears the battle.
+
+func replay_name() -> String:
+	return "weakness_multiplier_live"
+
+
+func actions() -> Array:
+	return [
+		{"type": EngineCore.ACTION_START_BATTLE, "enemy": "shaman"},
+		{"type": EngineCore.ACTION_SKILL, "leader": 4, "slot": 1},
+		{"type": EngineCore.ACTION_END_TURN},
+		{"type": EngineCore.ACTION_SKILL, "leader": 4, "slot": 0},
+		{"type": EngineCore.ACTION_END_TURN},
+	]
+
+
+func expected_state() -> Dictionary:
+	return {
+		"pack_id": "builtin",
+		"turn": 1,
+		"battle": null,
+		"log": [
+			"Turn 1: battle vs Shaman",
+			"Round 1: Dancer uses Blast for 28 damage (enemy HP 7)",
+			"Round 1: Shaman uses Bolt for 13 damage on Bulwark (HP 72)",
+			"Round 2: Dancer uses Twin Strike for 16 damage (enemy HP 0)",
+			"Round 2: victory!",
+			"Turn 1: battle over",
+		],
+	}
