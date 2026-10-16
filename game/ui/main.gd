@@ -16,6 +16,8 @@ const PACK_PATHS := [
 ## Language cycle for the chrome switcher (same order as EngineCore's).
 const LANG_CYCLE := ["en", "zh", "ja"]
 
+const AI_PANEL_SCENE := "res://ui/ai_panel.tscn"
+
 @onready var _state_label: Label = %StateLabel
 @onready var _buttons: HBoxContainer = %Buttons
 @onready var _language_button: Button = %LanguageButton
@@ -51,6 +53,21 @@ func _on_switch_pack_pressed() -> void:
 		if loaded["ok"] and loaded["pack"]["id"] != current:
 			GameEngine.step({"type": EngineCore.ACTION_IMPORT_PACK, "path": path})
 			return
+	# Ticket 06 (additive): AI-generated packs (persisted under user://packs)
+	# join the cycle after the shipped packs, through the same Engine seam.
+	for pack in AIGateway.get_generated_packs():
+		if pack["id"] != current:
+			GameEngine.step({"type": EngineCore.ACTION_SELECT_PACK, "pack": pack})
+			return
+
+
+func _on_ai_panel_pressed() -> void:
+	# Ticket 06 (additive): open the AI Entry panel (provider settings +
+	# generation). All panel behavior lives in ai_panel.gd.
+	if get_node_or_null("AIPanel") == null:
+		var panel: Control = (load(AI_PANEL_SCENE) as PackedScene).instantiate()
+		panel.name = "AIPanel"
+		add_child(panel)
 
 
 func _on_language_pressed() -> void:

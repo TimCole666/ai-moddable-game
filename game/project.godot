@@ -14,6 +14,7 @@ config/features=PackedStringArray("4.7")
 [autoload]
 
 GameEngine="*res://engine/engine.gd"
+AIGateway="*res://ai/ai_gateway.gd"
 
 [rendering]
 
