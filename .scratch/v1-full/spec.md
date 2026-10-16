@@ -112,7 +112,7 @@ Run structure
 
 Rules and the engine
 - The new strategy rule set is the core rule set for v1. The built-in pack carries it as expression trees, so the interpreter runs the official content.
-- The native Rance-10-style rules stay in the code, not in a pack. Developers use them for replay coverage and comparison. Players can also open them as a comparison option. Where that option lives is not decided yet.
+- The native Rance-10-style rules stay in the code, not in a pack. Developers use them for replay coverage and comparison. Players can also open them as a comparison option on the title screen (decided 2026-10-17).
 
 Pack format
 - Packs stay JSON. Rules are expression trees. The format version rises to 2. Validation gates features by version, as ADR-0002 requires.
@@ -138,7 +138,7 @@ Validation and safety
 
 Saves
 - A run in progress can be saved and resumed. A save holds the full run state and its seed, so a resumed run plays out exactly as an uninterrupted one would.
-- Not decided yet: save slots, autosave timing, and what happens to a save when its pack changes.
+- One save per run. Autosave happens at phase boundaries. A save stores a copy of its pack, so a run resumes with that copy when the pack has changed since the save was made (decided 2026-10-17).
 
 Interfaces
 - The GameEngine public API stays the single seam for the UI and for tests: validate_pack, new_game, step, get_state, available_actions, context_line, and the chrome and art accessors.
@@ -201,12 +201,9 @@ Defaults to confirm (set in this spec, not yet decided by the owner):
 
 Decided on 2026-10-17:
 - Version 1 packs are rejected, with no compatibility layer. This conflicts with ADR-0002 (data packs stay valid forever) and ADR-0008 (v1 packs run unchanged). Both ADRs are amended on 2026-10-17 (ADR-0002 and ADR-0008 status lines).
-- Saving: in-run save and resume is in scope.
-- Native Rance-10 rules: developer use and a player-visible comparison option.
+- Saving: in-run save and resume is in scope. Slots, autosave timing, and pack-change handling are set under Saves.
+- Native Rance-10 rules: developer use (replays), and a player-visible comparison option on the title screen only. No separate developer entry point.
 - Chapter sizes: see Run structure.
-
-Still open before implementation:
-- Save slots, autosave timing, and what happens to a save when its pack has changed.
 
 Documents to update when this spec is accepted:
 - A new ADR replacing ADR-0007, covering the code-pack format: JSON expression trees with a self-written interpreter.

@@ -4,8 +4,15 @@
 
 **Blocked by:** None (can start immediately)
 
-Status: needs-info
+Status: done
 
-- [ ] Each of the four questions has a recorded answer
-- [ ] Answers are written into the v1 spec, and the matching "still open" items are removed
-- [ ] Tickets 18 and 19 can be picked up without further questions
+- [x] Each of the four questions has a recorded answer
+- [x] Answers are written into the v1 spec, and the matching "still open" items are removed
+- [x] Tickets 18 and 19 can be picked up without further questions
+
+## Answers
+
+1. Save slots: one save per run.
+2. Autosave: at phase boundaries.
+3. Pack change: resume with a copy of the old pack stored in the save.
+4. Native Rance-10 option: on the title screen only. No separate developer entry point (the developer CLI flag was not selected).
