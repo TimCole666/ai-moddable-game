@@ -145,6 +145,10 @@ func expected_state() -> Dictionary:
 	"gains_total": 0,
 	"gains_turn": 0,
 	"log": [
+		"Turn 1: you are in the Preparation phase — start a preparation quest, work through its steps, then End Phase.",
+		"Turn 1: every quest step offers two branches: fights, chests, rest sites, and war supplies. Choose a side.",
+		"Turn 1: in battle the enemy's next move is announced — spend AP to strike now, or brace to soften the blow.",
+		"Turn 1: the buttons below (End Turn, End Phase, ...) drive the session; the header tracks realm, medals, meal tickets, and fatigue.",
 		"Turn 1: theme pack exported to user://t04/roundtrip/exported.json",
 		"Turn 1: theme pack switched to Mutated Seas.",
 		"Turn 1: battle vs Press-Gang Hand",

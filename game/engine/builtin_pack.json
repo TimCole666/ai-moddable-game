@@ -5,7 +5,7 @@
   "bodyClass": "seas",
   "parts": {
     "fatigue": {
-      "enabled": false,
+      "enabled": true,
       "params": {
         "threshold": 2,
         "apPenalty": 1

@@ -56,7 +56,11 @@ const ENEMIES := {
 	"grunt": {"hp": 40, "at": 8, "plan": ["e_slash"], "weakness": ""},
 	"brute": {"hp": 70, "at": 12, "plan": ["e_heavy", "e_slash"], "weakness": "ice"},
 	"shaman": {"hp": 35, "at": 10, "plan": ["e_bolt", "e_slash"], "weakness": "fire"},
-	"boss": {"hp": 160, "at": 16, "plan": ["e_heavy", "e_slash", "e_bolt"], "weakness": "fire", "boss": true},
+	## Ticket 10 balance sim: at 160 HP the boss was only beatable on turn 1
+	## (from turn 2 its HP outgrew 10 rounds of efficient play), making opA's
+	## b_boss branch a silent trap. 120 keeps it winnable deep into the arc
+	## while still the hardest fight on the board.
+	"boss": {"hp": 120, "at": 16, "plan": ["e_heavy", "e_slash", "e_bolt"], "weakness": "fire", "boss": true},
 }
 
 const ENEMY_SKILLS := {
@@ -106,13 +110,20 @@ const PHASE_WAR_REPORT := 3
 const START_REALM := 100
 const REALM_WARN_BELOW := 50
 const TURN_LIMIT := 8
-const WAR_LOSS_BASE := 9
+## War-report loss curve (ticket 10 balance sim): base 9 could never lose the
+## campaign (9 x 8 turns = 72 < 100 realm — even fully passive play won at
+## 28%). Base 13 puts the losing end inside the arc: fully passive play loses
+## at the turn-8 report, supply-disciplined play (~3 gains/turn) wins near
+## 45%, and the below-half warning still fires late enough to react.
+const WAR_LOSS_BASE := 13
 const WAR_LOSS_REDUCTION := 2
 const WAR_LOSS_MIN := 3
 const MAX_TICKETS := 2
 const GAINS_NODE_AMOUNT := 2
 const EVENT_EXP := 2
-const MEAL_EXP := 2
+## Meal tickets must beat the free quiet evening (+2 EXP) or the ticket is
+## mechanically void (ticket 10 balance sim: identical +2 either way).
+const MEAL_EXP := 4
 const LOGISTICS_GAINS := 1
 const CHEST_CHOICES := 3
 const AUTO_EXP := 1
@@ -261,6 +272,14 @@ func new_game(pack: Dictionary) -> Dictionary:
 		"battle": null,
 		"log": [],
 	}
+	# Ticket 10 onboarding: a fresh player reaches the first battle from these
+	# four lines alone — the phase they are in, the branch choice, the
+	# spend-vs-brace hook, and where the controls are. Turn 1 only; every line
+	# is a chrome key localized in all three languages.
+	_log_chrome("onboard_phase", [_state["turn"], (ChromeText.CHROME[_lang]["phases"] as Array)[_state["phase"]]])
+	_log_chrome("onboard_branch", [_state["turn"]])
+	_log_chrome("onboard_battle", [_state["turn"]])
+	_log_chrome("onboard_buttons", [_state["turn"]])
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 
