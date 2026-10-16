@@ -1,6 +1,6 @@
 # Spec: M1 — Godot Vertical Slice
 
-Status: ready-for-agent
+Status: ready-for-human
 
 ## Problem Statement
 
@@ -99,3 +99,7 @@ Build the vertical slice in Godot 4.7 (GDScript): a complete 2-3 hour arc of the
 - Naming is deferred until after the slice; the repo keeps the codename `ai-moddable-game`.
 - When the GitHub repo is created (after the slice, per owner decision), publish this spec as the first issue labeled `ready-for-agent`.
 - Full decision trail: `CONTEXT.md`, `docs/adr/0001`–`0007`, and the survey in `research/`.
+
+## Comments
+
+All ten tickets implemented on branch m1-vertical-slice (31 walkthrough replays green; desktop + web artifacts reproducible via scripts/build.sh; code review fixes merged). The spec's own gate — the 30-minute playtest that revisits the Core Loop decision — awaits a human session; notes template: docs/playtest/notes-template.md.

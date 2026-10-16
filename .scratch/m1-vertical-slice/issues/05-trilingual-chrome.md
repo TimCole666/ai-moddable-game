@@ -6,6 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] Every engine chrome string exists in zh, en, and ja
-- [ ] The language switcher works mid-run with state preserved bit-for-bit (replay-asserted)
-- [ ] Theme switching and language switching compose without state drift
+- [x] Every engine chrome string exists in zh, en, and ja
+- [x] The language switcher works mid-run with state preserved bit-for-bit (replay-asserted)
+- [x] Theme switching and language switching compose without state drift
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit f73b8cc); merged with all M1 tickets. All checkboxes hold; mid-run language switch bit-for-bit, composes with theme switching.

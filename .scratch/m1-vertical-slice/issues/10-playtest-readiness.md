@@ -10,4 +10,8 @@
 - [ ] Onboarding pass done: a fresh player can reach the first battle without guidance
 - [ ] The walkthrough replay suite is fully green
 - [ ] The 30-minute playtest build is packaged and a notes template exists
-- [ ] Playtest outcome recorded for the Core Loop decision
+- [ ] Playtest outcome recorded for the Core Loop decision (awaits the human session)
+
+## Comments
+
+Implemented on branch m1-vertical-slice (commit be1553c,4c78f5c,ac8cf95); merged with all M1 tickets. Balance tuned from simulation evidence, onboarding shipped, suite green, build packaged, template at docs/playtest/notes-template.md. The playtest-outcome checkbox requires the human 30-minute session.
