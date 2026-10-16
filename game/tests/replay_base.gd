@@ -17,8 +17,10 @@ func pack() -> Dictionary:
 	return {}
 
 
-## Scripted action sequence, applied with GameEngine.step() in order. All steps
-## must succeed for the replay to pass.
+## Scripted action sequence, applied with GameEngine.step() in order. All
+## steps must succeed for the replay to pass. An entry that is a Callable is
+## run verbatim between steps instead (test-driver code, e.g. file edits);
+## its return value is ignored.
 func actions() -> Array:
 	return []
 
@@ -27,6 +29,14 @@ func actions() -> Array:
 ## pack must validate and a session must start. Use a non-empty list to pin
 ## invalid-pack rejection with specific reasons.
 func expected_new_game_errors() -> PackedStringArray:
+	return PackedStringArray()
+
+
+## Optional extra assertions, run after the action sequence and before the
+## final state diff. Return a list of problems (empty = pass). Use it for
+## things the state diff cannot see, e.g. errors captured from a deliberately
+## failed step.
+func checks() -> PackedStringArray:
 	return PackedStringArray()
 
 

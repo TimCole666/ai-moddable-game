@@ -9,6 +9,8 @@ extends Node
 ##   new_game(pack: Dictionary) -> Dictionary      # validate + start a session
 ##   step(action: Dictionary) -> Dictionary        # apply one scripted action
 ##   get_state() -> Dictionary                     # full snapshot (deep copy)
+##   load_pack_file(path: String) -> Dictionary    # {ok, errors, pack}; pure
+##   export_pack(path: String) -> Dictionary       # write current pack as JSON
 ##
 ## Results are plain Dictionaries so replays can assert them bit-for-bit and
 ## so later format versions extend without breaking the seam.
@@ -131,6 +133,15 @@ const ENEMY_SCALE_PER_TURN := 0.15
 
 const START_TURN := 1
 
+# --- Pack contract v1 (ADR-0002: versioned from day one) ----------------------
+# The Engine interprets exactly this format version; packs declaring any other
+# version are rejected so old packs keep loading as the format grows.
+
+const PACK_FORMAT_VERSION := 1
+## Palette ids a v1 pack may declare in bodyClass (the UI maps them to styles;
+## the Engine only checks the enum).
+const PACK_PALETTES := ["seas", "iron"]
+
 # --- Action vocabulary -----------------------------------------------------------
 
 const ACTION_START_BATTLE := "start_battle"
@@ -142,6 +153,9 @@ const ACTION_CHEST_PICK := "chest_pick"
 const ACTION_RETIRE := "retire"
 const ACTION_BASE_PICK := "base_pick"
 const ACTION_END_PHASE := "end_phase"
+const ACTION_SELECT_PACK := "select_pack"
+const ACTION_IMPORT_PACK := "import_pack"
+const ACTION_EXPORT_PACK := "export_pack"
 
 const BUILTIN_PACK_PATH := "res://engine/builtin_pack.json"
 
@@ -158,8 +172,9 @@ func _ready() -> void:
 
 ## Validate a Theme Pack against the v1 contract. Returns the list of reasons
 ## the pack is invalid; an empty list means valid. Pure: reads nothing but the
-## argument, mutates nothing. Ticket 04 completes the full localeText contract;
-## the reason format ("dotted.path: problem") is stable from now on.
+## argument, mutates nothing. Reason format: "dotted.path: problem", ordered
+## top-to-bottom through the schema (id, version, accent, bodyClass, parts,
+## then per-locale text in en, zh, ja).
 func validate_pack(pack: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	if pack.is_empty():
@@ -167,7 +182,15 @@ func validate_pack(pack: Dictionary) -> PackedStringArray:
 		return errors
 	if not pack.has("id") or not (pack["id"] is String) or (pack["id"] as String).is_empty():
 		errors.append("pack.id: required non-empty string")
+	# ADR-0002: the contract carries a version from day one and validation
+	# gates features by version — this Engine only interprets v1 packs.
+	var version: Variant = pack.get("version", null)
+	if not _is_integral(version):
+		errors.append("pack.version: required integer")
+	elif int(version) != PACK_FORMAT_VERSION:
+		errors.append("pack.version: unsupported version %d (this engine interprets v%d)" % [int(version), PACK_FORMAT_VERSION])
 	_validate_accent(pack, errors)
+	_validate_body_class(pack, errors)
 	_validate_parts(pack, errors)
 	_validate_text(pack, errors)
 	return errors
@@ -226,6 +249,12 @@ func new_game(pack: Dictionary) -> Dictionary:
 ##                                           # phase announced in battle.next_action;
 ##                                           # once over, close the battle (and
 ##                                           # finish or abandon the quest node)
+## Pack vocabulary (ticket 04): switch the running session's Theme Pack —
+## same rules, new world. State is preserved; only pack_id and the pack text
+## change. A failed switch leaves state untouched.
+##   {"type": "select_pack", "pack": <pack Dictionary>}   # in-memory pack
+##   {"type": "import_pack", "path": <String>}            # pack from a file
+##   {"type": "export_pack", "path": <String>}            # write current pack
 func step(action: Dictionary) -> Dictionary:
 	if _state.is_empty():
 		return _step_error("engine: no session; call new_game() first")
@@ -249,6 +278,12 @@ func step(action: Dictionary) -> Dictionary:
 			return _apply_base_pick(action)
 		ACTION_END_PHASE:
 			return _apply_end_phase()
+		ACTION_SELECT_PACK:
+			return _apply_select_pack(action)
+		ACTION_IMPORT_PACK:
+			return _apply_import_pack(action)
+		ACTION_EXPORT_PACK:
+			return _apply_export_pack(action)
 		_:
 			return _step_error("action.type: unknown action type %s" % [type])
 
@@ -271,6 +306,50 @@ func get_builtin_pack() -> Dictionary:
 		push_error("Engine: builtin pack is not a JSON object")
 		return {}
 	return parsed
+
+
+## Load a Theme Pack from a file (user-imported or shipped) and validate it.
+## Pure: reads the file, never touches session state. Returns
+## {ok: bool, errors: PackedStringArray, pack: Dictionary} where pack is set
+## only on success.
+func load_pack_file(path: String) -> Dictionary:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		var errors := PackedStringArray()
+		errors.append("pack file: cannot open %s (%s)" % [path, error_string(FileAccess.get_open_error())])
+		return {"ok": false, "errors": errors, "pack": {}}
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	if not (parsed is Dictionary):
+		var errors := PackedStringArray()
+		errors.append("pack file: not a JSON object: %s" % [path])
+		return {"ok": false, "errors": errors, "pack": {}}
+	var pack := parsed as Dictionary
+	var validation := validate_pack(pack)
+	if not validation.is_empty():
+		return {"ok": false, "errors": validation, "pack": {}}
+	return {"ok": true, "errors": PackedStringArray(), "pack": pack}
+
+
+## Write the current session's Theme Pack to a file as pure JSON (v1 shape —
+## an exported pack is itself a valid pack). Returns {ok, errors, path};
+## requires a session. State is untouched.
+func export_pack(path: String) -> Dictionary:
+	var errors := PackedStringArray()
+	if _state.is_empty():
+		errors.append("engine: no session; call new_game() first")
+		return {"ok": false, "errors": errors, "path": path}
+	if path.is_empty():
+		errors.append("export_pack.path: required string")
+		return {"ok": false, "errors": errors, "path": path}
+	var dir := path.get_base_dir()
+	if dir != "" and not DirAccess.dir_exists_absolute(dir):
+		DirAccess.make_dir_recursive_absolute(dir)
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		errors.append("export_pack: cannot write %s (%s)" % [path, error_string(FileAccess.get_open_error())])
+		return {"ok": false, "errors": errors, "path": path}
+	file.store_string(JSON.stringify(_pack, "\t") + "\n")
+	return {"ok": true, "errors": PackedStringArray(), "path": path}
 
 
 # --- Turn cycle ------------------------------------------------------------------
@@ -835,6 +914,53 @@ func _fatigue_part_name() -> String:
 	return _text_name("parts", "fatigue")
 
 
+# --- Pack switching -------------------------------------------------------------
+# Switch the running session's Theme Pack: same rules, new world. The state
+# (turn, quest, battle, ...) carries over untouched; pack_id and every pack-
+# text lookup switch to the new pack. Failed switches leave state untouched.
+
+func _apply_select_pack(action: Dictionary) -> Dictionary:
+	var pack: Variant = action.get("pack", null)
+	if not (pack is Dictionary):
+		return _step_error("select_pack.pack: required object")
+	var errors := validate_pack(pack as Dictionary)
+	if not errors.is_empty():
+		return {"ok": false, "errors": errors, "state": get_state()}
+	_switch_pack(pack as Dictionary)
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _apply_import_pack(action: Dictionary) -> Dictionary:
+	var path: Variant = action.get("path", null)
+	if not (path is String) or (path as String).is_empty():
+		return _step_error("import_pack.path: required string")
+	var loaded := load_pack_file(path as String)
+	if not loaded["ok"]:
+		var errors: PackedStringArray = loaded["errors"]
+		return {"ok": false, "errors": errors, "state": get_state()}
+	_switch_pack(loaded["pack"])
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _apply_export_pack(action: Dictionary) -> Dictionary:
+	var path: Variant = action.get("path", null)
+	if not (path is String) or (path as String).is_empty():
+		return _step_error("export_pack.path: required string")
+	var result := export_pack(path as String)
+	if not result["ok"]:
+		var errors: PackedStringArray = result["errors"]
+		return {"ok": false, "errors": errors, "state": get_state()}
+	_log("Turn %d: theme pack exported to %s" % [_state["turn"], path])
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
+
+
+func _switch_pack(pack: Dictionary) -> void:
+	_pack = pack.duplicate(true)
+	_state["pack_id"] = pack["id"]
+	var name: Variant = _locale().get("name", pack["id"])
+	_log("Turn %d: theme pack switched to %s." % [_state["turn"], str(name)])
+
+
 # --- Validation helpers -------------------------------------------------------
 
 func _validate_accent(pack: Dictionary, errors: PackedStringArray) -> void:
@@ -846,6 +972,16 @@ func _validate_accent(pack: Dictionary, errors: PackedStringArray) -> void:
 	regex.compile("^#[0-9a-fA-F]{6}$")
 	if regex.search(accent as String) == null:
 		errors.append("pack.accent: must match #rrggbb")
+
+
+## bodyClass picks one of the known palettes (an enum, not a free string).
+func _validate_body_class(pack: Dictionary, errors: PackedStringArray) -> void:
+	var body_class: Variant = pack.get("bodyClass", null)
+	if not (body_class is String) or (body_class as String).is_empty():
+		errors.append("pack.bodyClass: required string")
+		return
+	if not PACK_PALETTES.has(body_class):
+		errors.append("pack.bodyClass: unknown palette %s (known: %s)" % [body_class, ", ".join(PACK_PALETTES)])
 
 
 func _validate_parts(pack: Dictionary, errors: PackedStringArray) -> void:
@@ -886,21 +1022,134 @@ func _is_integral(value: Variant) -> bool:
 	return false
 
 
+## Contract v1 tightening: all three languages are required — no fallback —
+## and every locale must cover the full skeleton: name/tagline, 3 factions,
+## every roster/skill/enemy/enemy-action/quest id, flavor arrays and the war
+## report template with its placeholders, and the part text.
 func _validate_text(pack: Dictionary, errors: PackedStringArray) -> void:
 	var text: Variant = pack.get("text", null)
 	if not (text is Dictionary):
 		errors.append("pack.text: required object")
 		return
-	# Contract v1 tightening: all three languages are required, no fallback.
 	for lang in ["en", "zh", "ja"]:
 		var locale: Variant = (text as Dictionary).get(lang, null)
 		if not (locale is Dictionary):
 			errors.append("pack.text.%s: required object" % [lang])
 			continue
+		var loc := locale as Dictionary
 		for field in ["name", "tagline"]:
-			var value: Variant = (locale as Dictionary).get(field, null)
+			var value: Variant = loc.get(field, null)
 			if not (value is String) or (value as String).is_empty():
 				errors.append("pack.text.%s.%s: required non-empty string" % [lang, field])
+		# factions: exactly 3 entries, each with name + icon.
+		var factions: Variant = loc.get("factions", null)
+		if not (factions is Array) or (factions as Array).size() != 3:
+			errors.append("pack.text.%s.factions: required array of exactly 3 entries" % [lang])
+		else:
+			for i in (factions as Array).size():
+				if not _has_name_and_icon(factions[i]):
+					errors.append("pack.text.%s.factions[%d]: required object with name and icon strings" % [lang, i])
+		# cards: every roster id needs name + icon.
+		var cards: Variant = loc.get("cards", null)
+		if not (cards is Dictionary):
+			errors.append("pack.text.%s.cards: required object" % [lang])
+		else:
+			for id in _roster_ids():
+				if not _has_name_and_icon((cards as Dictionary).get(id, null)):
+					errors.append("pack.text.%s.cards.%s: required object with name and icon strings" % [lang, id])
+		# skillNames: every skill id needs a non-empty name.
+		var skill_names: Variant = loc.get("skillNames", null)
+		if not (skill_names is Dictionary):
+			errors.append("pack.text.%s.skillNames: required object" % [lang])
+		else:
+			for id in SKILLS:
+				if not _nonempty_string((skill_names as Dictionary).get(id, null)):
+					errors.append("pack.text.%s.skillNames.%s: required non-empty string" % [lang, id])
+		# enemies: every enemy id needs name + icon.
+		var enemies: Variant = loc.get("enemies", null)
+		if not (enemies is Dictionary):
+			errors.append("pack.text.%s.enemies: required object" % [lang])
+		else:
+			for id in ENEMIES:
+				if not _has_name_and_icon((enemies as Dictionary).get(id, null)):
+					errors.append("pack.text.%s.enemies.%s: required object with name and icon strings" % [lang, id])
+		# enemyActions: all three ids need a non-empty name.
+		var enemy_actions: Variant = loc.get("enemyActions", null)
+		if not (enemy_actions is Dictionary):
+			errors.append("pack.text.%s.enemyActions: required object" % [lang])
+		else:
+			for id in ENEMY_SKILLS:
+				if not _nonempty_string((enemy_actions as Dictionary).get(id, null)):
+					errors.append("pack.text.%s.enemyActions.%s: required non-empty string" % [lang, id])
+		# questTitles: every quest key needs a non-empty title.
+		var quest_titles: Variant = loc.get("questTitles", null)
+		if not (quest_titles is Dictionary):
+			errors.append("pack.text.%s.questTitles: required object" % [lang])
+		else:
+			for key in _quest_keys():
+				if not _nonempty_string((quest_titles as Dictionary).get(key, null)):
+					errors.append("pack.text.%s.questTitles.%s: required non-empty string" % [lang, key])
+		# flavor: 1+ non-empty string lines per array, and the war report
+		# template must carry all three placeholders.
+		var flavor: Variant = loc.get("flavor", null)
+		if not (flavor is Dictionary):
+			errors.append("pack.text.%s.flavor: required object" % [lang])
+		else:
+			var flav := flavor as Dictionary
+			for key in ["ev_exp", "ev_gains", "base"]:
+				if not _nonempty_string_array(flav.get(key, null)):
+					errors.append("pack.text.%s.flavor.%s: required array of at least 1 non-empty string" % [lang, key])
+			var tpl: Variant = flav.get("reportTpl", null)
+			if not (tpl is String) or not _has_report_placeholders(tpl as String):
+				errors.append("pack.text.%s.flavor.reportTpl: required string containing {turn} {loss} {left}" % [lang])
+		# parts: text for every part the pack can enable.
+		var parts: Variant = loc.get("parts", null)
+		if not (parts is Dictionary):
+			errors.append("pack.text.%s.parts: required object" % [lang])
+		else:
+			var fatigue: Variant = (parts as Dictionary).get("fatigue", null)
+			if not _has_name_and_icon(fatigue):
+				errors.append("pack.text.%s.parts.fatigue: required object with name and icon strings" % [lang])
+
+
+## Roster ids in fixed party order (deterministic reason ordering).
+func _roster_ids() -> Array:
+	var ids: Array = []
+	for leader in LEADERS:
+		ids.append(leader["id"])
+	return ids
+
+
+## Quest keys from the skeleton data (deterministic reason ordering).
+func _quest_keys() -> Array:
+	var keys: Array = []
+	for pool in QUESTS.values():
+		for quest in pool:
+			keys.append(quest["key"])
+	return keys
+
+
+func _nonempty_string(value: Variant) -> bool:
+	return value is String and not (value as String).is_empty()
+
+
+func _has_name_and_icon(value: Variant) -> bool:
+	return value is Dictionary \
+		and _nonempty_string((value as Dictionary).get("name", null)) \
+		and _nonempty_string((value as Dictionary).get("icon", null))
+
+
+func _nonempty_string_array(value: Variant) -> bool:
+	if not (value is Array) or (value as Array).is_empty():
+		return false
+	for entry in value:
+		if not _nonempty_string(entry):
+			return false
+	return true
+
+
+func _has_report_placeholders(tpl: String) -> bool:
+	return tpl.contains("{turn}") and tpl.contains("{loss}") and tpl.contains("{left}")
 
 
 # --- Action implementations ----------------------------------------------------

@@ -67,11 +67,23 @@ func _run_replay(replay: ReplayBase) -> bool:
 		return false
 	if boot["ok"]:
 		for action in replay.actions():
+			# A Callable entry is test-driver code run verbatim between steps
+			# (e.g. mutating an exported pack file on disk); it is not an
+			# Engine action.
+			if action is Callable:
+				action.call()
+				continue
 			var result := GameEngine.step(action)
 			if not result["ok"]:
 				printerr("REPLAY %s: FAILED" % [replay_name])
 				printerr("  step %s failed: %s" % [action, result["errors"]])
 				return false
+	var problems := replay.checks()
+	if not problems.is_empty():
+		printerr("REPLAY %s: FAILED" % [replay_name])
+		for problem in problems:
+			printerr("  %s" % [problem])
+		return false
 	var actual := GameEngine.get_state()
 	var diffs := _diff(replay.expected_state(), actual, "state")
 	if diffs.is_empty():

@@ -1,6 +1,8 @@
 {
   "id": "builtin",
+  "version": 1,
   "accent": "#1a7a4c",
+  "bodyClass": "seas",
   "parts": {
     "fatigue": {
       "enabled": false,
@@ -14,6 +16,11 @@
     "en": {
       "name": "Placeholder Seas",
       "tagline": "the built-in skeleton pack",
+      "factions": [
+        {"name": "Shield Oath", "icon": "🛡️"},
+        {"name": "Lantern Order", "icon": "🔮"},
+        {"name": "Free Blades", "icon": "🏹"}
+      ],
       "cards": {
         "hero": {"name": "Vanguard", "icon": "⚔️"},
         "tank": {"name": "Bulwark", "icon": "🛡️"},
@@ -61,6 +68,11 @@
     "zh": {
       "name": "占位之海",
       "tagline": "内置骨架主题包",
+      "factions": [
+        {"name": "铁誓团", "icon": "🛡️"},
+        {"name": "灯火会", "icon": "🔮"},
+        {"name": "自由刃", "icon": "🏹"}
+      ],
       "cards": {
         "hero": {"name": "先锋", "icon": "⚔️"},
         "tank": {"name": "盾卫", "icon": "🛡️"},
@@ -108,6 +120,11 @@
     "ja": {
       "name": "プレースホルダーの海",
       "tagline": "内蔵スケルトンパック",
+      "factions": [
+        {"name": "鉄誓団", "icon": "🛡️"},
+        {"name": "灯火会", "icon": "🔮"},
+        {"name": "自由剣", "icon": "🏹"}
+      ],
       "cards": {
         "hero": {"name": "先駆", "icon": "⚔️"},
         "tank": {"name": "盾衛", "icon": "🛡️"},
