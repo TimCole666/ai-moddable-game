@@ -7,6 +7,13 @@ extends Control
 
 const PHASE_NAMES := ["Preparation", "Operation", "Base", "War Report"]
 
+## The shipped placeholder packs, switchable in-game through the Engine's
+## import action (same rules, new world).
+const PACK_PATHS := [
+	"res://engine/builtin_pack.json",
+	"res://engine/packs/ironroad.json",
+]
+
 @onready var _state_label: Label = %StateLabel
 
 
@@ -28,6 +35,17 @@ func _on_end_turn_pressed() -> void:
 
 func _on_end_phase_pressed() -> void:
 	GameEngine.step({"type": EngineCore.ACTION_END_PHASE})
+
+
+func _on_switch_pack_pressed() -> void:
+	# Thin view: pick the shipped pack whose id differs from the current one
+	# and let the Engine validate and switch. Rejections change nothing.
+	var current: String = GameEngine.get_state().get("pack_id", "")
+	for path in PACK_PATHS:
+		var loaded := GameEngine.load_pack_file(path)
+		if loaded["ok"] and loaded["pack"]["id"] != current:
+			GameEngine.step({"type": EngineCore.ACTION_IMPORT_PACK, "path": path})
+			return
 
 
 func _start_session() -> void:

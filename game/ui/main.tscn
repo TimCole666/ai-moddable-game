@@ -56,6 +56,11 @@ text = "End Turn"
 layout_mode = 2
 text = "End Phase"
 
+[node name="SwitchPackButton" type="Button" parent="Buttons"]
+layout_mode = 2
+text = "Switch Pack"
+
 [connection signal="pressed" from="Buttons/StartBattleButton" to="." method="_on_start_battle_pressed"]
 [connection signal="pressed" from="Buttons/EndTurnButton" to="." method="_on_end_turn_pressed"]
 [connection signal="pressed" from="Buttons/EndPhaseButton" to="." method="_on_end_phase_pressed"]
+[connection signal="pressed" from="Buttons/SwitchPackButton" to="." method="_on_switch_pack_pressed"]

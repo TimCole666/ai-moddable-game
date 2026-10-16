@@ -1,0 +1,173 @@
+{
+  "id": "ironroad",
+  "version": 1,
+  "accent": "#b0562a",
+  "bodyClass": "iron",
+  "parts": {
+    "fatigue": {
+      "enabled": false,
+      "params": {
+        "threshold": 2,
+        "apPenalty": 1
+      }
+    }
+  },
+  "text": {
+    "en": {
+      "name": "Iron Road",
+      "tagline": "a frontier railroad campaign",
+      "factions": [
+        {"name": "Firebrigade", "icon": "🔥"},
+        {"name": "Brakemen", "icon": "⚙️"},
+        {"name": "Surveyors", "icon": "🧭"}
+      ],
+      "cards": {
+        "hero": {"name": "Engine Driver", "icon": "🚂"},
+        "tank": {"name": "Brakeman", "icon": "🛑"},
+        "healer": {"name": "Station Medic", "icon": "⛑️"},
+        "mage": {"name": "Signal Witch", "icon": "🗼"},
+        "striker": {"name": "Tracklayer", "icon": "🔨"},
+        "archer": {"name": "Scout Rider", "icon": "🐎"}
+      },
+      "skillNames": {
+        "slash": "Coupling Strike",
+        "heavy": "Full Steam",
+        "multi": "Double Shift",
+        "blast": "Pressure Blast",
+        "mend": "Patch Up",
+        "guard": "Anchor",
+        "hex": "Cut the Wire"
+      },
+      "enemies": {
+        "grunt": {"name": "Raider", "icon": "🪓"},
+        "brute": {"name": "Ironclad Ox", "icon": "🐂"},
+        "shaman": {"name": "Storm Caller", "icon": "⚡"},
+        "boss": {"name": "The Baron", "icon": "🎩"}
+      },
+      "enemyActions": {
+        "e_slash": "Lash",
+        "e_heavy": "Ram",
+        "e_bolt": "Spark"
+      },
+      "questTitles": {
+        "prepA": "Track Inspection",
+        "prepB": "Coal Run",
+        "opA": "Hold the Junction",
+        "opB": "Night Raid on the Viaduct"
+      },
+      "flavor": {
+        "ev_exp": ["An old driver explains how to read the rails."],
+        "ev_gains": ["The crew loads timber onto the flatcars."],
+        "base": ["Crickets and cooling steel."],
+        "reportTpl": "Turn {turn} dispatch: raiders cut {loss} miles of line. {left} of the road still runs."
+      },
+      "parts": {
+        "fatigue": {"name": "Weariness", "icon": "🥵"}
+      }
+    },
+    "zh": {
+      "name": "钢铁大道",
+      "tagline": "边境铁路战记",
+      "factions": [
+        {"name": "炉火队", "icon": "🔥"},
+        {"name": "制动手", "icon": "⚙️"},
+        {"name": "勘线员", "icon": "🧭"}
+      ],
+      "cards": {
+        "hero": {"name": "司机长", "icon": "🚂"},
+        "tank": {"name": "制动手", "icon": "🛑"},
+        "healer": {"name": "站务医士", "icon": "⛑️"},
+        "mage": {"name": "信号巫女", "icon": "🗼"},
+        "striker": {"name": "铺轨工", "icon": "🔨"},
+        "archer": {"name": "骑行侦察", "icon": "🐎"}
+      },
+      "skillNames": {
+        "slash": "挂钩斩",
+        "heavy": "满汽冲击",
+        "multi": "双班连转",
+        "blast": "高压气浪",
+        "mend": "抢修",
+        "guard": "锚定",
+        "hex": "剪断电线"
+      },
+      "enemies": {
+        "grunt": {"name": "劫掠者", "icon": "🪓"},
+        "brute": {"name": "铁甲公牛", "icon": "🐂"},
+        "shaman": {"name": "唤暴者", "icon": "⚡"},
+        "boss": {"name": "男爵", "icon": "🎩"}
+      },
+      "enemyActions": {
+        "e_slash": "鞭击",
+        "e_heavy": "冲撞",
+        "e_bolt": "电火花"
+      },
+      "questTitles": {
+        "prepA": "巡道检查",
+        "prepB": "运煤急行",
+        "opA": "死守枢纽",
+        "opB": "夜袭高架桥"
+      },
+      "flavor": {
+        "ev_exp": ["老司机讲解如何读懂铁轨的震颤。"],
+        "ev_gains": ["车队把枕木装上平板车。"],
+        "base": ["虫鸣与冷却的钢轨。"],
+        "reportTpl": "第 {turn} 回合调度报:劫掠者拆毁 {loss} 英里铁轨。线路仅余 {left}。"
+      },
+      "parts": {
+        "fatigue": {"name": "积劳", "icon": "🥵"}
+      }
+    },
+    "ja": {
+      "name": "鉄の街道",
+      "tagline": "フロンティア鉄道戦記",
+      "factions": [
+        {"name": "火夫組", "icon": "🔥"},
+        {"name": "制動手", "icon": "⚙️"},
+        {"name": "測量班", "icon": "🧭"}
+      ],
+      "cards": {
+        "hero": {"name": "機関士長", "icon": "🚂"},
+        "tank": {"name": "制動手", "icon": "🛑"},
+        "healer": {"name": "駅務衛生兵", "icon": "⛑️"},
+        "mage": {"name": "信号魔女", "icon": "🗼"},
+        "striker": {"name": "工夫", "icon": "🔨"},
+        "archer": {"name": "騎馬斥候", "icon": "🐎"}
+      },
+      "skillNames": {
+        "slash": "連結斬り",
+        "heavy": "全速蒸気",
+        "multi": "二交代突撃",
+        "blast": "高圧衝撃",
+        "mend": "応急修理",
+        "guard": "錨錠",
+        "hex": "電線切断"
+      },
+      "enemies": {
+        "grunt": {"name": "襲撃者", "icon": "🪓"},
+        "brute": {"name": "鉄甲牛", "icon": "🐂"},
+        "shaman": {"name": "嵐呼び", "icon": "⚡"},
+        "boss": {"name": "男爵", "icon": "🎩"}
+      },
+      "enemyActions": {
+        "e_slash": "鞭打ち",
+        "e_heavy": "突進",
+        "e_bolt": "火花"
+      },
+      "questTitles": {
+        "prepA": "線路点検",
+        "prepB": "石炭輸送",
+        "opA": "操車場を死守せよ",
+        "opB": "高架橋の夜襲"
+      },
+      "flavor": {
+        "ev_exp": ["古参の機関士がレールの読み方を教えてくれる。"],
+        "ev_gains": ["乗務員が枕木を貨車に積み込む。"],
+        "base": ["虫の声と冷えていく鋼材。"],
+        "reportTpl": "第 {turn} 回の指令:襲撃者が {loss} マイルの線路を破壊した。路線は残り {left}。"
+      },
+      "parts": {
+        "fatigue": {"name": "疲労困憊", "icon": "🥵"}
+      }
+    }
+  }
+}

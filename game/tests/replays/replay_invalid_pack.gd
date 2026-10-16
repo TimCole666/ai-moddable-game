@@ -20,8 +20,18 @@ func pack() -> Dictionary:
 
 func expected_new_game_errors() -> PackedStringArray:
 	var errors := PackedStringArray()
+	errors.append("pack.version: required integer")
 	errors.append("pack.accent: required #rrggbb string")
+	errors.append("pack.bodyClass: required string")
 	errors.append("pack.parts: required object")
+	errors.append("pack.text.en.factions: required array of exactly 3 entries")
+	errors.append("pack.text.en.cards: required object")
+	errors.append("pack.text.en.skillNames: required object")
+	errors.append("pack.text.en.enemies: required object")
+	errors.append("pack.text.en.enemyActions: required object")
+	errors.append("pack.text.en.questTitles: required object")
+	errors.append("pack.text.en.flavor: required object")
+	errors.append("pack.text.en.parts: required object")
 	errors.append("pack.text.zh: required object")
 	errors.append("pack.text.ja: required object")
 	return errors
