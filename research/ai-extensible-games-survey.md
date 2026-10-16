@@ -288,6 +288,17 @@ arXiv:2607.00527 反复强调,当前 53 个 AI 原生游戏的普遍失败模式
 
 ---
 
+## D. Product decision update (2026-10-17)
+
+AI access will be dual-path, amending the BYOK framing of recommendation 5:
+
+1. **Official AI entry (default)**: the game ships with a hosted, official API entry. Inference costs are absorbed by the cache-first design — every generated result is persisted into the theme pack, so identical requests never re-bill (the Infinite Craft pattern, see A1).
+2. **Own-agent path (advanced players/creators)**: the theme pack is engine-validated pure JSON, so creators can author mods with their own AI agents or tools and import them without touching our service. Export doubles as the mod-format spec by example; import validation rejects malformed packs safely.
+
+Rationale: removes the "apply for an API key" onboarding wall for the majority of players while keeping an open, agent-friendly mod format for the creator ecosystem. Implemented and asserted in the prototype (`validatePack` + `importPack` round-trip; see branch `prototype/theme-mod-loop`).
+
+---
+
 ## 附:关键来源清单
 
 - arXiv:2607.00527《AI Native Games: A Survey and Roadmap》(2026) https://arxiv.org/html/2607.00527v1 ;游戏语料库 https://github.com/igloomatics/Awesome-AI-native-games-collection
