@@ -41,6 +41,21 @@
         "e_slash": "Jab",
         "e_heavy": "Slam",
         "e_bolt": "Bolt"
+      },
+      "questTitles": {
+        "prepA": "Ridge Patrol",
+        "prepB": "Supply Scout",
+        "opA": "Storm the Fort",
+        "opB": "Ambush at the Ford"
+      },
+      "flavor": {
+        "ev_exp": ["A veteran shares an old lesson over dinner."],
+        "ev_gains": ["You escort supplies to the alliance camp."],
+        "base": ["The camp is quiet tonight."],
+        "reportTpl": "Turn {turn} war report: the enemy pushed the frontier — the alliance lost {loss} ground. {left} of the realm remains."
+      },
+      "parts": {
+        "fatigue": {"name": "Fatigue", "icon": "😵"}
       }
     },
     "zh": {
@@ -73,6 +88,21 @@
         "e_slash": "戳击",
         "e_heavy": "重砸",
         "e_bolt": "毒弹"
+      },
+      "questTitles": {
+        "prepA": "山脊巡逻",
+        "prepB": "补给侦察",
+        "opA": "强攻要塞",
+        "opB": "浅滩伏击"
+      },
+      "flavor": {
+        "ev_exp": ["一位老兵在晚餐时传授旧日的功课。"],
+        "ev_gains": ["你护送物资抵达盟会营地。"],
+        "base": ["今夜营地寂静。"],
+        "reportTpl": "第 {turn} 回合战报:敌人进犯前线——盟会折损 {loss} 寸疆土。疆土仅余 {left}。"
+      },
+      "parts": {
+        "fatigue": {"name": "疲惫", "icon": "😵"}
       }
     },
     "ja": {
@@ -105,6 +135,21 @@
         "e_slash": "突き",
         "e_heavy": "叩き",
         "e_bolt": "毒弾"
+      },
+      "questTitles": {
+        "prepA": "山稜の哨戒",
+        "prepB": "補給偵察",
+        "opA": "要塞強襲",
+        "opB": "浅瀬の待ち伏せ"
+      },
+      "flavor": {
+        "ev_exp": ["古参兵が夕食を兼ねて古い教訓を語ってくれる。"],
+        "ev_gains": ["物資を同盟の陣営まで護送した。"],
+        "base": ["今夜の陣営は静かだ。"],
+        "reportTpl": "第 {turn} 回合戦報:敵が戦線を押し込んだ——同盟は {loss} の土地を失った。領土は残り {left}。"
+      },
+      "parts": {
+        "fatigue": {"name": "疲労", "icon": "😵"}
       }
     }
   }

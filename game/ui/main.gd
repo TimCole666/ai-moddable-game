@@ -2,9 +2,10 @@ extends Control
 
 ## Placeholder main scene: a thin view over the Engine. It reads
 ## GameEngine.get_state() and renders it; every gameplay action it offers goes
-## through GameEngine.step(). No rules live here. Pack names for battle text
-## arrive with the pack contract ticket; until then the view shows skeleton
-## ids.
+## through GameEngine.step(). No rules live here. Pack names come from the
+## pack text; chrome localization arrives with the trilingual-chrome ticket.
+
+const PHASE_NAMES := ["Preparation", "Operation", "Base", "War Report"]
 
 @onready var _state_label: Label = %StateLabel
 
@@ -25,6 +26,10 @@ func _on_end_turn_pressed() -> void:
 	GameEngine.step({"type": EngineCore.ACTION_END_TURN})
 
 
+func _on_end_phase_pressed() -> void:
+	GameEngine.step({"type": EngineCore.ACTION_END_PHASE})
+
+
 func _start_session() -> void:
 	var pack := GameEngine.get_builtin_pack()
 	var result := GameEngine.new_game(pack)
@@ -39,7 +44,25 @@ func _render() -> void:
 		return
 	var lines: Array[String] = []
 	lines.append("Theme Pack: %s" % [state["pack_id"]])
-	lines.append("Turn: %d" % [state["turn"]])
+	lines.append("Turn: %d%s   Phase: %s" % [
+		state["turn"], _result_suffix(state), PHASE_NAMES[state["phase"]],
+	])
+	lines.append("Realm: %d%%   Gains: %d this turn (%d total)" % [
+		state["realm"], state["gains_turn"], state["gains_total"],
+	])
+	lines.append("Medals: %d (squad level %d)   Meal tickets: %d   Fatigue: %d" % [
+		state["medals"], state["medals"] / 2, state["tickets"], state["fatigue"],
+	])
+	var quest: Variant = state["quest"]
+	if quest is Dictionary:
+		var q: Dictionary = quest
+		lines.append("Quest: %s #%d — step %d" % [q["pool"], q["idx"], q["step"]])
+	var chest: Variant = state["chest"]
+	if chest is Array:
+		lines.append("Chest open: %s" % [str(chest)])
+	var options: Variant = state["base_options"]
+	if options is Array:
+		lines.append("Base options: %s" % [str(options)])
 	var battle: Variant = state["battle"]
 	if battle is Dictionary:
 		var b: Dictionary = battle
@@ -59,3 +82,10 @@ func _render() -> void:
 	for line in state["log"]:
 		lines.append(line)
 	_state_label.text = "\n".join(lines)
+
+
+func _result_suffix(state: Dictionary) -> String:
+	var ended: String = state["ended"]
+	if ended == "":
+		return ""
+	return " (%s)" % [ended]

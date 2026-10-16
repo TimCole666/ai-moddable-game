@@ -1,11 +1,13 @@
 extends ReplayBase
 
-## Battle smoke walkthrough: turn advance (no battle), battle start with the
-## turn-based enemy scale (turn 2 -> Grunt 40 HP * 1.15 = 46, at 8 * 1.15 = 9),
-## one skill, one enemy phase — final state pinned bit-for-bit.
+## Battle smoke walkthrough: battle start through the quest-free seam with
+## turn-based enemy scale (turn 1 -> Grunt 40 HP, at 8), one skill, one enemy
+## phase — final state pinned bit-for-bit.
 ##
-## Numbers: hero Strike (no combo) 14 -> Grunt 32; the announced Jab hits the
-## Bulwark for roundi(9 * 1.0 * 1.05) = 9 -> HP 76.
+## Numbers: hero Strike (no combo, jitter 1.0) 14 -> Grunt 40 -> 26; the
+## announced Jab hits the Bulwark for roundi(8 * 1.0 * 1.05) = 8 -> HP 77.
+## (The session turn now only advances through the war report; end_turn is
+## battle-scoped since the turn cycle arrived.)
 
 
 func replay_name() -> String:
@@ -14,7 +16,6 @@ func replay_name() -> String:
 
 func actions() -> Array:
 	return [
-		{"type": EngineCore.ACTION_END_TURN},
 		{"type": EngineCore.ACTION_START_BATTLE, "enemy": "grunt"},
 		{"type": EngineCore.ACTION_SKILL, "leader": 0, "slot": 0},
 		{"type": EngineCore.ACTION_END_TURN},
@@ -23,29 +24,65 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"pack_id": "builtin",
-		"turn": 2,
+		"base_options": null,
 		"battle": {
-			"enemy": "grunt",
-			"boss": false,
-			"enemy_hp": 32,
-			"enemy_max_hp": 46,
-			"enemy_at": 9,
-			"round": 2,
 			"ap": 4,
 			"ap_max": 6,
-			"regen": 2,
+			"boss": false,
 			"combo": 0,
+			"enemy": "grunt",
+			"enemy_at": 8,
+			"enemy_hp": 26,
+			"enemy_max_hp": 40,
 			"guard": false,
 			"hexed": false,
-			"over": "",
-			"party_hp": [60, 76, 70, 45, 50, 48],
 			"next_action": "e_slash",
+			"over": "",
+			"party_hp": [60, 77, 70, 45, 50, 48],
+			"regen": 2,
+			"round": 2,
 		},
+		"chest": null,
+		"collection": {
+			"archer": {
+				"count": 1,
+				"exp": 0,
+			},
+			"healer": {
+				"count": 1,
+				"exp": 0,
+			},
+			"hero": {
+				"count": 1,
+				"exp": 0,
+			},
+			"mage": {
+				"count": 1,
+				"exp": 0,
+			},
+			"striker": {
+				"count": 1,
+				"exp": 0,
+			},
+			"tank": {
+				"count": 1,
+				"exp": 0,
+			},
+		},
+		"ended": "",
+		"fatigue": 0,
+		"gains_total": 0,
+		"gains_turn": 0,
 		"log": [
-			"Turn 2: end turn",
-			"Turn 2: battle vs Grunt",
-			"Round 1: Vanguard uses Strike for 14 damage (enemy HP 32)",
-			"Round 1: Grunt uses Jab for 9 damage on Bulwark (HP 76)",
+			"Turn 1: battle vs Grunt",
+			"Round 1: Vanguard uses Strike for 14 damage (enemy HP 26)",
+			"Round 1: Grunt uses Jab for 8 damage on Bulwark (HP 77)",
 		],
+		"medals": 0,
+		"pack_id": "builtin",
+		"phase": 0,
+		"quest": null,
+		"realm": 100,
+		"tickets": 0,
+		"turn": 1,
 	}

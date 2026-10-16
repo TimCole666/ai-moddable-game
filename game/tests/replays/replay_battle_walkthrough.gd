@@ -34,25 +34,55 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"pack_id": "builtin",
-		"turn": 1,
+		"base_options": null,
 		"battle": {
-			"enemy": "brute",
-			"boss": false,
-			"enemy_hp": 0,
-			"enemy_max_hp": 70,
-			"enemy_at": 12,
-			"round": 6,
 			"ap": 0,
 			"ap_max": 6,
-			"regen": 2,
+			"boss": false,
 			"combo": 1,
+			"enemy": "brute",
+			"enemy_at": 12,
+			"enemy_hp": 0,
+			"enemy_max_hp": 70,
 			"guard": false,
 			"hexed": false,
+			"next_action": "e_slash",
 			"over": "win",
 			"party_hp": [60, 74, 68, 26, 37, 35],
-			"next_action": "e_slash",
+			"regen": 2,
+			"round": 6,
 		},
+		"chest": null,
+		"collection": {
+			"archer": {
+				"count": 1,
+				"exp": 2,
+			},
+			"healer": {
+				"count": 1,
+				"exp": 2,
+			},
+			"hero": {
+				"count": 1,
+				"exp": 2,
+			},
+			"mage": {
+				"count": 1,
+				"exp": 2,
+			},
+			"striker": {
+				"count": 1,
+				"exp": 2,
+			},
+			"tank": {
+				"count": 1,
+				"exp": 2,
+			},
+		},
+		"ended": "",
+		"fatigue": 0,
+		"gains_total": 0,
+		"gains_turn": 0,
 		"log": [
 			"Turn 1: battle vs Brute",
 			"Round 1: Sage uses Blast for 22 damage (enemy HP 48)",
@@ -68,4 +98,11 @@ func expected_state() -> Dictionary:
 			"Round 6: Sage uses Blast for 22 damage (enemy HP 0)",
 			"Round 6: victory!",
 		],
+		"medals": 0,
+		"pack_id": "builtin",
+		"phase": 0,
+		"quest": null,
+		"realm": 100,
+		"tickets": 0,
+		"turn": 1,
 	}
