@@ -174,7 +174,7 @@ What makes a good test here: it exercises external behavior through the engine s
 - Adult image generation.
 - Any hosted AI service.
 - Code packs with access to files, the network, the clock, or unseeded randomness.
-- A mod-sharing UI, a pack browser, or an in-game code editor.
+- A pack-sharing UI, a pack browser, or an in-game code editor.
 - Languages beyond zh, en, and ja.
 - Music composition or audio generation.
 - Adult content in the web build.
@@ -200,7 +200,7 @@ Documents to update when this spec is accepted:
 - A new ADR replacing ADR-0007, covering the code-pack format: JSON expression trees with a self-written interpreter.
 - A new ADR recording the core rule replacement: the Rance-10-style rules are replaced by the strategy rules, and the native Rance-10 rules are kept.
 - Amend ADR-0002: its line about later sandboxed code now applies to version 2.
-- Update CONTEXT.md: the Core Loop, Theme Pack, mod, Part, and Engine definitions.
+- Update CONTEXT.md: the Core Loop, Theme Pack, Part, and Engine definitions, and the new terms Run, Chapter, Realm, Card Draft, and Rance-10 Rules.
 - Archive the M1 spec.
 
 Risks:
