@@ -1,0 +1,22 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 ai-moddable-game contributors
+
+This license applies to the game's written copy and art: all game text
+(name, tagline, factions, quest titles, flavor text, chrome strings in
+every locale), Theme Pack content shipped with the game, and any
+illustrations or audio.
+
+The license text is the canonical "Creative Commons Attribution 4.0
+International" legal code, available at:
+
+    https://creativecommons.org/licenses/by/4.0/legalcode
+
+You are free to share and adapt this material for any purpose, including
+commercially, provided you give appropriate credit, provide a link to the
+license, and indicate if changes were made. See the license text for the
+full terms; no additional restrictions apply.
+
+The source code of the game is NOT covered by this file: it is licensed
+under the MIT License, see the LICENSE file at the repository root
+(docs/adr/0004-open-source-free-distribution.md records the decision).
