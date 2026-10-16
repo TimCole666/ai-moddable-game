@@ -13,15 +13,99 @@
   "text": {
     "en": {
       "name": "Placeholder Seas",
-      "tagline": "the built-in skeleton pack"
+      "tagline": "the built-in skeleton pack",
+      "cards": {
+        "hero": {"name": "Vanguard", "icon": "⚔️"},
+        "tank": {"name": "Bulwark", "icon": "🛡️"},
+        "healer": {"name": "Medic", "icon": "⚕️"},
+        "mage": {"name": "Sage", "icon": "🔮"},
+        "striker": {"name": "Dancer", "icon": "🗡️"},
+        "archer": {"name": "Ranger", "icon": "🏹"}
+      },
+      "skillNames": {
+        "slash": "Strike",
+        "heavy": "Heavy Blow",
+        "multi": "Twin Strike",
+        "blast": "Blast",
+        "mend": "Mend",
+        "guard": "Brace",
+        "hex": "Hex"
+      },
+      "enemies": {
+        "grunt": {"name": "Grunt", "icon": "👹"},
+        "brute": {"name": "Brute", "icon": "🐗"},
+        "shaman": {"name": "Shaman", "icon": "🐍"},
+        "boss": {"name": "Warlord", "icon": "☠️"}
+      },
+      "enemyActions": {
+        "e_slash": "Jab",
+        "e_heavy": "Slam",
+        "e_bolt": "Bolt"
+      }
     },
     "zh": {
       "name": "占位之海",
-      "tagline": "内置骨架主题包"
+      "tagline": "内置骨架主题包",
+      "cards": {
+        "hero": {"name": "先锋", "icon": "⚔️"},
+        "tank": {"name": "盾卫", "icon": "🛡️"},
+        "healer": {"name": "医官", "icon": "⚕️"},
+        "mage": {"name": "术士", "icon": "🔮"},
+        "striker": {"name": "双刀", "icon": "🗡️"},
+        "archer": {"name": "弓手", "icon": "🏹"}
+      },
+      "skillNames": {
+        "slash": "斩击",
+        "heavy": "重击",
+        "multi": "连斩",
+        "blast": "冲击",
+        "mend": "治疗",
+        "guard": "布防",
+        "hex": "封印"
+      },
+      "enemies": {
+        "grunt": {"name": "杂兵", "icon": "👹"},
+        "brute": {"name": "暴徒", "icon": "🐗"},
+        "shaman": {"name": "巫师", "icon": "🐍"},
+        "boss": {"name": "首领", "icon": "☠️"}
+      },
+      "enemyActions": {
+        "e_slash": "戳击",
+        "e_heavy": "重砸",
+        "e_bolt": "毒弹"
+      }
     },
     "ja": {
       "name": "プレースホルダーの海",
-      "tagline": "内蔵スケルトンパック"
+      "tagline": "内蔵スケルトンパック",
+      "cards": {
+        "hero": {"name": "先駆", "icon": "⚔️"},
+        "tank": {"name": "盾衛", "icon": "🛡️"},
+        "healer": {"name": "衛生兵", "icon": "⚕️"},
+        "mage": {"name": "呪術師", "icon": "🔮"},
+        "striker": {"name": "二刀流", "icon": "🗡️"},
+        "archer": {"name": "弓手", "icon": "🏹"}
+      },
+      "skillNames": {
+        "slash": "斬撃",
+        "heavy": "強打",
+        "multi": "連斬",
+        "blast": "衝撃",
+        "mend": "治療",
+        "guard": "布陣",
+        "hex": "封印"
+      },
+      "enemies": {
+        "grunt": {"name": "雑兵", "icon": "👹"},
+        "brute": {"name": "荒くれ者", "icon": "🐗"},
+        "shaman": {"name": "巫師", "icon": "🐍"},
+        "boss": {"name": "首領", "icon": "☠️"}
+      },
+      "enemyActions": {
+        "e_slash": "突き",
+        "e_heavy": "叩き",
+        "e_bolt": "毒弾"
+      }
     }
   }
 }
