@@ -77,6 +77,10 @@ const CHROME := {
 			"hex_cancel": "Round %d: the hex cancels %s's %s!",
 			"defeat": "Round %d: defeat!",
 			"enemy_hit": "Round %d: %s uses %s for %d damage on %s (HP %d)",
+			"onboard_phase": "Turn %d: you are in the %s phase — start a preparation quest, work through its steps, then End Phase.",
+			"onboard_branch": "Turn %d: every quest step offers two branches: fights, chests, rest sites, and war supplies. Choose a side.",
+			"onboard_battle": "Turn %d: in battle the enemy's next move is announced — spend AP to strike now, or brace to soften the blow.",
+			"onboard_buttons": "Turn %d: the buttons below (End Turn, End Phase, ...) drive the session; the header tracks realm, medals, meal tickets, and fatigue.",
 		},
 	},
 	"zh": {
@@ -142,6 +146,10 @@ const CHROME := {
 			"hex_cancel": "第 %d 轮：咒术取消了 %s 的 %s！",
 			"defeat": "第 %d 轮：败北！",
 			"enemy_hit": "第 %d 轮：%s 使用 %s，造成 %d 伤害（%s，HP %d）",
+			"onboard_phase": "第 %d 回合：当前是%s阶段——先开始一个准备任务，完成各步骤后按结束阶段。",
+			"onboard_branch": "第 %d 回合：任务每一步都有两条分支：战斗、宝箱、休整营地与军需。选择其中一侧。",
+			"onboard_battle": "第 %d 回合：战斗中敌方的下一步行动会预先公布——可以花行动点立即进攻，也可以防御来减轻伤害。",
+			"onboard_buttons": "第 %d 回合：下方按钮（结束回合、结束阶段等）驱动会话；顶部状态栏显示国力、勋章、餐券与疲劳。",
 		},
 	},
 	"ja": {
@@ -207,6 +215,10 @@ const CHROME := {
 			"hex_cancel": "ラウンド %d：呪術が %s の %s を無効化！",
 			"defeat": "ラウンド %d：敗北！",
 			"enemy_hit": "ラウンド %d：%s が %s を使用、%d ダメージ（%s の HP %d）",
+			"onboard_phase": "ターン %d：現在は%sフェーズ——まず準備クエストを開始し、各ステップを終えたらフェーズ終了を。",
+			"onboard_branch": "ターン %d：クエストの各ステップには 2 つの分岐があります：戦闘、宝箱、休息地、軍需。どちらかを選択。",
+			"onboard_battle": "ターン %d：戦闘では敵の次の行動が予告されます——AP を使って今攻めるか、防御で軽減するかを選択。",
+			"onboard_buttons": "ターン %d：下部のボタン（ターン終了、フェーズ終了など）で操作。国力・勲章・食券・疲労は上部に表示されます。",
 		},
 	},
 }

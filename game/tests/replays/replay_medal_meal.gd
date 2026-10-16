@@ -48,7 +48,7 @@ func expected_state() -> Dictionary:
 		},
 		"healer": {
 			"count": 1,
-			"exp": 5
+			"exp": 7
 		},
 		"hero": {
 			"count": 1,
@@ -68,10 +68,14 @@ func expected_state() -> Dictionary:
 		}
 	},
 	"ended": "",
-	"fatigue": 0,
+	"fatigue": 1,
 	"gains_total": 0,
 	"gains_turn": 0,
 	"log": [
+		"Turn 1: you are in the Preparation phase — start a preparation quest, work through its steps, then End Phase.",
+		"Turn 1: every quest step offers two branches: fights, chests, rest sites, and war supplies. Choose a side.",
+		"Turn 1: in battle the enemy's next move is announced — spend AP to strike now, or brace to soften the blow.",
+		"Turn 1: the buttons below (End Turn, End Phase, ...) drive the session; the header tracks realm, medals, meal tickets, and fatigue.",
 		"Turn 1: Preparation quest started: The Rum Run.",
 		"Turn 1: treasure chest! 3 cards — take one.",
 		"Turn 1: card gained: Bram Ironkeel (copy x2).",
@@ -90,14 +94,14 @@ func expected_state() -> Dictionary:
 		"Turn 1: medal +1 (squad level 1).",
 		"Turn 1: quest complete: Ambush in the Screaming Strait.",
 		"Turn 1: earned a meal ticket.",
-		"Turn 1: meal ticket spent: Tidepriestess Nuala event, +2 EXP.",
-		"Turn 1 dispatch from the tide: raiders tore 9 leagues from our waters — 91% of the sea still flies the crimson flag."
+		"Turn 1: meal ticket spent: Tidepriestess Nuala event, +4 EXP.",
+		"Turn 1 dispatch from the tide: raiders tore 13 leagues from our waters — 87% of the sea still flies the crimson flag."
 	],
 	"medals": 2,
 	"pack_id": "builtin",
 	"phase": 0,
 	"quest": null,
-	"realm": 91,
+	"realm": 87,
 	"tickets": 0,
 	"turn": 2
 }

@@ -114,10 +114,14 @@ func expected_state() -> Dictionary:
 		}
 	},
 	"ended": "",
-	"fatigue": 0,
+	"fatigue": 2,
 	"gains_total": 4,
 	"gains_turn": 0,
 	"log": [
+		"Turn 1: you are in the Preparation phase — start a preparation quest, work through its steps, then End Phase.",
+		"Turn 1: every quest step offers two branches: fights, chests, rest sites, and war supplies. Choose a side.",
+		"Turn 1: in battle the enemy's next move is announced — spend AP to strike now, or brace to soften the blow.",
+		"Turn 1: the buttons below (End Turn, End Phase, ...) drive the session; the header tracks realm, medals, meal tickets, and fatigue.",
 		"第 1 回合：准备任务开始：岸上筹粮。",
 		"第 1 回合：对战 强征水手",
 		"第 1 轮：玛伦·风暴之牙船长 使用 弯刀斩，造成 14 伤害（敌方 HP 26）",
@@ -131,7 +135,7 @@ func expected_state() -> Dictionary:
 		"第 1 回合：军需到位：战功 +2（本回合合计 2）。",
 		"第 1 回合：任务完成：岸上筹粮。",
 		"第 1 回合：与玛伦·风暴之牙船长的宁静夜晚：雨点敲打艉窗，温热的手抚过你的每一道旧疤；待暴雨停歇，你已学会她那个被呻吟出来、而非说出口的名字。（经验 +2）",
-		"第 1 回合潮讯：掠袭者撕走了 5 里格海域——绯红的旗帜仍飘扬在 95% 的海面上。",
+		"第 1 回合潮讯：掠袭者撕走了 9 里格海域——绯红的旗帜仍飘扬在 91% 的海面上。",
 		"ターン 2：準備クエスト開始：ラム酒の輸送。",
 		"ターン 2：宝箱！カード 3 枚——1 枚選べ。",
 		"ターン 2：カード獲得：潮の巫女ヌアラ（複製 x2）。",
@@ -139,13 +143,13 @@ func expected_state() -> Dictionary:
 		"ターン 2：軍需品を確保：戦果 +2（ターン合計 2）。",
 		"ターン 2：クエスト完了：ラム酒の輸送。",
 		"ターン 2：嵐牙の船長マレン との静かな夜：彼女はラム酒と嵐の塩の味がする。ハンモックは潮の調子に揺れ、ランプの芯が燃え尽きるまで、どちらも手を止めない。（経験値 +2）",
-		"ターン 2 の潮告：略奪者たちが 5 リーグの海を切り取った——紅の旗はまだ海の 90% に翻っている。"
+		"ターン 2 の潮告：略奪者たちが 9 リーグの海を切り取った——紅の旗はまだ海の 82% に翻っている。"
 	],
 	"medals": 0,
 	"pack_id": "builtin",
 	"phase": 0,
 	"quest": null,
-	"realm": 90,
+	"realm": 82,
 	"tickets": 0,
 	"turn": 3
 }

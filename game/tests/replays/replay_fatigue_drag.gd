@@ -96,10 +96,14 @@ func expected_state() -> Dictionary:
 	"gains_total": 0,
 	"gains_turn": 0,
 	"log": [
+		"Turn 1: you are in the Preparation phase — start a preparation quest, work through its steps, then End Phase.",
+		"Turn 1: every quest step offers two branches: fights, chests, rest sites, and war supplies. Choose a side.",
+		"Turn 1: in battle the enemy's next move is announced — spend AP to strike now, or brace to soften the blow.",
+		"Turn 1: the buttons below (End Turn, End Phase, ...) drive the session; the header tracks realm, medals, meal tickets, and fatigue.",
 		"Turn 1: quiet evening with Captain Maren Stormbite: Rain drums the stern windows while warm hands map every scar you own; when the storm finally passes you have learned her name gasped, not spoken. (+2 EXP)",
-		"Turn 1 dispatch from the tide: raiders tore 9 leagues from our waters — 91% of the sea still flies the crimson flag.",
+		"Turn 1 dispatch from the tide: raiders tore 13 leagues from our waters — 87% of the sea still flies the crimson flag.",
 		"Turn 2: quiet evening with Captain Maren Stormbite: She tastes of rum and storm-salt; the hammock keeps the tide's rhythm and the lantern burns to nothing before either of you is done. (+2 EXP)",
-		"Turn 2 dispatch from the tide: raiders tore 9 leagues from our waters — 82% of the sea still flies the crimson flag.",
+		"Turn 2 dispatch from the tide: raiders tore 13 leagues from our waters — 74% of the sea still flies the crimson flag.",
 		"Turn 3: Preparation quest started: Provisions Ashore.",
 		"Turn 3: Sea Weariness drags the squad: AP regen -1.",
 		"Turn 3: battle vs Press-Gang Hand"
@@ -112,7 +116,7 @@ func expected_state() -> Dictionary:
 		"pool": "prep",
 		"step": 0
 	},
-	"realm": 82,
+	"realm": 74,
 	"tickets": 0,
 	"turn": 3
 }

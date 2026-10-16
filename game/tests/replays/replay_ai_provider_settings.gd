@@ -99,32 +99,51 @@ func checks() -> PackedStringArray:
 
 
 func expected_state() -> Dictionary:
-	return _baseline_state()
-
-
-static func _baseline_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": null,
-		"chest": null,
-		"collection": {
-			"archer": {"count": 1, "exp": 0},
-			"healer": {"count": 1, "exp": 0},
-			"hero": {"count": 1, "exp": 0},
-			"mage": {"count": 1, "exp": 0},
-			"striker": {"count": 1, "exp": 0},
-			"tank": {"count": 1, "exp": 0},
+	"base_options": null,
+	"battle": null,
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
 		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": null,
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 0
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: you are in the Preparation phase — start a preparation quest, work through its steps, then End Phase.",
+		"Turn 1: every quest step offers two branches: fights, chests, rest sites, and war supplies. Choose a side.",
+		"Turn 1: in battle the enemy's next move is announced — spend AP to strike now, or brace to soften the blow.",
+		"Turn 1: the buttons below (End Turn, End Phase, ...) drive the session; the header tracks realm, medals, meal tickets, and fatigue."
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": null,
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}
