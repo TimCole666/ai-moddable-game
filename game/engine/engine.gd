@@ -156,11 +156,16 @@ const ACTION_END_PHASE := "end_phase"
 const ACTION_SELECT_PACK := "select_pack"
 const ACTION_IMPORT_PACK := "import_pack"
 const ACTION_EXPORT_PACK := "export_pack"
+const ACTION_SET_LANGUAGE := "set_language"
 
 const BUILTIN_PACK_PATH := "res://engine/builtin_pack.json"
 
 var _state: Dictionary = {}
 var _pack: Dictionary = {}
+## UI language for chrome text (log templates, labels). Not part of session
+## state: switching it preserves the run bit-for-bit. Pack text uses the same
+## locale (pack.text.<lang>, complete in all three by contract — no fallback).
+var _lang: String = ChromeText.LANGUAGES[0]
 
 
 func _ready() -> void:
@@ -205,6 +210,7 @@ func new_game(pack: Dictionary) -> Dictionary:
 	if not errors.is_empty():
 		return {"ok": false, "errors": errors, "state": {}}
 	_pack = pack.duplicate(true)
+	_lang = ChromeText.LANGUAGES[0]
 	var collection := {}
 	for leader in LEADERS:
 		collection[leader["id"]] = {"count": 1, "exp": 0}
@@ -255,6 +261,10 @@ func new_game(pack: Dictionary) -> Dictionary:
 ##   {"type": "select_pack", "pack": <pack Dictionary>}   # in-memory pack
 ##   {"type": "import_pack", "path": <String>}            # pack from a file
 ##   {"type": "export_pack", "path": <String>}            # write current pack
+## Chrome vocabulary (ticket 05): switch the UI language mid-run. Chrome-only:
+## the session state is preserved bit-for-bit (the switch touches nothing but
+## the chrome locale used for log templates, labels, and pack-text lookups).
+##   {"type": "set_language", "lang": <"en"|"zh"|"ja">}
 func step(action: Dictionary) -> Dictionary:
 	if _state.is_empty():
 		return _step_error("engine: no session; call new_game() first")
@@ -284,6 +294,8 @@ func step(action: Dictionary) -> Dictionary:
 			return _apply_import_pack(action)
 		ACTION_EXPORT_PACK:
 			return _apply_export_pack(action)
+		ACTION_SET_LANGUAGE:
+			return _apply_set_language(action)
 		_:
 			return _step_error("action.type: unknown action type %s" % [type])
 
@@ -293,6 +305,22 @@ func step(action: Dictionary) -> Dictionary:
 ## mutable reference to internal state.
 func get_state() -> Dictionary:
 	return _state.duplicate(true)
+
+
+## Chrome strings (phases, results, quest pools, buttons, UI labels, log
+## templates) for the given language — or the current one when omitted.
+## Returns {} for an unknown language. Deep copy: read-only for callers.
+func chrome(lang := "") -> Dictionary:
+	var key := _lang if lang.is_empty() or not (lang is String) else lang
+	if not ChromeText.LANGUAGES.has(key):
+		return {}
+	return (ChromeText.CHROME[key] as Dictionary).duplicate(true)
+
+
+## The session's UI language ("en" | "zh" | "ja"); switched only by the
+## set_language action.
+func get_language() -> String:
+	return _lang
 
 
 ## Load the built-in Theme Pack shipped with the game (pure JSON, v1 shape).
@@ -377,8 +405,8 @@ func _apply_start_quest(action: Dictionary) -> Dictionary:
 	if idx < 0 or idx >= pool_quests.size():
 		return _step_error("start_quest.idx: invalid quest index %s" % [idx_v])
 	_state["quest"] = {"pool": pool, "idx": idx, "step": 0}
-	var kind := "Preparation" if pool == "prep" else "Operation"
-	_log("Turn %d: %s quest started: %s." % [_state["turn"], kind, _quest_title(pool_quests[idx]["key"])])
+	var kind: String = ChromeText.CHROME[_lang]["questPools"][pool]
+	_log_chrome("quest_started", [_state["turn"], kind, _quest_title(pool_quests[idx]["key"])])
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 
@@ -418,18 +446,18 @@ func _apply_node(node_id: String, option: int) -> void:
 			_apply_auto_node(node["e"])
 		"heal":
 			_state["fatigue"] = 0
-			_log("Turn %d: rest site: squad fully restored, fatigue cleared." % [_state["turn"]])
+			_log_chrome("rest_site", [_state["turn"]])
 		"event":
 			_apply_event_node(node["effect"])
 		"gains":
 			_state["gains_turn"] = _state["gains_turn"] + GAINS_NODE_AMOUNT
 			_state["gains_total"] = _state["gains_total"] + GAINS_NODE_AMOUNT
-			_log("Turn %d: war supplies secured: gains +%d (turn total %d)." % [
+			_log_chrome("gains_node", [
 				_state["turn"], GAINS_NODE_AMOUNT, _state["gains_turn"],
 			])
 		"medal":
 			_state["medals"] = _state["medals"] + 1
-			_log("Turn %d: medal +1 (squad level %d)." % [_state["turn"], _squad_level()])
+			_log_chrome("medal", [_state["turn"], _squad_level()])
 	_finish_node()
 
 
@@ -443,11 +471,11 @@ func _apply_auto_node(enemy_id: String) -> void:
 		var entry: Dictionary = _state["collection"][id]
 		entry["exp"] = entry["exp"] + AUTO_EXP
 	if total_at >= roundi(def["at"] * AUTO_WIN_RATIO):
-		_log("Turn %d: skirmish vs %s: won handily (squad AT %d). Leaders +%d EXP." % [
+		_log_chrome("skirmish_easy", [
 			_state["turn"], _enemy_name(enemy_id), total_at, AUTO_EXP,
 		])
 	else:
-		_log("Turn %d: skirmish vs %s: won at a cost (squad AT %d). Leaders +%d EXP." % [
+		_log_chrome("skirmish_costly", [
 			_state["turn"], _enemy_name(enemy_id), total_at, AUTO_EXP,
 		])
 
@@ -460,11 +488,11 @@ func _apply_event_node(effect: String) -> void:
 		var char_id: String = chars[_state["turn"] % chars.size()]
 		var entry: Dictionary = _state["collection"][char_id]
 		entry["exp"] = entry["exp"] + EVENT_EXP
-		_log("Turn %d: %s (%s +%d EXP)" % [_state["turn"], _flavor_line("ev_exp"), _card_name(char_id), EVENT_EXP])
+		_log_chrome("event_exp", [_state["turn"], _flavor_line("ev_exp"), _card_name(char_id), EVENT_EXP])
 	else:
 		_state["gains_turn"] = _state["gains_turn"] + 1
 		_state["gains_total"] = _state["gains_total"] + 1
-		_log("Turn %d: %s" % [_state["turn"], _flavor_line("ev_gains")])
+		_log_chrome("event_gains", [_state["turn"], _flavor_line("ev_gains")])
 
 
 func _open_chest() -> void:
@@ -478,7 +506,7 @@ func _open_chest() -> void:
 			opts.append(id)
 		k += 1
 	_state["chest"] = opts
-	_log("Turn %d: treasure chest! %d cards — take one." % [_state["turn"], opts.size()])
+	_log_chrome("chest_open", [_state["turn"], opts.size()])
 
 
 func _apply_chest_pick(action: Dictionary) -> Dictionary:
@@ -494,9 +522,9 @@ func _apply_chest_pick(action: Dictionary) -> Dictionary:
 	var entry: Dictionary = _state["collection"][card_id]
 	entry["count"] = entry["count"] + 1
 	if entry["count"] > 1:
-		_log("Turn %d: card gained: %s (copy x%d)." % [_state["turn"], _card_name(card_id), entry["count"]])
+		_log_chrome("card_gained_copy", [_state["turn"], _card_name(card_id), entry["count"]])
 	else:
-		_log("Turn %d: card gained: %s." % [_state["turn"], _card_name(card_id)])
+		_log_chrome("card_gained", [_state["turn"], _card_name(card_id)])
 	_state["chest"] = null
 	_finish_node()
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
@@ -514,10 +542,10 @@ func _complete_quest() -> void:
 	var quest: Dictionary = _state["quest"]
 	var title := _quest_title(QUESTS[quest["pool"]][quest["idx"]]["key"])
 	_state["quest"] = null
-	_log("Turn %d: quest complete: %s." % [_state["turn"], title])
+	_log_chrome("quest_complete", [_state["turn"], title])
 	if quest["pool"] == "operation" and _state["tickets"] < MAX_TICKETS:
 		_state["tickets"] = _state["tickets"] + 1
-		_log("Turn %d: earned a meal ticket." % [_state["turn"]])
+		_log_chrome("meal_ticket_earned", [_state["turn"]])
 	_state["phase"] = _state["phase"] + 1
 	if _state["phase"] == PHASE_BASE:
 		_set_base_options()
@@ -532,7 +560,7 @@ func _apply_retire() -> Dictionary:
 	_state["phase"] = _state["phase"] + 1
 	if _state["phase"] == PHASE_BASE:
 		_set_base_options()
-	_log("Turn %d: quest retired (no rewards)." % [_state["turn"]])
+	_log_chrome("quest_retired", [_state["turn"]])
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 
@@ -559,14 +587,14 @@ func _apply_base_pick(action: Dictionary) -> Dictionary:
 	if _state["tickets"] > 0:
 		_state["tickets"] = _state["tickets"] - 1
 		entry["exp"] = entry["exp"] + MEAL_EXP
-		_log("Turn %d: meal ticket spent: %s event, +%d EXP." % [_state["turn"], _card_name(char_id), MEAL_EXP])
+		_log_chrome("base_meal", [_state["turn"], _card_name(char_id), MEAL_EXP])
 	elif option == 0:
 		entry["exp"] = entry["exp"] + EVENT_EXP
-		_log("Turn %d: quiet evening: %s +%d EXP." % [_state["turn"], _card_name(char_id), EVENT_EXP])
+		_log_chrome("base_quiet", [_state["turn"], _card_name(char_id), EVENT_EXP])
 	else:
 		_state["gains_turn"] = _state["gains_turn"] + LOGISTICS_GAINS
 		_state["gains_total"] = _state["gains_total"] + LOGISTICS_GAINS
-		_log("Turn %d: logistics arranged: war gains +%d." % [_state["turn"], LOGISTICS_GAINS])
+		_log_chrome("base_logistics", [_state["turn"], LOGISTICS_GAINS])
 	_state["base_options"] = null
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
@@ -606,15 +634,15 @@ func _resolve_war_report() -> void:
 		_state["fatigue"] = _state["fatigue"] + 1
 	if _state["realm"] <= 0:
 		_state["ended"] = "lose"
-		_log("Turn %d: the realm falls. GAME OVER." % [_state["turn"]])
+		_log_chrome("realm_falls", [_state["turn"]])
 		return
 	_state["turn"] = _state["turn"] + 1
 	_state["phase"] = PHASE_PREPARE
 	if _state["turn"] > TURN_LIMIT:
 		_state["ended"] = "win"
-		_log("Turn %d: the campaign holds — victory!" % [_state["turn"]])
+		_log_chrome("campaign_victory", [_state["turn"]])
 	elif _state["realm"] < REALM_WARN_BELOW:
-		_log("Turn %d: warning: the realm is below half (%d%% held)." % [_state["turn"], _state["realm"]])
+		_log_chrome("realm_warning", [_state["turn"], _state["realm"]])
 
 
 func _squad_level() -> int:
@@ -670,9 +698,9 @@ func _start_battle(enemy_id: String) -> String:
 		var penalty: int = part["params"]["apPenalty"]
 		battle["ap_max"] = maxi(1, BATTLE_AP_MAX - penalty)
 		battle["regen"] = maxi(0, BATTLE_AP_REGEN - penalty)
-		_log("Turn %d: %s drags the squad: AP regen -%d." % [_state["turn"], _fatigue_part_name(), penalty])
+		_log_chrome("fatigue_drag", [_state["turn"], _fatigue_part_name(), penalty])
 	_state["battle"] = battle
-	_log("Turn %d: battle vs %s" % [_state["turn"], _enemy_name(enemy_id)])
+	_log_chrome("battle_start", [_state["turn"], _enemy_name(enemy_id)])
 	return ""
 
 
@@ -726,10 +754,10 @@ func _apply_skill(action: Dictionary) -> Dictionary:
 			_apply_heal(b, leader_def, sk, leader_idx, slot, leader_label, skill_label)
 		"support":
 			b["guard"] = true
-			_log("Round %d: %s uses %s: party braces (-30%% incoming this round)" % [b["round"], leader_label, skill_label])
+			_log_chrome("brace", [b["round"], leader_label, skill_label])
 		"interference":
 			b["hexed"] = true
-			_log("Round %d: %s uses %s: one enemy action this round will be cancelled" % [b["round"], leader_label, skill_label])
+			_log_chrome("hex_set", [b["round"], leader_label, skill_label])
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 
@@ -748,13 +776,13 @@ func _apply_attack(b: Dictionary, leader_def: Dictionary, bind: Dictionary, sk: 
 		total += roundi(dmg)
 	b["enemy_hp"] = maxi(0, b["enemy_hp"] - total)
 	b["combo"] = b["combo"] + hits
-	_log("Round %d: %s uses %s for %d damage (enemy HP %d)" % [b["round"], leader_label, skill_label, total, b["enemy_hp"]])
+	_log_chrome("attack", [b["round"], leader_label, skill_label, total, b["enemy_hp"]])
 	if b["enemy_hp"] <= 0:
 		b["over"] = "win"
 		for id in _state["collection"]:
 			var entry: Dictionary = _state["collection"][id]
 			entry["exp"] = entry["exp"] + BATTLE_WIN_EXP
-		_log("Round %d: victory!" % [b["round"]])
+		_log_chrome("victory", [b["round"]])
 
 
 ## Heals top up every standing leader, capped at each one's max HP.
@@ -764,7 +792,7 @@ func _apply_heal(b: Dictionary, leader_def: Dictionary, sk: Dictionary, leader_i
 	for i in party_hp.size():
 		if party_hp[i] > 0:
 			party_hp[i] = mini(LEADERS[i]["max_hp"], party_hp[i] + heal)
-	_log("Round %d: %s uses %s: all standing leaders +%d HP" % [b["round"], leader_label, skill_label, heal])
+	_log_chrome("heal", [b["round"], leader_label, skill_label, heal])
 
 
 ## Resolve the enemy phase: execute the pre-announced action (unless a hex
@@ -777,12 +805,12 @@ func _apply_battle_end_turn(b: Dictionary) -> void:
 	var plan: Array = def["plan"]
 	if b["round"] > BATTLE_ROUND_CAP:
 		b["over"] = "lose"
-		_log("Round %d: the squad withdraws (stalemate)" % [b["round"]])
+		_log_chrome("withdraw", [b["round"]])
 		return
 	var action_id: String = plan[(b["round"] - 1) % plan.size()]
 	if b["hexed"] and not b["boss"]:
 		b["hexed"] = false
-		_log("Round %d: the hex cancels %s's %s!" % [b["round"], _enemy_name(b["enemy"]), _enemy_action_name(action_id)])
+		_log_chrome("hex_cancel", [b["round"], _enemy_name(b["enemy"]), _enemy_action_name(action_id)])
 	else:
 		var alive: Array = []
 		for i in b["party_hp"].size():
@@ -790,14 +818,14 @@ func _apply_battle_end_turn(b: Dictionary) -> void:
 				alive.append(i)
 		if alive.is_empty():
 			b["over"] = "lose"
-			_log("Round %d: defeat!" % [b["round"]])
+			_log_chrome("defeat", [b["round"]])
 			return
 		var sk: Dictionary = ENEMY_SKILLS[action_id]
 		var guard_mult: float = GUARD_REDUCTION if b["guard"] else 1.0
 		var dmg := roundi(b["enemy_at"] * sk["mult"] * _jitter(b["round"], 0, 0, 1) * guard_mult)
 		var target: int = alive[b["round"] % alive.size()]
 		b["party_hp"][target] = maxi(0, b["party_hp"][target] - dmg)
-		_log("Round %d: %s uses %s for %d damage on %s (HP %d)" % [
+		_log_chrome("enemy_hit", [
 			b["round"], _enemy_name(b["enemy"]), _enemy_action_name(action_id),
 			dmg, _card_name(LEADERS[target]["id"]), b["party_hp"][target],
 		])
@@ -807,7 +835,7 @@ func _apply_battle_end_turn(b: Dictionary) -> void:
 				any_alive = true
 		if not any_alive:
 			b["over"] = "lose"
-			_log("Round %d: defeat!" % [b["round"]])
+			_log_chrome("defeat", [b["round"]])
 			return
 	b["round"] = b["round"] + 1
 	b["ap"] = mini(b["ap_max"], b["ap"] + b["regen"])
@@ -829,9 +857,9 @@ func _jitter(round_no: int, a: int, b: int, c: int) -> float:
 func _locale() -> Dictionary:
 	var text: Variant = _pack.get("text", {})
 	if text is Dictionary:
-		var en: Variant = (text as Dictionary).get("en", {})
-		if en is Dictionary:
-			return en
+		var locale: Variant = (text as Dictionary).get(_lang, {})
+		if locale is Dictionary:
+			return locale
 	return {}
 
 
@@ -950,7 +978,7 @@ func _apply_export_pack(action: Dictionary) -> Dictionary:
 	if not result["ok"]:
 		var errors: PackedStringArray = result["errors"]
 		return {"ok": false, "errors": errors, "state": get_state()}
-	_log("Turn %d: theme pack exported to %s" % [_state["turn"], path])
+	_log_chrome("pack_exported", [_state["turn"], path])
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
 
 
@@ -958,7 +986,7 @@ func _switch_pack(pack: Dictionary) -> void:
 	_pack = pack.duplicate(true)
 	_state["pack_id"] = pack["id"]
 	var name: Variant = _locale().get("name", pack["id"])
-	_log("Turn %d: theme pack switched to %s." % [_state["turn"], str(name)])
+	_log_chrome("pack_switched", [_state["turn"], str(name)])
 
 
 # --- Validation helpers -------------------------------------------------------
@@ -1177,7 +1205,7 @@ func _apply_end_turn() -> Dictionary:
 		# next end turn closes the battle.
 		var result: String = b["over"]
 		_state["battle"] = null
-		_log("Turn %d: battle over" % [_state["turn"]])
+		_log_chrome("battle_over", [_state["turn"]])
 		if _state["quest"] != null:
 			if result == "win":
 				_finish_node()
@@ -1187,7 +1215,7 @@ func _apply_end_turn() -> Dictionary:
 				_state["phase"] = _state["phase"] + 1
 				if _state["phase"] == PHASE_BASE:
 					_set_base_options()
-				_log("Turn %d: quest abandoned." % [_state["turn"]])
+				_log_chrome("quest_abandoned", [_state["turn"]])
 	else:
 		_apply_battle_end_turn(b)
 	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
@@ -1196,3 +1224,25 @@ func _apply_end_turn() -> Dictionary:
 func _log(line: String) -> void:
 	var log: Array = _state["log"]
 	log.append(line)
+
+
+## Log through the chrome template for the current language: `_log_chrome(key)`
+## for template-free lines, `_log_chrome(key, args)` to format. Template args
+## are positional; a line with no placeholders takes no args.
+func _log_chrome(key: String, args: Array = []) -> void:
+	var tpl: String = ChromeText.CHROME[_lang]["log"][key]
+	if args.is_empty():
+		_log(tpl)
+	else:
+		_log(tpl % args)
+
+
+## Chrome vocabulary (ticket 05): switch the UI language mid-run. Touches only
+## the chrome locale — session state is preserved bit-for-bit, and every later
+## chrome log line and pack-text lookup renders in the new language.
+func _apply_set_language(action: Dictionary) -> Dictionary:
+	var lang: Variant = action.get("lang", null)
+	if not (lang is String) or not ChromeText.LANGUAGES.has(lang):
+		return _step_error("set_language.lang: invalid language %s (known: %s)" % [lang, ", ".join(ChromeText.LANGUAGES)])
+	_lang = lang
+	return {"ok": true, "errors": PackedStringArray(), "state": get_state()}
