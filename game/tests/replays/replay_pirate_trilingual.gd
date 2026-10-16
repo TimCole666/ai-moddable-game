@@ -76,6 +76,16 @@ func checks() -> PackedStringArray:
 			"TODO", "TBD", "{turn}", "{loss}", "{left}"]:
 		if joined.contains(banned):
 			problems.append("log leaks skeleton placeholder %s" % [banned])
+	# Contract v1 (ticket 04) makes every flavor pool mandatory, so the
+	# skeleton fallback in _flavor_line() is unreachable for a validated
+	# pack. Pin that: none of the fallback chrome strings may ever appear
+	# in a validated-pack session's log. If validation ever loosens, this
+	# fails loudly instead of leaking skeleton text silently. (The
+	# all-ages web gate's substitution is a separate, legitimate path —
+	# this session runs with adult content on.)
+	for fallback in ["an event (+EXP)", "an event (+war gains)"]:
+		if joined.contains(fallback):
+			problems.append("log leaked _flavor_line skeleton fallback %s" % [fallback])
 	for required in ["岸上筹粮", "强征水手", "ラム酒の輸送", "嵐牙の船長マレン"]:
 		if not joined.contains(required):
 			problems.append("log missing localized pirate pack text %s" % [required])

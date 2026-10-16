@@ -72,7 +72,19 @@ const ENEMY_SKILLS := {
 # --- Turn cycle: quest skeletons ---------------------------------------------
 # Steps of paired node ids (left / right branch), identical for every theme —
 # the pack's questTitles name the quests, the pack's text names the nodes.
-# Node shapes: battle/auto carry an enemy id; event carries its effect.
+#
+# Node-key shorthand (a terse but stable vocabulary — packs and the pack
+# contract reference these ids, so do not rename):
+#   t          node type: "battle" (fight via _start_battle), "auto"
+#              (instant auto-skirmish), "chest" (3-card offer), "heal"
+#              (rest site, fatigue -> 0), "gains" (+2 war supplies),
+#              "medal" (+1 medal), "event" (resolve by "effect")
+#   e          enemy id (ENEMIES key) for battle/auto nodes
+#   effect     for event nodes: "exp" | "gains" (the ev_exp/ev_gains pair)
+#   prefixes   b_ battle, a_ auto, ev_ event; b_g/b_b/b_s/b_boss and
+#              a_g/a_b abbreviate enemy (grunt/brute/shaman/boss)
+# QUESTS values: pool -> ordered steps, each step a [left, right] pair of
+# QUEST_NODES ids; "key" is the pack-text quest title id (questTitles).
 
 const QUEST_NODES := {
 	"b_g": {"t": "battle", "e": "grunt"},
@@ -950,7 +962,9 @@ func _quest_title(key: String) -> String:
 ## Flavor line for an event/rest surface, rotating deterministically with the
 ## session turn so a pool of lines cycles instead of repeating one line
 ## (ticket 07 ships several lines per pool). Falls back to a bare chrome line
-## when the pack carries no flavor yet (ticket 04 enforces it).
+## when the pack carries no flavor yet (ticket 04 enforces it, and the
+## pirate_text_trilingual replay asserts the fallback never appears in a
+## validated-pack session's log).
 func _flavor_line(key: String) -> String:
 	# ADR-0005: on the web export every flavor surface is all-ages.
 	if not _adult_allowed:
