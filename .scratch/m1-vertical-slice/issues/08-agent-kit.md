@@ -4,7 +4,7 @@
 
 **Blocked by:** 04 (Theme Pack contract v1).
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] The contract document specifies the v1 schema, validation reasons, and at least one worked example per section
 - [x] A Claude Code skill encodes the contract (installable and invocable)

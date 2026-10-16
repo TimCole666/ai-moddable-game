@@ -4,7 +4,7 @@
 
 **Blocked by:** 04 (Theme Pack contract v1).
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] Provider settings accept a cloud key or a local endpoint, with recommended presets
 - [x] Generation produces packs that pass v1 validation or fail with actionable errors

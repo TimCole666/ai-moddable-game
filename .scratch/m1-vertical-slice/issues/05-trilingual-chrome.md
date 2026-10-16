@@ -4,7 +4,7 @@
 
 **Blocked by:** 04 (Theme Pack contract v1).
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] Every engine chrome string exists in zh, en, and ja
 - [x] The language switcher works mid-run with state preserved bit-for-bit (replay-asserted)

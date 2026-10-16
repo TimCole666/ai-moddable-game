@@ -4,7 +4,7 @@
 
 **Blocked by:** 09 (Build artifacts).
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [ ] Balance pass done: encounters, economy, and Fatigue tuning reviewed against the arc
 - [ ] Onboarding pass done: a fresh player can reach the first battle without guidance
