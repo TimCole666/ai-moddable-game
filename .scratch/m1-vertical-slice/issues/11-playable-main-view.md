@@ -4,7 +4,7 @@
 
 **Blocked by:** None (replaces the placeholder view in place on this branch).
 
-**Status:** done
+Status: done
 
 - [x] `available_actions()` lists exactly the legal actions with chrome labels, pinned in four situations by the new replay
 - [x] The main view renders the Engine's action list dynamically; every press is one `step()`

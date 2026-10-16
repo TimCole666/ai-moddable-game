@@ -1,5 +1,7 @@
 # Spec: M1 — Godot Vertical Slice
 
+Archived: superseded by `.scratch/v1-full/spec.md`. Do not follow this spec for new work.
+
 Status: ready-for-human
 
 ## Problem Statement

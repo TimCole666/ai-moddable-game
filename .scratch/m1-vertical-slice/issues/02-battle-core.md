@@ -4,7 +4,7 @@
 
 **Blocked by:** 01 (Engine test seam + project skeleton).
 
-**Status:** done
+Status: done
 
 - [x] A battle is playable end to end: AP spend, skills, damage, heals, guards
 - [x] Enemy actions are pre-announced; bracing reduces incoming damage; a hexed action is cancelled

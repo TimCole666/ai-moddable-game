@@ -96,25 +96,25 @@
 			},
 			"flavor": {
 				"ev_exp": [
-					"A veteran corsair drills you in cutlass-work below decks until the lesson dissolves into sweat, bare skin, and the slow grammar of hands.",
-					"The sailing master corrects your charts by lamplight, then your posture — her teeth at your throat, your belt on the deck.",
-					"The ship's surgeon teaches herb-lore and anatomy in one breathless lesson; by the end you can name every place she likes to be touched.",
-					"The gunner's mate shows you how to hold a long barrel steady, then takes you apart with the same unhurried precision.",
-					"Sparring becomes grappling becomes the hammock: she pins you, grins, and collects her victory toll from every inch of you."
+					"A veteran corsair drills you in cutlass-work below decks until the lesson dissolves into sweat and bare skin; her hands guide yours, slow, then faster, until you both shudder.",
+					"The sailing master corrects your charts by lamplight, then your posture: she bends you over the table, her teeth at your throat and her hand between your thighs, until you can no longer hold a pen.",
+					"The ship's surgeon teaches anatomy in one breathless lesson: she names each place she likes to be touched, then shows you with her mouth and fingers until you can name them back through a moan.",
+					"The gunner's mate shows you how to hold a long barrel steady, then takes you apart with the same unhurried precision: she guides you inside her, and you learn to aim by the sound of her gasps.",
+					"Sparring becomes grappling becomes the hammock: she pins you, grins, and collects her victory toll from every inch of you, with her mouth, her hands, and finally her hips grinding down on yours."
 				],
 				"ev_gains": [
-					"The quartermaster tallies the taken cargo while the captured merchant captain settles her ransom in the great cabin — coin counted twice, kisses counted longer.",
-					"War chests land on the beach at midnight; the crew hauls barrels through the surf while two officers warm the chart room.",
-					"A prize of brandy and silk: by dawn the silk is woven through the rigging and knotted around two gun crews.",
-					"Bribed harbor pilots trade their charts for pearls and spend the night being thanked in person, thoroughly.",
-					"The supply lugger's captain settles her escort bill with supper, brandy, and the whole night left to round up the account."
+					"The quartermaster tallies the taken cargo while the captured merchant captain settles her ransom in the great cabin: she pays with kisses, then with moans, counted over and over until the coin is forgotten.",
+					"War chests land on the beach at midnight; the crew hauls barrels through the surf while two officers, half undressed, finish each other against the chart table.",
+					"A prize of brandy and silk: by dawn the silk is knotted around your wrists, the brandy is spilled across her stomach, and both gun crews have heard every word.",
+					"Bribed harbor pilots trade their charts for pearls and spend the night being thanked in person, thoroughly: one at a time, then all at once, until the pearls are scattered across the sheets.",
+					"The supply lugger's captain settles her escort bill with supper, brandy, and the whole night: she rides you until you cry out her name, and you pay the rest in full."
 				],
 				"base": [
-					"Lamplight, a lock turning on the cabin door: she undresses you with a sailor's economy, lays you back on the charts, and makes the whole sea wait.",
-					"Rain drums the stern windows while warm hands map every scar you own; when the storm finally passes you have learned her name gasped, not spoken.",
-					"She tastes of rum and storm-salt; the hammock keeps the tide's rhythm and the lantern burns to nothing before either of you is done.",
-					"A rare quiet anchorage: oil, slow hands, whispered charts of each other's bodies — the tide turns twice before either of you surfaces.",
-					"The crew sleeps ashore and the ship creaks around two voices; the dawn watch finds an empty rum bottle and the two of you still tangled in one sheet."
+					"Lamplight and a barred cabin door: she strips you with a sailor's impatience, lays you back across the charts, and rides you slow until you both forget the sea is waiting.",
+					"Rain drums the stern windows while her mouth traces every scar you own, then moves lower, until you are shaking and begging her name; when the storm passes you are spent and gasping against the glass.",
+					"She tastes of rum and salt; in the swaying hammock she takes you inside her and sets the tide's rhythm with her hips, and the lantern burns out before either of you stops.",
+					"A rare quiet anchorage: warm oil, slow hands, her fingers opening you one knuckle at a time while she whispers charts of your body; the tide turns twice before either of you comes apart.",
+					"The crew sleeps ashore and the ship creaks around two bodies: you wake with her astride you, and the dawn watch finds an empty rum bottle and the two of you still tangled, sweat-slick, in one sheet."
 				],
 				"reportTpl": "Turn {turn} dispatch from the tide: raiders tore {loss} leagues from our waters — {left} of the sea still flies the crimson flag."
 			},
@@ -208,25 +208,25 @@
 			},
 			"flavor": {
 				"ev_exp": [
-					"老练的海盗在底舱教你弯刀功夫，直到课程融进汗水与赤裸的肌肤，化作双手迟缓的语法。",
-					"航海长在灯下替你修订海图，顺便修正你的姿势——她的齿尖抵着你的喉咙，你的腰带落在甲板上。",
-					"船医把药草学与人体构造讲成一堂令人窒息的课；到下课为止，你已能一一叫出她喜欢被抚摸的每处地方。",
-					"炮手长先教你如何稳住一根长筒，然后用同样从容不迫的精准把你拆开。",
-					"切磋变成角力，角力变成吊床：她把你钉住，咧嘴一笑，向你一寸一寸地收取胜利的贡金。"
+					"老练的海盗在底舱教你弯刀功夫，直到课程融进汗水与赤裸的肌肤；她握着你的手教你发力，由慢到快，直到你们同时颤抖。",
+					"航海长在灯下替你修订海图，顺便修正你的姿势：她把你按在桌边，齿尖抵着你的喉咙，手探进你的腿间，直到你再也握不住笔。",
+					"船医把解剖学讲成一堂令人窒息的课：她一处一处点明自己喜欢被触碰的地方，再用唇与指尖亲自示范，直到你带着呻吟把那些地方一一说出。",
+					"炮手长教你如何稳住一根长筒，然后用同样从容不迫的精准把你拆开：她引你进入她，你从她愈发急促的喘息里学会瞄准。",
+					"切磋变成角力，角力变成吊床：她把你钉住，咧嘴一笑，用唇、用手，最后用腰胯压下来，一寸一寸地收取胜利的贡金。"
 				],
 				"ev_gains": [
-					"军需官清点缴获的货物，被俘的商船女船长则在船长室里支付赎金——金币点了两遍，吻数得更久。",
-					"战利品箱在午夜落上海滩；水手们推着酒桶蹚过浪沫，两名军官把海图室烘得暖热。",
-					"缴获了白兰地与丝绸：到天亮时，丝绸已缠满索具，也缠住了两个炮组的腰。",
-					"被收买的领航员用港湾海图换走珍珠，再用一整夜被当面致谢，谢得十分彻底。",
-					"补给纵帆船的女船长用晚餐、白兰地和余下的一整夜，来结清你的护航账。"
+					"军需官清点缴获的货物，被俘的商船女船长则在船长室里以身抵债：她先用吻付账，再用呻吟付账，一遍遍地算，直到金币被忘在脑后。",
+					"战利品箱在午夜落上海滩；水手们推着酒桶蹚过浪沫，两名军官在海图桌旁衣衫半解，彼此纠缠，直到海图被揉皱。",
+					"缴获了白兰地与丝绸：到天亮时，丝绸已缠住你的双腕，白兰地洒在她的小腹上，两个炮组的人都听了个清清楚楚。",
+					"被收买的领航员用港湾海图换走珍珠，再用一整夜当面致谢，谢得十分彻底：一个接一个，然后一起，直到珍珠散落在床单上。",
+					"补给纵帆船的女船长用晚餐、白兰地和整夜的时间结清你的护航账：她骑在你身上，直到你喊出她的名字，而余下的账，你也一并付清了。"
 				],
 				"base": [
-					"灯光昏黄，门闩落下：她以水手的利落褪去你的衣裳，把你平放在海图上，让整片大海稍等。",
-					"雨点敲打艉窗，温热的手抚过你的每一道旧疤；待暴雨停歇，你已学会她那个被呻吟出来、而非说出口的名字。",
-					"她带着朗姆酒与风暴盐的味道；吊床应和着潮水的节拍，灯芯燃尽之前，谁也不肯先停。",
-					"难得安静的锚地：精油、缓慢的手、在彼此身体上低声描摹的海图——潮水转了两轮，谁也不肯浮出水面。",
-					"船员在岸上酣睡，船身绕着两道声音吱呀作响；晨班的岗哨只找到一只见底的朗姆酒瓶，和仍缠在同一床单里的两个人。"
+					"灯光昏黄，门闩落下：她以水手的急切扯开你的衣裳，把你压回海图上，慢慢坐上来，直到你们都忘了海正等着。",
+					"雨点敲打艉窗，她的唇沿着你每一道旧疤向下游走，直到你颤抖着喊出她的名字；暴雨停歇时，你已瘫在玻璃上喘息。",
+					"她带着朗姆酒与盐的味道；吊床随潮水摇晃，她引你进入她的身体，用腰肢定下节拍，灯芯燃尽前，谁也没有停下。",
+					"难得安静的锚地：温热的油，缓慢的手，她的指尖一点点把你打开，同时低声描摹你身上的每一处；潮水转了两轮，你们才相继松开。",
+					"船员都睡在岸上，船身绕着两具身体吱呀作响；晨班的岗哨只找到一只见底的朗姆酒瓶，和仍纠缠在同一床单里、满身汗湿的两个人。"
 				],
 				"reportTpl": "第 {turn} 回合潮讯：掠袭者撕走了 {loss} 里格海域——绯红的旗帜仍飘扬在 {left} 的海面上。"
 			},
@@ -320,25 +320,25 @@
 			},
 			"flavor": {
 				"ev_exp": [
-					"古参の海賊が船室でカトラスの手程を教え込む——やがて稽古は汗と素肌に溶け、両手のゆっくりした文法になっていく。",
-					"航海士がランプの下で海図を直し、ついでに姿勢も正す——歯先は喉元に、ベルトは床板の上。",
-					"船医は薬草学と人体の構造を、息のつく一つの稽古にしてくれる。終わるころには、彼女が触れられるのを好む場所を全部、名で呼べるようになった。",
-					"砲手長は長い筒の狙いの定め方を教え、それから同じ飽くことのない精確さでお前をほどいていく。",
-					"手合わせは組み打ちに、組み打ちはハンモックに：彼女はお前を押さえ込み、にやりと笑い、一寸残らず勝利の代償を徴収する。"
+					"古参の海賊が船底でカトラスの手程を教え込む。稽古は汗と素肌に溶けていき、彼女の手がお前の手を導く——ゆっくり、やがて速く、二人同時に震えるまで。",
+					"航海士がランプの下で海図を直し、ついでに姿勢も直す。机の端に押し付けられ、歯先は喉元に、手は腿の間に——ペンを握れなくなるまで。",
+					"船医は解剖学を息も継げない一つの稽古にしてしまう。触れられると好い場所を一つずつ名指しし、唇と指で実地に示してくる。お前は呻きながら、それを全部言い返せるようになった。",
+					"砲手長は長い筒の狙いの定め方を教え、そして同じ飽くなき精確さでお前をほどいていく。彼女の中へ導かれ、その喘ぎの速さで狙いを覚える。",
+					"手合わせは組み打ちに、組み打ちはハンモックに。彼女はお前を押さえ込み、にやりと笑い、唇と手で、最後は腰を沈めて、一寸残らず勝利の代償を徴収する。"
 				],
 				"ev_gains": [
-					"主計長が戦利品を勘定するあいだに、捕われた商船の女船長は艦室で身代金を支払う——金貨は二度、口付けはもっと長く数えられた。",
-					"戦利品の箱は真夜中に浜へ着く。乗員は砕波を越えて樽を運び、二人の士官は海図室を暖めた。",
-					"ブランデーと絹の戦利品：夜明けまでに、絹は索具に編み込まれ、二つの砲術班の腰にも結ばれていた。",
-					"賄賂を受けた水先案内人は海図と真珠を取り替え、一晩かけて直接、念入りに礼を言われた。",
-					"補給帆船の女船長は、夕食とブランデーと残りの一夜で、護衛の勘定を精算した。"
+					"主計長が戦利品を勘定するあいだ、捕われた商船の女船長は艦室で身代を払う——口付けで、喘ぎ声で。何度も数え直され、金貨のことは忘れ去られる。",
+					"戦利品の箱は真夜中に浜へ着く。乗員は砕波を越えて樽を運び、海図台のそばでは二人の士官が衣服を半ば脱ぎ捨て、互いを求め合っていた。",
+					"ブランデーと絹の戦利品：夜明けには絹がお前の両手首に結ばれ、ブランデーが彼女の腹の上にこぼれ、二つの砲術班がその一部始終を聞いていた。",
+					"賄賂を受けた水先案内人は海図と真珠を取り替え、一晩かけて直接、念入りに礼を言われた。一人ずつ、それから全員で。真珠がシーツの上に散らばるまで。",
+					"補給帆船の女船長は、夕食とブランデーと一晩の時間で護衛の勘定を精算する。彼女がお前の上で腰を振り、お前が名を叫ぶまで。残りの代金も、きっちり払った。"
 				],
 				"base": [
-					"ランプの灯り、居室の鍵のかかる音：彼女は船乗りの手際でお前を脱がせ、海図の上に仰向けに寝かせ、海全体を待たせる。",
-					"雨が尾窓を叩くあいだ、温かい手がお前の傷跡を一つずつなぞる。嵐がようやく過ぎるころ、呻き声に漏れた彼女の名前の響きを覚えてしまった。",
-					"彼女はラム酒と嵐の塩の味がする。ハンモックは潮の調子に揺れ、ランプの芯が燃え尽きるまで、どちらも手を止めない。",
-					"久しぶりに静かな錨地：油、緩い手、互いの身体に囁きながら描き合う海図——潮が二度巡っても、どちらも顔を上げない。",
-					"乗員は上陸先で眠り、船は二つの声で軋む。夜明けの見張りが見つけたのは空のラム酒瓶と、一枚のシーツにまだ絡んだままの二人だった。"
+					"ランプの灯り、居室の扉に掛かる閂：彼女は船乗りの性急さでお前を剥ぎ、海図の上へ押し倒し、ゆっくりと腰を沈めてくる。二人とも海が待っていることを忘れるまで。",
+					"雨が尾窓を叩くあいだ、彼女の唇がお前の傷跡を一つずつ辿り、さらに下へ。名を震え声で呼ぶまで離さない。嵐が過ぎるころ、お前はガラスにもたれて息を荒げていた。",
+					"彼女はラム酒と塩の味がする。揺れるハンモックの中でお前を迎え入れ、腰で潮の拍子を刻む。ランプの芯が燃え尽きるまで、どちらも止まらなかった。",
+					"久しぶりに静かな錨地：温かい油、緩やかな手。彼女の指がお前をゆっくり開き、囁きながら身体の隅々まで描き取る。潮が二度巡るころ、ようやく二人とも崩れ落ちた。",
+					"乗員は上陸して眠り、船は二つの身体の重みで軋む。夜明けの見張りが見つけたのは空のラム酒瓶と、汗に濡れて一枚のシーツにまだ絡み合う二人だった。"
 				],
 				"reportTpl": "ターン {turn} の潮告：略奪者たちが {loss} リーグの海を切り取った——紅の旗はまだ海の {left} に翻っている。"
 			},

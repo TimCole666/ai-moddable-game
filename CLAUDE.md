@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues and specs live as local markdown under `.scratch/<feature-slug>/` (repo has no remote yet). See `docs/agents/issue-tracker.md`.
+Issues and specs live as local markdown under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
