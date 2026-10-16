@@ -6,7 +6,10 @@ extends Node
 ## through this API and nothing else:
 ##
 ##   validate_pack(pack: Dictionary) -> PackedStringArray
-##   new_game(pack: Dictionary) -> Dictionary      # validate + start a session
+##   new_game(pack: Dictionary, lang := "") -> Dictionary
+##                                                 # validate + start a session
+##                                                 # (lang: explicit chrome
+##                                                 # language, else OS locale)
 ##   step(action: Dictionary) -> Dictionary        # apply one scripted action
 ##   get_state() -> Dictionary                     # full snapshot (deep copy)
 ##   load_pack_file(path: String) -> Dictionary    # {ok, errors, pack}; pure
@@ -257,12 +260,20 @@ func validate_pack(pack: Dictionary) -> PackedStringArray:
 ## it. Returns {ok: bool, errors: PackedStringArray, state: Dictionary}; state
 ## is the new snapshot on success and an empty Dictionary on failure. An
 ## invalid pack never changes existing state.
-func new_game(pack: Dictionary) -> Dictionary:
+func new_game(pack: Dictionary, lang := "") -> Dictionary:
 	var errors := validate_pack(pack)
 	if not errors.is_empty():
 		return {"ok": false, "errors": errors, "state": {}}
 	_pack = pack.duplicate(true)
-	_lang = ChromeText.LANGUAGES[0]
+	# Boot language: an explicit valid argument wins; otherwise the OS locale
+	# (a zh player boots into zh); unknown locales fall back to en. Test
+	# harnesses pass "en" explicitly so replays stay deterministic regardless
+	# of the machine they run on.
+	if ChromeText.LANGUAGES.has(lang):
+		_lang = lang
+	else:
+		var os_lang := OS.get_locale_language()
+		_lang = os_lang if ChromeText.LANGUAGES.has(os_lang) else ChromeText.LANGUAGES[0]
 	var collection := {}
 	for leader in LEADERS:
 		collection[leader["id"]] = {"count": 1, "exp": 0}
@@ -365,6 +376,149 @@ func step(action: Dictionary) -> Dictionary:
 ## mutable reference to internal state.
 func get_state() -> Dictionary:
 	return _state.duplicate(true)
+
+
+## Legal actions right now, each with its chrome label — the seam the view
+## renders as buttons. The Engine owns legality (the exact guards step()
+## enforces); the view never invents an action. An empty list means nothing
+## to do: no session, or the game is over (the view offers a new session).
+func available_actions() -> Array:
+	if _state.is_empty() or _state["ended"] != "":
+		return []
+	var chrome: Dictionary = ChromeText.CHROME[_lang]
+	var buttons: Dictionary = chrome["buttons"]
+	var actions: Array = []
+	var battle: Variant = _state["battle"]
+	if battle is Dictionary:
+		var b := battle as Dictionary
+		if b["over"] != "":
+			actions.append({"action": {"type": ACTION_END_TURN}, "label": buttons["continue"]})
+			return actions
+		for leader_idx in LEADERS.size():
+			if b["party_hp"][leader_idx] <= 0:
+				continue
+			var bindings: Array = LEADERS[leader_idx]["skills"]
+			for slot in bindings.size():
+				var skill_id: String = (bindings[slot] as Dictionary)["id"]
+				var sk: Dictionary = SKILLS[skill_id]
+				if b["ap"] < int(sk["ap"]):
+					continue
+				actions.append({
+					"action": {"type": ACTION_SKILL, "leader": leader_idx, "slot": slot},
+					"label": (chrome["ui"]["skillButton"] as String) % [
+						_card_name(LEADERS[leader_idx]["id"]), _skill_name(skill_id), int(sk["ap"]),
+					],
+				})
+		actions.append({"action": {"type": ACTION_END_TURN}, "label": buttons["endTurn"]})
+		return actions
+	if _state["chest"] is Array:
+		var chest: Array = _state["chest"]
+		for idx in chest.size():
+			actions.append({
+				"action": {"type": ACTION_CHEST_PICK, "idx": idx},
+				"label": _card_name(chest[idx]),
+			})
+		actions.append({"action": {"type": ACTION_RETIRE}, "label": buttons["retire"]})
+		return actions
+	if _state["base_options"] is Array:
+		var options: Array = _state["base_options"]
+		var chars := _owned_char_ids()
+		for idx in options.size():
+			var label: String
+			if _state["tickets"] > 0:
+				label = (chrome["ui"]["baseMealLabel"] as String) % _card_name(chars[idx % chars.size()])
+			elif idx == 0:
+				label = (chrome["ui"]["baseQuietLabel"] as String) % _card_name(chars[idx % chars.size()])
+			else:
+				label = chrome["ui"]["baseLogisticsLabel"]
+			actions.append({"action": {"type": ACTION_BASE_PICK, "option": idx}, "label": label})
+		return actions
+	var quest: Variant = _state["quest"]
+	if quest is Dictionary:
+		var q := quest as Dictionary
+		var step_nodes: Array = QUESTS[q["pool"]][q["idx"]]["steps"][q["step"]]
+		for option in 2:
+			actions.append({
+				"action": {"type": ACTION_CHOOSE, "option": option},
+				"label": _node_label(step_nodes[option]),
+			})
+		actions.append({"action": {"type": ACTION_RETIRE}, "label": buttons["retire"]})
+		return actions
+	if _state["phase"] == PHASE_PREPARE or _state["phase"] == PHASE_OPERATION:
+		for pool in QUESTS.keys():
+			var pool_quests: Array = QUESTS[pool]
+			for idx in pool_quests.size():
+				actions.append({
+					"action": {"type": ACTION_START_QUEST, "pool": pool, "idx": idx},
+					"label": "%s #%d — %s" % [
+						chrome["questPools"][pool], idx + 1, _quest_title((pool_quests[idx] as Dictionary)["key"]),
+					],
+				})
+	actions.append({"action": {"type": ACTION_END_PHASE}, "label": buttons["endPhase"]})
+	return actions
+
+
+## One localized, phase-appropriate summary for the view's center panel.
+## Enemy names, skill names, and quest titles are resolved through the pack
+## text here — the old raw state dump showed bare ids like "grunt"/"e_slash".
+## Multi-line; empty when the action buttons speak for themselves.
+func context_line() -> String:
+	if _state.is_empty():
+		return ChromeText.CHROME[ChromeText.LANGUAGES[0]]["ui"]["noSession"]
+	var chrome: Dictionary = ChromeText.CHROME[_lang]
+	var ui: Dictionary = chrome["ui"]
+	var results: Dictionary = chrome["results"]
+	if _state["ended"] != "":
+		return results[_state["ended"]]
+	var battle: Variant = _state["battle"]
+	if battle is Dictionary:
+		var b := battle as Dictionary
+		if b["over"] != "":
+			return (ui["battleOver"] as String) % [_enemy_name(b["enemy"]), results[b["over"]]]
+		return "\n".join([
+			(ui["battleRound"] as String) % [_enemy_name(b["enemy"]), b["round"], _enemy_action_name(b["next_action"])],
+			(ui["enemyStats"] as String) % [b["enemy_hp"], b["enemy_max_hp"], b["ap"], b["ap_max"], b["regen"], b["combo"]],
+			(ui["guardHexed"] as String) % [b["guard"], b["hexed"]],
+			(ui["partyHp"] as String) % [str(b["party_hp"])],
+		])
+	var chest: Variant = _state["chest"]
+	if chest is Array:
+		var names: Array = []
+		for card_id in chest:
+			names.append(_card_name(card_id))
+		return (ui["chest"] as String) % [str(names)]
+	var quest: Variant = _state["quest"]
+	if quest is Dictionary:
+		var q := quest as Dictionary
+		return "\n".join([
+			(ui["quest"] as String) % [chrome["questPools"][q["pool"]], q["idx"] + 1, q["step"] + 1],
+			(ui["chooseStep"] as String) % [q["step"] + 1],
+		])
+	if _state["phase"] == PHASE_PREPARE or _state["phase"] == PHASE_OPERATION:
+		return ui["noQuest"]
+	return ""
+
+
+## The chrome label for one quest node id (the two branch-choice buttons).
+func _node_label(node_id: String) -> String:
+	var node: Dictionary = QUEST_NODES[node_id]
+	var ui: Dictionary = ChromeText.CHROME[_lang]["ui"]
+	match node["t"]:
+		"battle":
+			return (ui["nodeBattle"] as String) % _enemy_name(node["e"])
+		"auto":
+			return (ui["nodeAuto"] as String) % _enemy_name(node["e"])
+		"chest":
+			return ui["nodeChest"]
+		"heal":
+			return ui["nodeHeal"]
+		"gains":
+			return ui["nodeGains"]
+		"medal":
+			return ui["nodeMedal"]
+		"event":
+			return ui["nodeEventExp"] if node["effect"] == "exp" else ui["nodeEventGains"]
+	return node_id
 
 
 ## Chrome strings (phases, results, quest pools, buttons, UI labels, log

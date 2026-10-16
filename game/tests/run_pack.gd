@@ -26,7 +26,7 @@ func _ready() -> void:
 		return
 	print("VALID: %s" % [path])
 	var pack: Dictionary = loaded["pack"]
-	var boot := GameEngine.new_game(pack)
+	var boot := GameEngine.new_game(pack, "en")
 	if not boot["ok"]:
 		printerr("PLAY FAILED: new_game errors: %s" % [boot["errors"]])
 		get_tree().quit(1)

@@ -103,7 +103,7 @@ func _report(s: Dictionary, out: Dictionary) -> void:
 ## Play a full campaign with the given strategy under the given pack. Returns
 ## a summary Dictionary of observable outcomes.
 func _play(s: Dictionary, pack: Dictionary) -> Dictionary:
-	var boot := GameEngine.new_game(pack)
+	var boot := GameEngine.new_game(pack, "en")
 	if not boot["ok"]:
 		push_error("sim: pack rejected: %s" % [boot["errors"]])
 		get_tree().quit(1)
@@ -262,7 +262,7 @@ func _boss_probe() -> void:
 	print("")
 	print("=== BOSS PROBE (opA b_boss branch, efficient play) ===")
 	for target in range(1, 7):
-		var boot := GameEngine.new_game(GameEngine.get_builtin_pack())
+		var boot := GameEngine.new_game(GameEngine.get_builtin_pack(), "en")
 		if not boot["ok"]:
 			push_error("sim: pack rejected: %s" % [boot["errors"]])
 			get_tree().quit(1)

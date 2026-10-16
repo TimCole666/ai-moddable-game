@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://ui/main.gd" id="1_main"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_state"]
-line_spacing = 4.0
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -14,65 +11,76 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
 
-[node name="StateLabel" type="Label" parent="."]
-unique_name_in_owner = true
+[node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -140.0
-offset_right = 240.0
-offset_bottom = 140.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-label_settings = SubResource("LabelSettings_state")
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
-[node name="Buttons" type="HBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="Label" parent="Margin/VBox"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = 160.0
-offset_right = 240.0
-offset_bottom = 192.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="StartBattleButton" type="Button" parent="Buttons"]
 layout_mode = 2
-text = "Start Battle"
 
-[node name="EndTurnButton" type="Button" parent="Buttons"]
+[node name="Toolbar" type="HBoxContainer" parent="Margin/VBox"]
 layout_mode = 2
-text = "End Turn"
+alignment = 2
+theme_override_constants/separation = 8
 
-[node name="EndPhaseButton" type="Button" parent="Buttons"]
+[node name="LanguageButton" type="Button" parent="Margin/VBox/Toolbar"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "End Phase"
+text = "Language"
 
-[node name="SwitchPackButton" type="Button" parent="Buttons"]
+[node name="SwitchPackButton" type="Button" parent="Margin/VBox/Toolbar"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Switch Pack"
 
-[node name="LanguageButton" type="Button" parent="Buttons"]
+[node name="AIPanelButton" type="Button" parent="Margin/VBox/Toolbar"]
 unique_name_in_owner = true
-layout_mode = 2
-text = "Language: en"
-
-[node name="AIPanelButton" type="Button" parent="Buttons"]
 layout_mode = 2
 text = "AI Panel"
 
-[connection signal="pressed" from="Buttons/StartBattleButton" to="." method="_on_start_battle_pressed"]
-[connection signal="pressed" from="Buttons/EndTurnButton" to="." method="_on_end_turn_pressed"]
-[connection signal="pressed" from="Buttons/EndPhaseButton" to="." method="_on_end_phase_pressed"]
-[connection signal="pressed" from="Buttons/SwitchPackButton" to="." method="_on_switch_pack_pressed"]
-[connection signal="pressed" from="Buttons/LanguageButton" to="." method="_on_language_pressed"]
-[connection signal="pressed" from="Buttons/AIPanelButton" to="." method="_on_ai_panel_pressed"]
+[node name="NewGameButton" type="Button" parent="Margin/VBox/Toolbar"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "New Game"
+
+[node name="ContextLabel" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="ActionsScroll" type="ScrollContainer" parent="Margin/VBox"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ActionsGrid" type="GridContainer" parent="Margin/VBox/ActionsScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 2
+
+[node name="LogScroll" type="ScrollContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="LogLabel" type="Label" parent="Margin/VBox/LogScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+autowrap_mode = 3

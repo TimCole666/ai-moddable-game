@@ -50,7 +50,7 @@ func _run_replay(replay: ReplayBase) -> bool:
 	# order against the shared Engine, so every replay starts from this known
 	# state. A rejected pack leaves exactly this baseline (zero state change);
 	# a valid pack replaces it with its own session.
-	var baseline := GameEngine.new_game(GameEngine.get_builtin_pack())
+	var baseline := GameEngine.new_game(GameEngine.get_builtin_pack(), "en")
 	if not baseline["ok"]:
 		printerr("REPLAY %s: FAILED" % [replay_name])
 		printerr("  builtin baseline session failed to start: %s" % [baseline["errors"]])
@@ -58,7 +58,7 @@ func _run_replay(replay: ReplayBase) -> bool:
 	var pack := replay.pack()
 	if pack.is_empty():
 		pack = GameEngine.get_builtin_pack()
-	var boot := GameEngine.new_game(pack)
+	var boot := GameEngine.new_game(pack, "en")
 	var expected_errors := replay.expected_new_game_errors()
 	if _errors_to_array(boot["errors"]) != _errors_to_array(expected_errors):
 		printerr("REPLAY %s: FAILED" % [replay_name])
