@@ -15,4 +15,4 @@
 
 ## Comments
 
-User verdict on the shipped M1 build: "这根本不可玩" — the view was a debug dump. This ticket is the fix; the review lesson is recorded for the next milestone: "playable" acceptance needs a human-eyes check, not only seam replays.
+User verdict on the shipped M1 build: "completely unplayable" — the view was a debug dump. This ticket is the fix; the review lesson is recorded for the next milestone: "playable" acceptance needs a human-eyes check, not only seam replays.
