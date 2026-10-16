@@ -62,6 +62,10 @@ func _on_switch_pack_pressed() -> void:
 
 
 func _on_ai_panel_pressed() -> void:
+	# ADR-0005: the web export is all-ages only — the Engine says whether the
+	# AI Entry plays on this platform; the view just follows.
+	if not GameEngine.adult_allowed():
+		return
 	# Ticket 06 (additive): open the AI Entry panel (provider settings +
 	# generation). All panel behavior lives in ai_panel.gd.
 	if get_node_or_null("AIPanel") == null:

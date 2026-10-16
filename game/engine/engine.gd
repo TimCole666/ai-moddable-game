@@ -166,11 +166,40 @@ var _pack: Dictionary = {}
 ## state: switching it preserves the run bit-for-bit. Pack text uses the same
 ## locale (pack.text.<lang>, complete in all three by contract — no fallback).
 var _lang: String = ChromeText.LANGUAGES[0]
+## Adult Content gate (ADR-0005): the web export serves the all-ages
+## experience only. Derived once from the platform feature flag — no
+## environment, no wall clock. Desktop (including headless) defaults true,
+## so existing replays are unaffected. The setter is a test seam; the
+## _ready() platform check is the production source of truth.
+var _adult_allowed := true
+
+## The all-ages line substituted for every pack flavor surface (base
+## quiet-evening scenes, ev_exp/ev_gains vignettes) when Adult Content is
+## gated off. Trilingual, keyed like the pack locales.
+const ALL_AGES_FLAVOR := {
+	"en": "the squad shares a quiet, wholesome evening",
+	"zh": "众人共度了一个平静而温馨的夜晚",
+	"ja": "一同で静かで心和らかな夜を過ごす",
+}
 
 
 func _ready() -> void:
 	_state = {}
 	_pack = {}
+	_adult_allowed = not OS.has_feature("web")
+
+
+## Whether Adult Content plays on this platform (true on desktop, false on
+## the web export). The UI reads this to hide the AI Entry panel; the Engine
+## reads it to swap pack flavor for the all-ages line.
+func adult_allowed() -> bool:
+	return _adult_allowed
+
+
+## Test seam: replays pin both sides of the gate deterministically. The
+## production value comes only from the platform check in _ready().
+func set_adult_allowed(value: bool) -> void:
+	_adult_allowed = value
 
 
 # --- The seam ----------------------------------------------------------------
@@ -904,6 +933,9 @@ func _quest_title(key: String) -> String:
 ## (ticket 07 ships several lines per pool). Falls back to a bare chrome line
 ## when the pack carries no flavor yet (ticket 04 enforces it).
 func _flavor_line(key: String) -> String:
+	# ADR-0005: on the web export every flavor surface is all-ages.
+	if not _adult_allowed:
+		return ALL_AGES_FLAVOR.get(_lang, ALL_AGES_FLAVOR["en"])
 	var flavor: Variant = _locale().get("flavor", {})
 	if flavor is Dictionary:
 		var lines: Variant = (flavor as Dictionary).get(key, null)
