@@ -1,0 +1,27 @@
+{
+  "id": "builtin",
+  "accent": "#1a7a4c",
+  "parts": {
+    "fatigue": {
+      "enabled": false,
+      "params": {
+        "threshold": 2,
+        "apPenalty": 1
+      }
+    }
+  },
+  "text": {
+    "en": {
+      "name": "Placeholder Seas",
+      "tagline": "the built-in skeleton pack"
+    },
+    "zh": {
+      "name": "占位之海",
+      "tagline": "内置骨架主题包"
+    },
+    "ja": {
+      "name": "プレースホルダーの海",
+      "tagline": "内蔵スケルトンパック"
+    }
+  }
+}

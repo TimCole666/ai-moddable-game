@@ -1,0 +1,6 @@
+# Godot generated caches
+.godot/
+
+# Godot export artifacts
+*.tmp
+export_presets.cfg.secret
