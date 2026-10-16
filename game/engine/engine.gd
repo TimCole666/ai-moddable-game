@@ -167,6 +167,9 @@ const PACK_FORMAT_VERSION := 1
 ## Palette ids a v1 pack may declare in bodyClass (the UI maps them to styles;
 ## the Engine only checks the enum).
 const PACK_PALETTES := ["seas", "iron"]
+## ADR-0008: per-image cap for the pack's optional embedded art, in base64
+## chars (~1.5 MB of binary).
+const ART_MAX_B64_CHARS := 2_000_000
 
 # --- Action vocabulary -----------------------------------------------------------
 
@@ -192,6 +195,8 @@ var _pack: Dictionary = {}
 ## state: switching it preserves the run bit-for-bit. Pack text uses the same
 ## locale (pack.text.<lang>, complete in all three by contract — no fallback).
 var _lang: String = ChromeText.LANGUAGES[0]
+## Decoded pack art (ADR-0008), keyed "kind/id"; cleared on every pack switch.
+var _art_cache: Dictionary = {}
 ## Adult Content gate (ADR-0005): the web export serves the all-ages
 ## experience only. Derived once from the platform feature flag — no
 ## environment, no wall clock. Desktop (including headless) defaults true,
@@ -253,7 +258,47 @@ func validate_pack(pack: Dictionary) -> PackedStringArray:
 	_validate_body_class(pack, errors)
 	_validate_parts(pack, errors)
 	_validate_text(pack, errors)
+	_validate_art(pack, errors)
 	return errors
+
+
+## ADR-0008: optional art section — base64 JPEG/PNG embedded in the single
+## pack file. Absent art is valid (v1 packs degrade to emoji + accent); a
+## section that is present must be an object of id → base64 string, each
+## decoding to PNG or JPEG magic bytes under the per-image cap.
+func _validate_art(pack: Dictionary, errors: PackedStringArray) -> void:
+	var art: Variant = pack.get("art", null)
+	if art == null:
+		return
+	if not (art is Dictionary):
+		errors.append("art: optional, must be an object when present")
+		return
+	for section in ["portraits", "enemies", "backgrounds"]:
+		if not (art as Dictionary).has(section):
+			continue
+		var entries: Variant = (art as Dictionary)[section]
+		if not (entries is Dictionary):
+			errors.append("art.%s: must be an object of id → base64 image" % [section])
+			continue
+		for id in (entries as Dictionary):
+			var data: Variant = (entries as Dictionary)[id]
+			if not (data is String) or (data as String).is_empty():
+				errors.append("art.%s.%s: required non-empty base64 string" % [section, id])
+				continue
+			if (data as String).length() > ART_MAX_B64_CHARS:
+				errors.append("art.%s.%s: exceeds the %d char cap" % [section, id, ART_MAX_B64_CHARS])
+				continue
+			var raw := Marshalls.base64_to_raw(data as String)
+			if raw.size() == 0 or not _is_png_or_jpeg(raw):
+				errors.append("art.%s.%s: not decodable base64 PNG/JPEG data" % [section, id])
+
+
+func _is_png_or_jpeg(raw: PackedByteArray) -> bool:
+	if raw.size() < 4:
+		return false
+	if raw[0] == 0x89 and raw[1] == 0x50 and raw[2] == 0x4E and raw[3] == 0x47:
+		return true
+	return raw[0] == 0xFF and raw[1] == 0xD8
 
 
 ## Validate the pack and, if valid, start a fresh deterministic session under
@@ -521,6 +566,62 @@ func _node_label(node_id: String) -> String:
 	return node_id
 
 
+## Structured read-only view of the active battle for the art-driven UI
+## (portraits, HP bars, the announced-action banner) — every value pack-name
+## resolved. Empty when no battle is running. Replays assert state, not this.
+func battle_view() -> Dictionary:
+	var battle: Variant = _state.get("battle", null)
+	if not (battle is Dictionary):
+		return {}
+	var b := battle as Dictionary
+	var party: Array = []
+	var ids := _owned_char_ids()
+	for idx in LEADERS.size():
+		var id: String = LEADERS[idx]["id"]
+		party.append({
+			"id": id,
+			"name": _card_name(id),
+			"hp": b["party_hp"][idx],
+			"max_hp": LEADERS[idx]["max_hp"],
+		})
+	return {
+		"enemy_id": b["enemy"],
+		"enemy_name": _enemy_name(b["enemy"]),
+		"enemy_hp": b["enemy_hp"],
+		"enemy_max_hp": b["enemy_max_hp"],
+		"announced": _enemy_action_name(b["next_action"]),
+		"ap": b["ap"],
+		"ap_max": b["ap_max"],
+		"regen": b["regen"],
+		"combo": b["combo"],
+		"guard": b["guard"],
+		"hexed": b["hexed"],
+		"round": b["round"],
+		"over": b["over"],
+		"party": party,
+	}
+
+
+## The pack's accent color as a Color for the view's theme (read-only).
+func pack_accent() -> Color:
+	var accent: Variant = _pack.get("accent", "")
+	if accent is String and not (accent as String).is_empty():
+		return Color.from_string(accent as String, Color(0.25, 0.75, 0.62))
+	return Color(0.25, 0.75, 0.62)
+
+
+## The pack's palette id ("seas" | "iron") for the view's backdrop tint.
+func pack_palette() -> String:
+	var body: Variant = _pack.get("bodyClass", "")
+	return body if body is String else ""
+
+
+## The pack's display name in the session language (read-only presentation).
+func pack_name() -> String:
+	var name: Variant = _locale().get("name", _state.get("pack_id", ""))
+	return str(name)
+
+
 ## Chrome strings (phases, results, quest pools, buttons, UI labels, log
 ## templates) for the given language — or the current one when omitted.
 ## Returns {} for an unknown language. Deep copy: read-only for callers.
@@ -535,6 +636,44 @@ func chrome(lang := "") -> Dictionary:
 ## set_language action.
 func get_language() -> String:
 	return _lang
+
+
+## The pack's art as a decoded Texture2D (ADR-0008) — a read-only presentation
+## accessor like chrome(): kind is "portraits" | "enemies" | "backgrounds".
+## Returns null when the pack ships no art for that id; the view degrades to
+## emoji + accent chips. Decoded textures are cached; the cache resets on
+## every pack switch.
+func pack_art(kind: String, id: String) -> Texture2D:
+	var key := "%s/%s" % [kind, id]
+	if _art_cache.has(key):
+		return _art_cache[key]
+	var texture := _decode_pack_art(kind, id)
+	_art_cache[key] = texture
+	return texture
+
+
+func _decode_pack_art(kind: String, id: String) -> Texture2D:
+	var art: Variant = _pack.get("art", null)
+	if not (art is Dictionary):
+		return null
+	var entries: Variant = (art as Dictionary).get(kind, null)
+	if not (entries is Dictionary):
+		return null
+	var data: Variant = (entries as Dictionary).get(id, null)
+	if not (data is String) or (data as String).is_empty():
+		return null
+	var raw := Marshalls.base64_to_raw(data as String)
+	if raw.size() == 0:
+		return null
+	var img := Image.new()
+	var err: int
+	if raw[0] == 0x89 and raw[1] == 0x50:
+		err = img.load_png_from_buffer(raw)
+	else:
+		err = img.load_jpg_from_buffer(raw)
+	if err != OK:
+		return null
+	return ImageTexture.create_from_image(img)
 
 
 ## Load the built-in Theme Pack shipped with the game (pure JSON, v1 shape).
@@ -1206,6 +1345,7 @@ func _apply_export_pack(action: Dictionary) -> Dictionary:
 
 func _switch_pack(pack: Dictionary) -> void:
 	_pack = pack.duplicate(true)
+	_art_cache.clear()
 	_state["pack_id"] = pack["id"]
 	var name: Variant = _locale().get("name", pack["id"])
 	_log_chrome("pack_switched", [_state["turn"], str(name)])

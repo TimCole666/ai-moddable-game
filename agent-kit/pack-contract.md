@@ -13,7 +13,7 @@ By-example references shipped with the engine:
 
 ## 1. Top level
 
-A pack is a single JSON object with exactly these fields (extra fields are ignored; missing fields are rejected):
+A pack is a single JSON object with exactly these fields (extra fields are ignored; missing fields are rejected — `art` is the one exception, it is optional):
 
 ```
 pack := {
@@ -23,6 +23,7 @@ pack := {
   bodyClass: string   — palette id: "seas" or "iron"
   parts:     object   — part configuration (section 2)
   text:      object   — trilingual text, keys en, zh, ja (section 3)
+  art:       object?  — optional embedded art (section 7); omit for emoji + accent UI
 }
 ```
 
@@ -40,6 +41,11 @@ Validation reasons (checked in this order; first failures at each level are all 
 | `parts` missing or not an object | `pack.parts: required object` |
 | `text` missing or not an object | `pack.text: required object` |
 | one of `en`, `zh`, `ja` missing or not an object | `pack.text.<lang>: required object` |
+| `art` present but not an object | `art: optional, must be an object when present` |
+| an `art` section (portraits/enemies/backgrounds) not an object | `art.<section>: must be an object of id → base64 image` |
+| an art entry missing, empty, or not a string | `art.<section>.<id>: required non-empty base64 string` |
+| an art entry over 2,000,000 base64 chars | `art.<section>.<id>: exceeds the 2000000 char cap` |
+| an art entry not decoding to PNG/JPEG magic bytes | `art.<section>.<id>: not decodable base64 PNG/JPEG data` |
 
 **Version gate:** the engine declares `PACK_FORMAT_VERSION := 1`. Missing/non-integer version fails with "required integer"; any integer ≠ 1 fails with "unsupported version". There is no fallback and no leniency — a v2 pack will not load under a v1 engine.
 
@@ -235,6 +241,8 @@ Copy this skeleton and fill in every marked slot in all three locales. Do not le
 }
 ```
 
+`art` is omitted in the minimal skeleton; add it per section 7 when the pack ships with illustrations.
+
 ---
 
 ## 5. Numbers in JSON
@@ -247,11 +255,32 @@ JSON has no int/float distinction, and the engine's JSON parser reads all number
 2. `parts.fatigue` complete: `enabled` bool, `threshold` integer > 0, `apPenalty` integer >= 0.
 3. `text` has all of `en`, `zh`, `ja` — each with every field of section 3, every fixed id present, no empty strings, `reportTpl` containing `{turn}`, `{loss}`, `{left}`.
 4. Text is genuinely trilingual — translate, do not duplicate.
-5. Validate with the engine before shipping:
+5. `art` optional: omit it, or embed base64 PNG/JPEG per section 7 (portraits/enemies keyed by your ids, backgrounds fixed `sea`/`deck`/`tavern`, 2M char cap each).
+6. Validate with the engine before shipping:
    `godot --headless --path game res://tests/run_pack.tscn -- /abs/path/to/pack.json`
    It prints `VALID` + a played battle transcript on success, or the exact `pack.*` reasons on failure. Exit code 0 = valid and playable.
 
-## 7. How packs get into the game
+## 7. `art` — optional embedded art (ADR-0008)
+
+`art` is the only optional top-level field. Omit it entirely and the pack is fully valid: the UI falls back to each entry's `icon` emoji plus the pack `accent` color. When present, `art` holds base64-encoded JPEG or PNG images keyed by the pack's own ids:
+
+```
+art := {
+  portraits:   { "<leader id>": "<base64 JPEG/PNG>", ... }  — crew card art (portrait ratio, e.g. 640×960)
+  enemies:     { "<enemy id>": "<base64 JPEG/PNG>", ... }   — enemy panel art
+  backgrounds: { "sea": "...", "deck": "...", "tavern": "..." } — fixed keys, phase backdrops
+}
+```
+
+Rules:
+
+- The three background keys are fixed: `sea` (quest map), `deck` (battle), `tavern` (base/report). Any subset may be present; missing keys fall back to a flat accent-tinted backdrop.
+- `portraits`/`enemies` ids must match the pack's own leader/enemy ids. Any subset may be present; missing ids fall back to that entry's emoji.
+- Encoding is plain base64 — no `data:` prefix, no line breaks required. Decoded bytes must start with PNG (`89 50 4E 47`) or JPEG (`FF D8`) magic bytes.
+- Cap: each base64 string ≤ 2,000,000 chars (~1.5 MB binary). Resize/compress before embedding — the builtin pack fits 13 images in ~1.9 MB total.
+- Art is language-independent: it lives at the top level, NOT inside `text`. One image serves en/zh/ja alike.
+
+## 8. How packs get into the game
 
 - `load_pack_file(path)` — read + parse + validate; returns `{ok, errors, pack}` with the exact reasons above.
 - In-session: the `select_pack` / `import_pack` actions switch packs (mid-session switching is allowed and preserves state; a rejected switch changes nothing).
