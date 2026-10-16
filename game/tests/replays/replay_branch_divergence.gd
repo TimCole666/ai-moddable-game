@@ -48,76 +48,76 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": null,
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 3,
-			},
-			"healer": {
-				"count": 2,
-				"exp": 5,
-			},
-			"hero": {
-				"count": 2,
-				"exp": 3,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 3,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 3,
-			},
-			"tank": {
-				"count": 1,
-				"exp": 5,
-			},
+	"base_options": null,
+	"battle": null,
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 3
 		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 4,
-		"gains_turn": 2,
-		"log": [
-			"Turn 1: Preparation quest started: Ridge Patrol.",
-			"Turn 1: treasure chest! 3 cards — take one.",
-			"Turn 1: card gained: Vanguard (copy x2).",
-			"Turn 1: You escort supplies to the alliance camp.",
-			"Turn 1: rest site: squad fully restored, fatigue cleared.",
-			"Turn 1: quest complete: Ridge Patrol.",
-			"Turn 1: Operation quest started: Storm the Fort.",
-			"Turn 1: skirmish vs Brute: won handily (squad AT 69). Leaders +1 EXP.",
-			"Turn 1: You escort supplies to the alliance camp.",
-			"Turn 1: rest site: squad fully restored, fatigue cleared.",
-			"Turn 1: treasure chest! 3 cards — take one.",
-			"Turn 1: card gained: Medic (copy x2).",
-			"Turn 1: quest complete: Storm the Fort.",
-			"Turn 1: earned a meal ticket.",
-			"Turn 1: meal ticket spent: Bulwark event, +2 EXP.",
-			"Turn 1 war report: the enemy pushed the frontier — the alliance lost 5 ground. 95% of the realm remains.",
-			"Turn 2: Preparation quest started: Ridge Patrol.",
-			"Turn 2: battle vs Grunt",
-			"Round 1: Vanguard uses Strike for 14 damage (enemy HP 32)",
-			"Round 1: Grunt uses Jab for 9 damage on Bulwark (HP 76)",
-			"Round 2: Vanguard uses Strike for 15 damage (enemy HP 17)",
-			"Round 2: Grunt uses Jab for 8 damage on Medic (HP 62)",
-			"Round 3: Vanguard uses Strike for 13 damage (enemy HP 4)",
-			"Round 3: Grunt uses Jab for 9 damage on Sage (HP 36)",
-			"Round 4: Vanguard uses Strike for 15 damage (enemy HP 0)",
-			"Round 4: victory!",
-			"Turn 2: battle over",
-			"Turn 2: A veteran shares an old lesson over dinner. (Medic +2 EXP)",
-			"Turn 2: war supplies secured: gains +2 (turn total 2).",
-			"Turn 2: quest complete: Ridge Patrol.",
-		],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 1,
-		"quest": null,
-		"realm": 95,
-		"tickets": 0,
-		"turn": 2,
-	}
+		"healer": {
+			"count": 2,
+			"exp": 5
+		},
+		"hero": {
+			"count": 2,
+			"exp": 3
+		},
+		"mage": {
+			"count": 1,
+			"exp": 3
+		},
+		"striker": {
+			"count": 1,
+			"exp": 3
+		},
+		"tank": {
+			"count": 1,
+			"exp": 5
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 4,
+	"gains_turn": 2,
+	"log": [
+		"Turn 1: Preparation quest started: Provisions Ashore.",
+		"Turn 1: treasure chest! 3 cards — take one.",
+		"Turn 1: card gained: Captain Maren Stormbite (copy x2).",
+		"Turn 1: War chests land on the beach at midnight; the crew hauls barrels through the surf while two officers warm the chart room.",
+		"Turn 1: rest site: squad fully restored, fatigue cleared.",
+		"Turn 1: quest complete: Provisions Ashore.",
+		"Turn 1: Operation quest started: Storm Fort Siren.",
+		"Turn 1: skirmish vs Sharkhide Brute: won handily (squad AT 69). Leaders +1 EXP.",
+		"Turn 1: War chests land on the beach at midnight; the crew hauls barrels through the surf while two officers warm the chart room.",
+		"Turn 1: rest site: squad fully restored, fatigue cleared.",
+		"Turn 1: treasure chest! 3 cards — take one.",
+		"Turn 1: card gained: Tidepriestess Nuala (copy x2).",
+		"Turn 1: quest complete: Storm Fort Siren.",
+		"Turn 1: earned a meal ticket.",
+		"Turn 1: meal ticket spent: Bram Ironkeel event, +2 EXP.",
+		"Turn 1 dispatch from the tide: raiders tore 5 leagues from our waters — 95% of the sea still flies the crimson flag.",
+		"Turn 2: Preparation quest started: Provisions Ashore.",
+		"Turn 2: battle vs Press-Gang Hand",
+		"Round 1: Captain Maren Stormbite uses Cutlass Slash for 14 damage (enemy HP 32)",
+		"Round 1: Press-Gang Hand uses Hook Rake for 9 damage on Bram Ironkeel (HP 76)",
+		"Round 2: Captain Maren Stormbite uses Cutlass Slash for 15 damage (enemy HP 17)",
+		"Round 2: Press-Gang Hand uses Hook Rake for 8 damage on Tidepriestess Nuala (HP 62)",
+		"Round 3: Captain Maren Stormbite uses Cutlass Slash for 13 damage (enemy HP 4)",
+		"Round 3: Press-Gang Hand uses Hook Rake for 9 damage on Tempest Iris (HP 36)",
+		"Round 4: Captain Maren Stormbite uses Cutlass Slash for 15 damage (enemy HP 0)",
+		"Round 4: victory!",
+		"Turn 2: battle over",
+		"Turn 2: The ship's surgeon teaches herb-lore and anatomy in one breathless lesson; by the end you can name every place she likes to be touched. (Tidepriestess Nuala +2 EXP)",
+		"Turn 2: war supplies secured: gains +2 (turn total 2).",
+		"Turn 2: quest complete: Provisions Ashore."
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 1,
+	"quest": null,
+	"realm": 95,
+	"tickets": 0,
+	"turn": 2
+}

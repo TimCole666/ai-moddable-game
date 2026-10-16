@@ -39,73 +39,80 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 4,
-			"ap_max": 5,
-			"boss": false,
-			"combo": 0,
-			"enemy": "grunt",
-			"enemy_at": 10,
-			"enemy_hp": 52,
-			"enemy_max_hp": 52,
-			"guard": false,
-			"hexed": false,
-			"next_action": "e_slash",
-			"over": "",
-			"party_hp": [60, 85, 70, 45, 50, 48],
-			"regen": 1,
-			"round": 1,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 0,
-			},
-			"healer": {
-				"count": 1,
-				"exp": 0,
-			},
-			"hero": {
-				"count": 1,
-				"exp": 4,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 0,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 0,
-			},
-			"tank": {
-				"count": 1,
-				"exp": 0,
-			},
-		},
-		"ended": "",
-		"fatigue": 2,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: quiet evening: Vanguard +2 EXP.",
-			"Turn 1 war report: the enemy pushed the frontier — the alliance lost 9 ground. 91% of the realm remains.",
-			"Turn 2: quiet evening: Vanguard +2 EXP.",
-			"Turn 2 war report: the enemy pushed the frontier — the alliance lost 9 ground. 82% of the realm remains.",
-			"Turn 3: Preparation quest started: Ridge Patrol.",
-			"Turn 3: Fatigue drags the squad: AP regen -1.",
-			"Turn 3: battle vs Grunt",
+	"base_options": null,
+	"battle": {
+		"ap": 4,
+		"ap_max": 5,
+		"boss": false,
+		"combo": 0,
+		"enemy": "grunt",
+		"enemy_at": 10,
+		"enemy_hp": 52,
+		"enemy_max_hp": 52,
+		"guard": false,
+		"hexed": false,
+		"next_action": "e_slash",
+		"over": "",
+		"party_hp": [
+			60,
+			85,
+			70,
+			45,
+			50,
+			48
 		],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": {
-			"idx": 0,
-			"pool": "prep",
-			"step": 0,
+		"regen": 1,
+		"round": 1
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
 		},
-		"realm": 82,
-		"tickets": 0,
-		"turn": 3,
-	}
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 4
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 2,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: quiet evening with Captain Maren Stormbite: Rain drums the stern windows while warm hands map every scar you own; when the storm finally passes you have learned her name gasped, not spoken. (+2 EXP)",
+		"Turn 1 dispatch from the tide: raiders tore 9 leagues from our waters — 91% of the sea still flies the crimson flag.",
+		"Turn 2: quiet evening with Captain Maren Stormbite: She tastes of rum and storm-salt; the hammock keeps the tide's rhythm and the lantern burns to nothing before either of you is done. (+2 EXP)",
+		"Turn 2 dispatch from the tide: raiders tore 9 leagues from our waters — 82% of the sea still flies the crimson flag.",
+		"Turn 3: Preparation quest started: Provisions Ashore.",
+		"Turn 3: Sea Weariness drags the squad: AP regen -1.",
+		"Turn 3: battle vs Press-Gang Hand"
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": {
+		"idx": 0,
+		"pool": "prep",
+		"step": 0
+	},
+	"realm": 82,
+	"tickets": 0,
+	"turn": 3
+}

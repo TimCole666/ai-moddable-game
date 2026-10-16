@@ -26,50 +26,79 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 2,
-			"ap_max": 6,
-			"boss": false,
-			"combo": 1,
-			"enemy": "grunt",
-			"enemy_at": 8,
-			"enemy_hp": 11,
-			"enemy_max_hp": 40,
-			"guard": false,
-			"hexed": false,
-			"next_action": "e_slash",
-			"over": "",
-			"party_hp": [60, 77, 70, 45, 50, 48],
-			"regen": 2,
-			"round": 2,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {"count": 1, "exp": 0},
-			"healer": {"count": 1, "exp": 0},
-			"hero": {"count": 1, "exp": 0},
-			"mage": {"count": 1, "exp": 0},
-			"striker": {"count": 1, "exp": 0},
-			"tank": {"count": 1, "exp": 0},
-		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: Preparation quest started: Ridge Patrol.",
-			"Turn 1: battle vs Grunt",
-			"Round 1: Vanguard uses Strike for 14 damage (enemy HP 26)",
-			"Round 1: Grunt uses Jab for 8 damage on Bulwark (HP 77)",
-			"Turn 1: theme pack switched to Iron Road.",
-			"Round 2: Engine Driver uses Coupling Strike for 15 damage (enemy HP 11)",
+	"base_options": null,
+	"battle": {
+		"ap": 2,
+		"ap_max": 6,
+		"boss": false,
+		"combo": 1,
+		"enemy": "grunt",
+		"enemy_at": 8,
+		"enemy_hp": 11,
+		"enemy_max_hp": 40,
+		"guard": false,
+		"hexed": false,
+		"next_action": "e_slash",
+		"over": "",
+		"party_hp": [
+			60,
+			77,
+			70,
+			45,
+			50,
+			48
 		],
-		"medals": 0,
-		"pack_id": "ironroad",
-		"phase": 0,
-		"quest": {"idx": 0, "pool": "prep", "step": 0},
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"regen": 2,
+		"round": 2
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
+		},
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 0
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: Preparation quest started: Provisions Ashore.",
+		"Turn 1: battle vs Press-Gang Hand",
+		"Round 1: Captain Maren Stormbite uses Cutlass Slash for 14 damage (enemy HP 26)",
+		"Round 1: Press-Gang Hand uses Hook Rake for 8 damage on Bram Ironkeel (HP 77)",
+		"Turn 1: theme pack switched to Iron Road.",
+		"Round 2: Engine Driver uses Coupling Strike for 15 damage (enemy HP 11)"
+	],
+	"medals": 0,
+	"pack_id": "ironroad",
+	"phase": 0,
+	"quest": {
+		"idx": 0,
+		"pool": "prep",
+		"step": 0
+	},
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}

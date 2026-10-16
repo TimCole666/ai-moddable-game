@@ -30,75 +30,82 @@ func actions() -> Array:
 
 func expected_state() -> Dictionary:
 	return {
-		"base_options": null,
-		"battle": {
-			"ap": 6,
-			"ap_max": 6,
-			"boss": true,
-			"combo": 0,
-			"enemy": "boss",
-			"enemy_at": 16,
-			"enemy_hp": 160,
-			"enemy_max_hp": 160,
-			"guard": false,
-			"hexed": true,
-			"next_action": "e_slash",
-			"over": "lose",
-			"party_hp": [40, 35, 40, 5, 0, 33],
-			"regen": 2,
-			"round": 11,
-		},
-		"chest": null,
-		"collection": {
-			"archer": {
-				"count": 1,
-				"exp": 0,
-			},
-			"healer": {
-				"count": 1,
-				"exp": 0,
-			},
-			"hero": {
-				"count": 1,
-				"exp": 0,
-			},
-			"mage": {
-				"count": 1,
-				"exp": 0,
-			},
-			"striker": {
-				"count": 1,
-				"exp": 0,
-			},
-			"tank": {
-				"count": 1,
-				"exp": 0,
-			},
-		},
-		"ended": "",
-		"fatigue": 0,
-		"gains_total": 0,
-		"gains_turn": 0,
-		"log": [
-			"Turn 1: battle vs Warlord",
-			"Round 1: Ranger uses Hex: one enemy action this round will be cancelled",
-			"Round 1: Warlord uses Slam for 27 damage on Bulwark (HP 58)",
-			"Round 2: Warlord uses Jab for 14 damage on Medic (HP 56)",
-			"Round 3: Warlord uses Bolt for 19 damage on Sage (HP 26)",
-			"Round 4: Warlord uses Slam for 28 damage on Dancer (HP 22)",
-			"Round 5: Warlord uses Jab for 15 damage on Ranger (HP 33)",
-			"Round 6: Warlord uses Bolt for 20 damage on Vanguard (HP 40)",
-			"Round 7: Warlord uses Slam for 23 damage on Bulwark (HP 35)",
-			"Round 8: Warlord uses Jab for 16 damage on Medic (HP 40)",
-			"Round 9: Warlord uses Bolt for 21 damage on Sage (HP 5)",
-			"Round 10: Warlord uses Slam for 24 damage on Dancer (HP 0)",
-			"Round 11: the squad withdraws (stalemate)",
+	"base_options": null,
+	"battle": {
+		"ap": 6,
+		"ap_max": 6,
+		"boss": true,
+		"combo": 0,
+		"enemy": "boss",
+		"enemy_at": 16,
+		"enemy_hp": 160,
+		"enemy_max_hp": 160,
+		"guard": false,
+		"hexed": true,
+		"next_action": "e_slash",
+		"over": "lose",
+		"party_hp": [
+			40,
+			35,
+			40,
+			5,
+			0,
+			33
 		],
-		"medals": 0,
-		"pack_id": "builtin",
-		"phase": 0,
-		"quest": null,
-		"realm": 100,
-		"tickets": 0,
-		"turn": 1,
-	}
+		"regen": 2,
+		"round": 11
+	},
+	"chest": null,
+	"collection": {
+		"archer": {
+			"count": 1,
+			"exp": 0
+		},
+		"healer": {
+			"count": 1,
+			"exp": 0
+		},
+		"hero": {
+			"count": 1,
+			"exp": 0
+		},
+		"mage": {
+			"count": 1,
+			"exp": 0
+		},
+		"striker": {
+			"count": 1,
+			"exp": 0
+		},
+		"tank": {
+			"count": 1,
+			"exp": 0
+		}
+	},
+	"ended": "",
+	"fatigue": 0,
+	"gains_total": 0,
+	"gains_turn": 0,
+	"log": [
+		"Turn 1: battle vs Admiral Blackjaw",
+		"Round 1: Gull-Eye Finn uses Drowned Curse: one enemy action this round will be cancelled",
+		"Round 1: Admiral Blackjaw uses Cannon Slam for 27 damage on Bram Ironkeel (HP 58)",
+		"Round 2: Admiral Blackjaw uses Hook Rake for 14 damage on Tidepriestess Nuala (HP 56)",
+		"Round 3: Admiral Blackjaw uses Venom Bolt for 19 damage on Tempest Iris (HP 26)",
+		"Round 4: Admiral Blackjaw uses Cannon Slam for 28 damage on Twin-Cut Sable (HP 22)",
+		"Round 5: Admiral Blackjaw uses Hook Rake for 15 damage on Gull-Eye Finn (HP 33)",
+		"Round 6: Admiral Blackjaw uses Venom Bolt for 20 damage on Captain Maren Stormbite (HP 40)",
+		"Round 7: Admiral Blackjaw uses Cannon Slam for 23 damage on Bram Ironkeel (HP 35)",
+		"Round 8: Admiral Blackjaw uses Hook Rake for 16 damage on Tidepriestess Nuala (HP 40)",
+		"Round 9: Admiral Blackjaw uses Venom Bolt for 21 damage on Tempest Iris (HP 5)",
+		"Round 10: Admiral Blackjaw uses Cannon Slam for 24 damage on Twin-Cut Sable (HP 0)",
+		"Round 11: the squad withdraws (stalemate)"
+	],
+	"medals": 0,
+	"pack_id": "builtin",
+	"phase": 0,
+	"quest": null,
+	"realm": 100,
+	"tickets": 0,
+	"turn": 1
+}

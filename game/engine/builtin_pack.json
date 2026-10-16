@@ -1,7 +1,7 @@
 {
   "id": "builtin",
   "version": 1,
-  "accent": "#1a7a4c",
+  "accent": "#8c2f39",
   "bodyClass": "seas",
   "parts": {
     "fatigue": {
@@ -14,159 +14,213 @@
   },
   "text": {
     "en": {
-      "name": "Placeholder Seas",
-      "tagline": "the built-in skeleton pack",
+      "name": "Crimson Corsairs",
+      "tagline": "Plunder the seas by day; below decks, the spoils are shared.",
       "factions": [
-        {"name": "Shield Oath", "icon": "🛡️"},
-        {"name": "Lantern Order", "icon": "🔮"},
-        {"name": "Free Blades", "icon": "🏹"}
+        {"name": "Crimson Fleet", "icon": "☠️"},
+        {"name": "Mermaid Court", "icon": "🧜"},
+        {"name": "Powder Guild", "icon": "💣"}
       ],
       "cards": {
-        "hero": {"name": "Vanguard", "icon": "⚔️"},
-        "tank": {"name": "Bulwark", "icon": "🛡️"},
-        "healer": {"name": "Medic", "icon": "⚕️"},
-        "mage": {"name": "Sage", "icon": "🔮"},
-        "striker": {"name": "Dancer", "icon": "🗡️"},
-        "archer": {"name": "Ranger", "icon": "🏹"}
+        "hero": {"name": "Captain Maren Stormbite", "icon": "⚔️"},
+        "tank": {"name": "Bram Ironkeel", "icon": "🛡️"},
+        "healer": {"name": "Tidepriestess Nuala", "icon": "⚕️"},
+        "mage": {"name": "Tempest Iris", "icon": "🔮"},
+        "striker": {"name": "Twin-Cut Sable", "icon": "🗡️"},
+        "archer": {"name": "Gull-Eye Finn", "icon": "🏹"}
       },
       "skillNames": {
-        "slash": "Strike",
-        "heavy": "Heavy Blow",
-        "multi": "Twin Strike",
-        "blast": "Blast",
-        "mend": "Mend",
-        "guard": "Brace",
-        "hex": "Hex"
+        "slash": "Cutlass Slash",
+        "heavy": "Broadside",
+        "multi": "Knife Flurry",
+        "blast": "Powder Blast",
+        "mend": "Sea Salve",
+        "guard": "Brace the Deck",
+        "hex": "Drowned Curse"
       },
       "enemies": {
-        "grunt": {"name": "Grunt", "icon": "👹"},
-        "brute": {"name": "Brute", "icon": "🐗"},
-        "shaman": {"name": "Shaman", "icon": "🐍"},
-        "boss": {"name": "Warlord", "icon": "☠️"}
+        "grunt": {"name": "Press-Gang Hand", "icon": "🪝"},
+        "brute": {"name": "Sharkhide Brute", "icon": "🦈"},
+        "shaman": {"name": "Reef Hexer", "icon": "🐙"},
+        "boss": {"name": "Admiral Blackjaw", "icon": "☠️"}
       },
       "enemyActions": {
-        "e_slash": "Jab",
-        "e_heavy": "Slam",
-        "e_bolt": "Bolt"
+        "e_slash": "Hook Rake",
+        "e_heavy": "Cannon Slam",
+        "e_bolt": "Venom Bolt"
       },
       "questTitles": {
-        "prepA": "Ridge Patrol",
-        "prepB": "Supply Scout",
-        "opA": "Storm the Fort",
-        "opB": "Ambush at the Ford"
+        "prepA": "Provisions Ashore",
+        "prepB": "The Rum Run",
+        "opA": "Storm Fort Siren",
+        "opB": "Ambush in the Screaming Strait"
       },
       "flavor": {
-        "ev_exp": ["A veteran shares an old lesson over dinner."],
-        "ev_gains": ["You escort supplies to the alliance camp."],
-        "base": ["The camp is quiet tonight."],
-        "reportTpl": "Turn {turn} war report: the enemy pushed the frontier — the alliance lost {loss} ground. {left} of the realm remains."
+        "ev_exp": [
+          "A veteran corsair drills you in cutlass-work below decks until the lesson dissolves into sweat, bare skin, and the slow grammar of hands.",
+          "The sailing master corrects your charts by lamplight, then your posture — her teeth at your throat, your belt on the deck.",
+          "The ship's surgeon teaches herb-lore and anatomy in one breathless lesson; by the end you can name every place she likes to be touched.",
+          "The gunner's mate shows you how to hold a long barrel steady, then takes you apart with the same unhurried precision.",
+          "Sparring becomes grappling becomes the hammock: she pins you, grins, and collects her victory toll from every inch of you."
+        ],
+        "ev_gains": [
+          "The quartermaster tallies the taken cargo while the captured merchant captain settles her ransom in the great cabin — coin counted twice, kisses counted longer.",
+          "War chests land on the beach at midnight; the crew hauls barrels through the surf while two officers warm the chart room.",
+          "A prize of brandy and silk: by dawn the silk is woven through the rigging and knotted around two gun crews.",
+          "Bribed harbor pilots trade their charts for pearls and spend the night being thanked in person, thoroughly.",
+          "The supply lugger's captain settles her escort bill with supper, brandy, and the whole night left to round up the account."
+        ],
+        "base": [
+          "Lamplight, a lock turning on the cabin door: she undresses you with a sailor's economy, lays you back on the charts, and makes the whole sea wait.",
+          "Rain drums the stern windows while warm hands map every scar you own; when the storm finally passes you have learned her name gasped, not spoken.",
+          "She tastes of rum and storm-salt; the hammock keeps the tide's rhythm and the lantern burns to nothing before either of you is done.",
+          "A rare quiet anchorage: oil, slow hands, whispered charts of each other's bodies — the tide turns twice before either of you surfaces.",
+          "The crew sleeps ashore and the ship creaks around two voices; the dawn watch finds an empty rum bottle and the two of you still tangled in one sheet."
+        ],
+        "reportTpl": "Turn {turn} dispatch from the tide: raiders tore {loss} leagues from our waters — {left} of the sea still flies the crimson flag."
       },
       "parts": {
-        "fatigue": {"name": "Fatigue", "icon": "😵"}
+        "fatigue": {"name": "Sea Weariness", "icon": "🥴"}
       }
     },
     "zh": {
-      "name": "占位之海",
-      "tagline": "内置骨架主题包",
+      "name": "绯红私掠者",
+      "tagline": "白日劫掠四海；入夜之后，战利品彼此分享。",
       "factions": [
-        {"name": "铁誓团", "icon": "🛡️"},
-        {"name": "灯火会", "icon": "🔮"},
-        {"name": "自由刃", "icon": "🏹"}
+        {"name": "绯红舰队", "icon": "☠️"},
+        {"name": "人鱼宫廷", "icon": "🧜"},
+        {"name": "火药公会", "icon": "💣"}
       ],
       "cards": {
-        "hero": {"name": "先锋", "icon": "⚔️"},
-        "tank": {"name": "盾卫", "icon": "🛡️"},
-        "healer": {"name": "医官", "icon": "⚕️"},
-        "mage": {"name": "术士", "icon": "🔮"},
-        "striker": {"name": "双刀", "icon": "🗡️"},
-        "archer": {"name": "弓手", "icon": "🏹"}
+        "hero": {"name": "玛伦·风暴之牙船长", "icon": "⚔️"},
+        "tank": {"name": "布拉姆·铁龙骨", "icon": "🛡️"},
+        "healer": {"name": "潮汐祭司娜乌拉", "icon": "⚕️"},
+        "mage": {"name": "风暴伊丽丝", "icon": "🔮"},
+        "striker": {"name": "双刃莎珀", "icon": "🗡️"},
+        "archer": {"name": "鸥眼芬恩", "icon": "🏹"}
       },
       "skillNames": {
-        "slash": "斩击",
-        "heavy": "重击",
-        "multi": "连斩",
-        "blast": "冲击",
-        "mend": "治疗",
-        "guard": "布防",
-        "hex": "封印"
+        "slash": "弯刀斩",
+        "heavy": "舷炮重击",
+        "multi": "飞刀连舞",
+        "blast": "火药爆裂",
+        "mend": "海药膏",
+        "guard": "紧守甲板",
+        "hex": "溺亡者之咒"
       },
       "enemies": {
-        "grunt": {"name": "杂兵", "icon": "👹"},
-        "brute": {"name": "暴徒", "icon": "🐗"},
-        "shaman": {"name": "巫师", "icon": "🐍"},
-        "boss": {"name": "首领", "icon": "☠️"}
+        "grunt": {"name": "强征水手", "icon": "🪝"},
+        "brute": {"name": "鲨皮壮汉", "icon": "🦈"},
+        "shaman": {"name": "暗礁咒师", "icon": "🐙"},
+        "boss": {"name": "黑颚提督", "icon": "☠️"}
       },
       "enemyActions": {
-        "e_slash": "戳击",
-        "e_heavy": "重砸",
-        "e_bolt": "毒弹"
+        "e_slash": "铁钩横扫",
+        "e_heavy": "舰炮猛砸",
+        "e_bolt": "毒液弹"
       },
       "questTitles": {
-        "prepA": "山脊巡逻",
-        "prepB": "补给侦察",
-        "opA": "强攻要塞",
-        "opB": "浅滩伏击"
+        "prepA": "岸上筹粮",
+        "prepB": "朗姆酒护航",
+        "opA": "强攻塞壬堡",
+        "opB": "尖啸海峡的伏击"
       },
       "flavor": {
-        "ev_exp": ["一位老兵在晚餐时传授旧日的功课。"],
-        "ev_gains": ["你护送物资抵达盟会营地。"],
-        "base": ["今夜营地寂静。"],
-        "reportTpl": "第 {turn} 回合战报:敌人进犯前线——盟会折损 {loss} 寸疆土。疆土仅余 {left}。"
+        "ev_exp": [
+          "老练的海盗在底舱教你弯刀功夫，直到课程融进汗水与赤裸的肌肤，化作双手迟缓的语法。",
+          "航海长在灯下替你修订海图，顺便修正你的姿势——她的齿尖抵着你的喉咙，你的腰带落在甲板上。",
+          "船医把药草学与人体构造讲成一堂令人窒息的课；到下课为止，你已能一一叫出她喜欢被抚摸的每处地方。",
+          "炮手长先教你如何稳住一根长筒，然后用同样从容不迫的精准把你拆开。",
+          "切磋变成角力，角力变成吊床：她把你钉住，咧嘴一笑，向你一寸一寸地收取胜利的贡金。"
+        ],
+        "ev_gains": [
+          "军需官清点缴获的货物，被俘的商船女船长则在船长室里支付赎金——金币点了两遍，吻数得更久。",
+          "战利品箱在午夜落上海滩；水手们推着酒桶蹚过浪沫，两名军官把海图室烘得暖热。",
+          "缴获了白兰地与丝绸：到天亮时，丝绸已缠满索具，也缠住了两个炮组的腰。",
+          "被收买的领航员用港湾海图换走珍珠，再用一整夜被当面致谢，谢得十分彻底。",
+          "补给纵帆船的女船长用晚餐、白兰地和余下的一整夜，来结清你的护航账。"
+        ],
+        "base": [
+          "灯光昏黄，门闩落下：她以水手的利落褪去你的衣裳，把你平放在海图上，让整片大海稍等。",
+          "雨点敲打艉窗，温热的手抚过你的每一道旧疤；待暴雨停歇，你已学会她那个被呻吟出来、而非说出口的名字。",
+          "她带着朗姆酒与风暴盐的味道；吊床应和着潮水的节拍，灯芯燃尽之前，谁也不肯先停。",
+          "难得安静的锚地：精油、缓慢的手、在彼此身体上低声描摹的海图——潮水转了两轮，谁也不肯浮出水面。",
+          "船员在岸上酣睡，船身绕着两道声音吱呀作响；晨班的岗哨只找到一只见底的朗姆酒瓶，和仍缠在同一床单里的两个人。"
+        ],
+        "reportTpl": "第 {turn} 回合潮讯：掠袭者撕走了 {loss} 里格海域——绯红的旗帜仍飘扬在 {left} 的海面上。"
       },
       "parts": {
-        "fatigue": {"name": "疲惫", "icon": "😵"}
+        "fatigue": {"name": "海之倦怠", "icon": "🥴"}
       }
     },
     "ja": {
-      "name": "プレースホルダーの海",
-      "tagline": "内蔵スケルトンパック",
+      "name": "紅の海賊団",
+      "tagline": "昼は海を略奪し、夜は戦利品を分かち合う。",
       "factions": [
-        {"name": "鉄誓団", "icon": "🛡️"},
-        {"name": "灯火会", "icon": "🔮"},
-        {"name": "自由剣", "icon": "🏹"}
+        {"name": "紅艦隊", "icon": "☠️"},
+        {"name": "人魚の宮廷", "icon": "🧜"},
+        {"name": "火薬組合", "icon": "💣"}
       ],
       "cards": {
-        "hero": {"name": "先駆", "icon": "⚔️"},
-        "tank": {"name": "盾衛", "icon": "🛡️"},
-        "healer": {"name": "衛生兵", "icon": "⚕️"},
-        "mage": {"name": "呪術師", "icon": "🔮"},
-        "striker": {"name": "二刀流", "icon": "🗡️"},
-        "archer": {"name": "弓手", "icon": "🏹"}
+        "hero": {"name": "嵐牙の船長マレン", "icon": "⚔️"},
+        "tank": {"name": "鉄竜骨のブラム", "icon": "🛡️"},
+        "healer": {"name": "潮の巫女ヌアラ", "icon": "⚕️"},
+        "mage": {"name": "嵐のアイリス", "icon": "🔮"},
+        "striker": {"name": "二刀のセイブル", "icon": "🗡️"},
+        "archer": {"name": "鴎目のフィン", "icon": "🏹"}
       },
       "skillNames": {
-        "slash": "斬撃",
-        "heavy": "強打",
-        "multi": "連斬",
-        "blast": "衝撃",
-        "mend": "治療",
-        "guard": "布陣",
-        "hex": "封印"
+        "slash": "カトラス斬り",
+        "heavy": "舷砲の一撃",
+        "multi": "ナイフの連舞",
+        "blast": "火薬の爆発",
+        "mend": "海の膏",
+        "guard": "甲板を固めろ",
+        "hex": "溺れ者の呪い"
       },
       "enemies": {
-        "grunt": {"name": "雑兵", "icon": "👹"},
-        "brute": {"name": "荒くれ者", "icon": "🐗"},
-        "shaman": {"name": "巫師", "icon": "🐍"},
-        "boss": {"name": "首領", "icon": "☠️"}
+        "grunt": {"name": "強徴水夫", "icon": "🪝"},
+        "brute": {"name": "鮫皮の巨漢", "icon": "🦈"},
+        "shaman": {"name": "礁石の呪術師", "icon": "🐙"},
+        "boss": {"name": "黒顎の提督", "icon": "☠️"}
       },
       "enemyActions": {
-        "e_slash": "突き",
-        "e_heavy": "叩き",
+        "e_slash": "フックの薙ぎ",
+        "e_heavy": "艦砲の叩き付け",
         "e_bolt": "毒弾"
       },
       "questTitles": {
-        "prepA": "山稜の哨戒",
-        "prepB": "補給偵察",
-        "opA": "要塞強襲",
-        "opB": "浅瀬の待ち伏せ"
+        "prepA": "上陸補給",
+        "prepB": "ラム酒の輸送",
+        "opA": "セイレーン砦の強襲",
+        "opB": "悲鳴海峡の待ち伏せ"
       },
       "flavor": {
-        "ev_exp": ["古参兵が夕食を兼ねて古い教訓を語ってくれる。"],
-        "ev_gains": ["物資を同盟の陣営まで護送した。"],
-        "base": ["今夜の陣営は静かだ。"],
-        "reportTpl": "第 {turn} 回合戦報:敵が戦線を押し込んだ——同盟は {loss} の土地を失った。領土は残り {left}。"
+        "ev_exp": [
+          "古参の海賊が船室でカトラスの手程を教え込む——やがて稽古は汗と素肌に溶け、両手のゆっくりした文法になっていく。",
+          "航海士がランプの下で海図を直し、ついでに姿勢も正す——歯先は喉元に、ベルトは床板の上。",
+          "船医は薬草学と人体の構造を、息のつく一つの稽古にしてくれる。終わるころには、彼女が触れられるのを好む場所を全部、名で呼べるようになった。",
+          "砲手長は長い筒の狙いの定め方を教え、それから同じ飽くことのない精確さでお前をほどいていく。",
+          "手合わせは組み打ちに、組み打ちはハンモックに：彼女はお前を押さえ込み、にやりと笑い、一寸残らず勝利の代償を徴収する。"
+        ],
+        "ev_gains": [
+          "主計長が戦利品を勘定するあいだに、捕われた商船の女船長は艦室で身代金を支払う——金貨は二度、口付けはもっと長く数えられた。",
+          "戦利品の箱は真夜中に浜へ着く。乗員は砕波を越えて樽を運び、二人の士官は海図室を暖めた。",
+          "ブランデーと絹の戦利品：夜明けまでに、絹は索具に編み込まれ、二つの砲術班の腰にも結ばれていた。",
+          "賄賂を受けた水先案内人は海図と真珠を取り替え、一晩かけて直接、念入りに礼を言われた。",
+          "補給帆船の女船長は、夕食とブランデーと残りの一夜で、護衛の勘定を精算した。"
+        ],
+        "base": [
+          "ランプの灯り、居室の鍵のかかる音：彼女は船乗りの手際でお前を脱がせ、海図の上に仰向けに寝かせ、海全体を待たせる。",
+          "雨が尾窓を叩くあいだ、温かい手がお前の傷跡を一つずつなぞる。嵐がようやく過ぎるころ、呻き声に漏れた彼女の名前の響きを覚えてしまった。",
+          "彼女はラム酒と嵐の塩の味がする。ハンモックは潮の調子に揺れ、ランプの芯が燃え尽きるまで、どちらも手を止めない。",
+          "久しぶりに静かな錨地：油、緩い手、互いの身体に囁きながら描き合う海図——潮が二度巡っても、どちらも顔を上げない。",
+          "乗員は上陸先で眠り、船は二つの声で軋む。夜明けの見張りが見つけたのは空のラム酒瓶と、一枚のシーツにまだ絡んだままの二人だった。"
+        ],
+        "reportTpl": "ターン {turn} の潮告：略奪者たちが {loss} リーグの海を切り取った——紅の旗はまだ海の {left} に翻っている。"
       },
       "parts": {
-        "fatigue": {"name": "疲労", "icon": "😵"}
+        "fatigue": {"name": "海の疲労", "icon": "🥴"}
       }
     }
   }
