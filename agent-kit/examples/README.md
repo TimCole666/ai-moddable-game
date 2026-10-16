@@ -1,18 +1,30 @@
 # Examples
 
-Proof artifacts of the ticket-08 agent round-trip were to live here:
+Proof artifacts of the ticket-08 agent round-trip.
 
-- `agent_pack.json` — a Theme Pack authored by an external coding agent
-- the agent's raw run transcript and the engine validation/play transcript
+## Round-trip demonstrated — Droid, contract-only (2026-10-17)
 
-**Status: round-trip not yet demonstrated.** Both local CLIs were unavailable
-when ticket 08 was implemented:
+`droid-roundtrip/` records a real agent authoring round-trip performed by
+**Droid** (Factory's coding agent), standing in for Claude Code/Codex, which
+were both unavailable on this machine that day (claude weekly limit, codex not
+logged in):
 
-- `claude -p ...` — "You've hit your weekly limit · resets 8am (Asia/Taipei)"
-- `codex exec ...` — not logged in (401 Unauthorized against api.openai.com)
+- `droid-roundtrip/agent_pack.json` — the "Coral Court" pack the agent authored
+- `droid-roundtrip/transcript.md` — the agent's own run record
 
-Per the ticket, no hand-written pack is presented as an agent output. To
-complete the round-trip once either CLI has credentials:
+The authoring agent was given **only** the two shipped kit files
+(`agent-kit/pack-contract.md`, `agent-kit/claude-code/SKILL.md`) — no game
+source, no builtin packs, no engine access. It passed the headless runner on
+its first attempt: `VALID` → battle played with pack text → `PACK PLAYED`,
+exit 0. The in-repo copy re-verifies identically. This demonstrates the ticket's
+intent: the contract document alone is sufficient for an external coding agent
+to author a valid, playable pack with no game-engine access.
+
+Remaining follow-up (optional, strengthens the evidence): repeat the run with
+the Claude Code skill invoked through the `claude` CLI once it has credentials
+(steps below, kept for that purpose).
+
+## Completing the Claude Code variant
 
 1. Install the skill: `cp agent-kit/claude-code/SKILL.md agent-kit/pack-contract.md ~/.claude/skills/theme-pack-author/`
 2. From the repo root, run e.g.:
